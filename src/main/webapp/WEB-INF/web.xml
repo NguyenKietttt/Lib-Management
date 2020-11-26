@@ -22,6 +22,7 @@
         <url-pattern>/faces/*</url-pattern>
     </servlet-mapping>
     <session-config>
+        <tracking-mode>COOKIE</tracking-mode>
         <session-timeout>
             30
         </session-timeout>

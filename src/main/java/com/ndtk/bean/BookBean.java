@@ -14,6 +14,7 @@ import com.ndtk.service.PublisherService;
 import java.util.ArrayList;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -27,7 +28,8 @@ public class BookBean {
     private static CategoryService cateSvc = new CategoryService();
     private static AuthorService authorSvc = new AuthorService();
     private static PublisherService publisherSvc = new PublisherService();
-    
+    private static ArrayList<BookRes> listBook;
+        
     private int id;
     private String bookName;
     private String status;
@@ -35,13 +37,10 @@ public class BookBean {
     private int authorID = -1;
     private int publisherID = -1;
     private String keyword;
-    private static ArrayList<BookRes> listBook;
     
     public BookBean(){
         ArrayList<Book> books = bookSvc.getAllBooks(this.keyword, this.categoryID, this.authorID, this.publisherID);
-       
         ArrayList<BookRes> booksRes = initBookRes(books);
-        
         setListBook(booksRes);
     }
     
@@ -59,11 +58,6 @@ public class BookBean {
         setListBook(booksRes);
 
         return listBook;
-    }
-    
-    public void test(int id){
-        int temp = id;
-        temp++;
     }
     
     private ArrayList<BookRes> initBookRes(ArrayList<Book> books){

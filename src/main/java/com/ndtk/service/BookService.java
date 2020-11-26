@@ -25,6 +25,28 @@ import org.hibernate.SessionFactory;
 public class BookService {
     private static final SessionFactory factory = HibernateUtil.getFACTORY();
     
+    public Book getBookByID(int ID){
+        try(Session session = factory.openSession()){
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Book> query = builder.createQuery(Book.class);
+            Root<Book> root = query.from(Book.class);
+            
+            root.fetch("category", JoinType.INNER);
+            root.fetch("author", JoinType.INNER);
+            root.fetch("publisher", JoinType.INNER);
+                    
+            query.orderBy(builder.asc(root.get("bookID"))).select(root);
+            
+            ArrayList<Book> listBook = (ArrayList<Book>) session.createQuery(query).getResultList();
+            
+            if (listBook.size() > 0) {
+                return listBook.get(0);
+            }
+           
+            return null;
+        }
+    }
+    
     public ArrayList<Book> getAllBooks(String keyword, int categoryID, int authorID, int publisherID){
         try(Session session = factory.openSession()){
             CriteriaBuilder builder = session.getCriteriaBuilder();

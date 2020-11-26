@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:t="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"/>
+        <title>Book Detail</title>
+        <h:outputStylesheet name="css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"/>
+        <h:outputStylesheet name="fonts/fontawesome-all.min.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"/>
+    </h:head>
+    <h:body id="page-top">
+        <div id="wrapper">
+            <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+                <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="index.html"><div class="sidebar-brand-icon"><i class="fas fa-ethernet"></i></div><div class="sidebar-brand-text mx-3"><span>Library</span></div></a>
+                    <hr class="sidebar-divider my-0"/>
+                    <ul class="nav navbar-nav text-light" id="accordionSidebar">
+                        <li class="nav-item"><a class="nav-link" href="table.html"><i class="fas fa-filter"></i><span>Book Listing</span></a></li>
+                        <li class="nav-item"><a class="nav-link" href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a><a class="nav-link" href="index.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a><a class="nav-link" href="user.html"><i class="fas fa-user-friends"></i><span>User</span></a>
+                            <a class="nav-link" href="reader.html"><i class="fas fa-book-reader"></i><span>Reader</span></a>
+                        </li>
+                        <li class="nav-item"></li>
+                        <li class="nav-item"></li>
+                        <li class="nav-item"></li>
+                    </ul>
+                    <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
+                </div>
+            </nav>
+            <div class="d-flex flex-column" id="content-wrapper">
+                <div id="content">
+                    <div class="container-fluid">
+                        <h3 class="text-dark mb-4" style="margin-top: 2%;">Book Detail</h3>
+                        <div class="row mb-3">
+                            <div class="col-lg-4">
+                                <div class="card mb-3">
+                                    <div class="card-body text-center shadow">
+                                        <h:graphicImage class="img-thumbnail mb-3 mt-4" library="img" name="#{bookDetailBean.image}" width="160" height="160"/>
+                                        <div class="mb-3"><button class="btn btn-primary btn-sm" type="button">Change Photo</button></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="card shadow mb-3">
+                                            <div class="card-header py-3">
+                                                <p class="text-primary m-0 font-weight-bold">Infomation</p>
+                                            </div>
+                                            <div class="card-body">
+                                                <form>
+                                                    <div class="form-row">
+                                                        <div class="col">
+                                                            <div class="form-group"><label><strong>Book ID</strong><br/></label>
+                                                                <h:inputText class="form-control" t:placeholder="ID" value="#{bookDetailBean.bookID}"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="form-group"><label><strong>Status</strong><br/></label>
+                                                                <h:inputText class="form-control" t:placeholder="Status" value="#{bookDetailBean.status}"/></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="col-xl-12">
+                                                            <div class="form-group"><label><strong>Book Name</strong><br/></label>
+                                                                <h:inputText class="form-control" t:placeholder="Name" value="#{bookDetailBean.bookName}" required=""/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-12">
+                                                            <div class="form-group"><label><strong>Category</strong></label>
+                                                                <h:selectOneMenu class="form-control" required="">
+                                                                    <f:selectItem itemValue="#{bookDetailBean.category.categoryId}" itemLabel="#{bookDetailBean.category.categoryName}" noSelectionOption="true"/>
+                                                                </h:selectOneMenu>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-12">
+                                                            <div class="form-group"><label><strong>Author</strong><br/></label>
+                                                                <h:inputText class="form-control" t:placeholder="Author" value="#{bookDetailBean.author.authorName}" required=""/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-12">
+                                                            <div class="form-group"><label><strong>Publisher</strong><br/></label>
+                                                                <h:inputText class="form-control" t:placeholder="Publisher" value="#{bookDetailBean.publisher.publisherName}" required=""/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="form-group"><label><strong>Quantity</strong><br/></label>
+                                                                <h:inputText class="form-control" 
+                                                                             style="display: none"
+                                                                             t:placeholder="Quantity" value="" required=""/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group"><label><strong>Description</strong></label>
+                                                        <h:inputTextarea  class="form-control" t:placeholder="Description" value="#{bookDetailBean.bookDescription}" style="width: 100%;height: 200px; resize: none;"></h:inputTextarea>
+                                                    </div>
+                                                    <div class="form-group text-center" style="margin-top: 4%;">
+                                                        <button class="btn btn-primary btn-sm" type="button" style="width: 20%;">Save</button>
+                                                        <button class="btn btn-primary btn-sm" type="button" style="margin-left: 5%;background: rgb(223,87,78);width: 20%;">Delete</button></div>
+                                                    <div
+                                                        class="form-group text-center" style="margin-top: 4%;"><button class="btn btn-primary btn-sm" type="button" style="width: 20%;background: rgb(116,223,78);">Borrow</button></div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="card shadow"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+        </div>
+        <h:outputScript name="js/jquery.min.js"/>
+        <h:outputScript name="js/bootstrap.min.js"/>
+        <h:outputScript name="js/chart.min.js"/>
+        <h:outputScript name="js/bs-init.js"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+        <h:outputScript name="js/theme.js"/>
+    </h:body>
+</html>
