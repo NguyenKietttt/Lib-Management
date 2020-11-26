@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<h:head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"/>
+    <title>Dashboard - Brand</title>
+    <h:outputStylesheet name="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"/>
+    <h:outputStylesheet name="fonts/fontawesome-all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css"/>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'Sales', 'Expenses', 'Profit'],
+          ['2014', 1000, 400, 200],
+          ['2015', 1170, 460, 250],
+          ['2016', 660, 1120, 300],
+          ['2017', 1030, 540, 350]
+        ]);
+
+        var options = {
+            title: 'Company Performance',
+            subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+            vAxis: {format:'decimal'}
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+      }
+    </script>
+</h:head>
+
+<h:body id="page-top">
+    <div id="wrapper">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+            <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="index.html"><div class="sidebar-brand-icon"><i class="fas fa-ethernet"></i></div><div class="sidebar-brand-text mx-3"><span>Library</span></div></a>
+                <hr/>
+                <ul class="nav navbar-nav text-light" id="accordionSidebar">
+                    <li class="nav-item"><a class="nav-link active" href="index.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="table.html"><i class="fas fa-filter"></i><span>Book Listing</span></a><a class="nav-link" href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a></li>
+                    <li class="nav-item"></li>
+                    <li class="nav-item"></li>
+                    <li class="nav-item"></li>
+                </ul>
+                <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
+            </div>
+        </nav>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <div class="container-fluid">
+                    <div class="text-left d-sm-flex justify-content-between align-items-center mb-4" style="margin-top: 24px;">
+                        <h3 class="text-left text-dark mb-0">Dashboard</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-lg-4 col-xl-3 offset-xl-0 text-nowrap">
+                            <div id="dataTable_length-1" class="dataTables_length" aria-controls="dataTable"><label>Quarter:&#160;<select class="form-control form-control-sm custom-select custom-select-sm"><option value="1" selected="">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>&#160;</label></div>
+                        </div>
+                        <div class="col-md-6 col-lg-4 offset-xl-0 text-nowrap">
+                            <div id="dataTable_length-2" class="dataTables_length" aria-controls="dataTable"><label>Year:&#160;<select class="form-control form-control-sm custom-select custom-select-sm"><option value="10" selected="">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select>&#160;</label></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-xl-3 mb-4">
+                            <div class="card shadow border-left-primary py-2">
+                                <div class="card-body">
+                                    <div class="row align-items-center no-gutters">
+                                        <div class="col mr-2">
+                                            <div class="text-uppercase text-primary font-weight-bold text-xs mb-1"><span>borrowed books</span></div>
+                                            <div class="text-dark font-weight-bold h5 mb-0"><span class="flash animated">40,000</span></div>
+                                        </div>
+                                        <div class="col-auto"><i class="fas fa-book-open fa-2x text-gray-300"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-3 mb-4">
+                            <div class="card shadow border-left-success py-2">
+                                <div class="card-body">
+                                    <div class="row align-items-center no-gutters">
+                                        <div class="col mr-2">
+                                            <div class="text-uppercase text-success font-weight-bold text-xs mb-1"><span>returned books</span></div>
+                                            <div class="text-dark font-weight-bold h5 mb-0"><span class="flash animated">215,000</span></div>
+                                        </div>
+                                        <div class="col-auto"><i class="fas fa-book fa-2x text-gray-300"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-3 mb-4">
+                            <div class="card shadow border-left-info py-2">
+                                <div class="card-body">
+                                    <div class="row align-items-center no-gutters">
+                                        <div class="col mr-2">
+                                            <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span>broken books</span></div>
+                                            <div class="row no-gutters align-items-center flash animated">
+                                                <div class="col-auto">
+                                                    <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span>50</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto"><i class="fas fa-book fa-2x text-gray-300"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-3 mb-4">
+                            <div class="card shadow border-left-warning py-2">
+                                <div class="card-body">
+                                    <div class="row align-items-center no-gutters">
+                                        <div class="col mr-2">
+                                            <div class="text-uppercase text-warning font-weight-bold text-xs mb-1"><span>fines</span></div>
+                                            <div class="text-dark flash animated font-weight-bold h5 mb-0"><span>18</span></div>
+                                        </div>
+                                        <div class="col-auto"><i class="fas fa-money-alt fa-2x text-gray-300"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <div class="card">
+                                    <div class="card-header py-3">
+                                        <p class="text-primary m-0 font-weight-bold"><strong>Chart</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="columnchart_material" style="width: 900px; height: 500px; display: block; margin: 0 auto;"></div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <div class="card">
+                                    <div class="card-header py-3">
+                                        <p class="text-primary m-0 font-weight-bold"><strong>Detailed Information</strong></p>
+                                    </div>
+                                    <div class="card-body" style="padding-top: 0px;">
+                                        <div class="table-responsive table mt-2" id="dataTable-2" role="grid" aria-describedby="dataTable_info">
+                                            <h:dataTable value="#{userData.employees}" var="p" 
+                                                         id="dataTable" 
+                                                         styleClass="display table my-0"
+                                                         headerClass="text-center"
+                                                         rowClasses="text-center">
+                                                <h:column>    				
+                                                         <f:facet name = "header">ID</f:facet>    				
+                                                         #{p.age}
+                                                 </h:column>
+                                                 <h:column>    				
+                                                         <f:facet name = "header">Name</f:facet>                                                        
+                                                         #{p.name}
+                                                 </h:column>
+                                                <h:column>    				
+                                                         <f:facet name = "header">Price</f:facet>                                                        
+                                                         #{p.salary}
+                                                 </h:column>
+                                                <h:column>    				
+                                                         <f:facet name = "header">Function</f:facet>                                                        
+                                                         <h:commandButton value="ADD"></h:commandButton>
+                                                 </h:column>
+                                             </h:dataTable>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a></div>
+    <h:outputScript name="js/jquery.min.js"/>
+    <h:outputScript name="js/bootstrap.min.js"/>
+    <h:outputScript name="js/chart.min.js"/>
+    <h:outputScript name="js/bs-init.js"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <h:outputScript name="js/theme.js"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#dataTable').DataTable({
+                "searching": false,
+                "lengthChange": false,
+                "iDisplayLength": 5
+            });
+            
+        });
+    </script>
+</h:body>
+</html>

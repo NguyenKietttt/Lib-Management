@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <h:outputStylesheet name="css/bootstrap.min.css"></h:outputStylesheet>
+        <h:outputStylesheet name="fonts/fontawesome-all.min.css"></h:outputStylesheet>
+        <h:outputStylesheet name="css/googlefont.css"></h:outputStylesheet>
+        <h:outputStylesheet name="css/animate.min.css"></h:outputStylesheet>
+    </h:head>
+        <h:body class="bg-gradient-primary">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-9 col-lg-12 col-xl-10">
+                <div class="card shadow-lg o-hidden border-0 my-5">
+                    <div class="card-body p-0">
+                        <div class="row">
+                            <div class="col-lg-6 offset-lg-3">
+                                <div class="p-5">
+                                    <c:if test="#{testBean.check == true}">
+                                        <div role="alert" class="alert alert-danger" style="display: none"><span>Alert</span></div>
+                                    </c:if>
+                                    <c:if test="#{testBean.check == false}">
+                                        <div role="alert" class="alert alert-danger"><span>Alert</span></div>
+                                    </c:if>
+                                    <div class="text-center">
+                                        <h4 class="text-dark mb-4">LOGIN FORM</h4>
+                                    </div>
+                                    <h:form class="user">
+                                        <div class="form-group"><input class="form-control form-control-user" type="text" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Your Username" name="username" required=""/></div>
+                                        <div class="form-group"><input class="form-control form-control-user" type="password" id="exampleInputPassword" placeholder="Your Password" name="password" required=""/>
+                                        </div>
+                                        <h:commandButton action="#{testBean.doCheck}" class="btn btn-primary btn-block text-white btn-user" type="submit" value="Login"></h:commandButton>
+                                        <hr/>
+                                    </h:form>
+                                    <div class="text-center"></div>
+                                    <div class="text-center"><a class="small" href="#">Create an Account!</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h:outputScript name="js/jquery.min.js"></h:outputScript>
+    <h:outputScript name="js/bootstrap.min.js"></h:outputScript>
+    <h:outputScript name="js/jquery.easing.js"></h:outputScript>
+    <h:outputScript name="js/theme.js"></h:outputScript>
+    </h:body>
+</html>

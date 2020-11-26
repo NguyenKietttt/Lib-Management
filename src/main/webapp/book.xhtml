@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:t="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"/>
+        <title>Table - Brand</title>
+        <h:outputStylesheet name="css/bootstrap.min.css"/>
+        <h:outputStylesheet name="css/custom.css"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"/>
+        <h:outputStylesheet name="fonts/fontawesome-all.min.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"/>
+    </h:head>
+    <h:body>
+        <div id="wrapper">
+            <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+                <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="index.html"><div class="sidebar-brand-icon"><i class="fas fa-ethernet"></i></div><div class="sidebar-brand-text mx-3"><span>Library</span></div></a>
+                    <hr class="sidebar-divider my-0"/>
+                    <ul class="nav navbar-nav text-light" id="accordionSidebar">
+                        <li class="nav-item"><a class="nav-link active" href="table.html"><i class="fas fa-filter"></i><span>Book Listing</span></a></li>
+                        <li class="nav-item"><a class="nav-link" href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a><a class="nav-link" href="index.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                        <li class="nav-item"></li>
+                        <li class="nav-item"></li>
+                        <li class="nav-item"></li>
+                    </ul>
+                    <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
+                </div>
+            </nav>
+            <div class="d-flex flex-column" id="content-wrapper">
+                <h:form id="fo">
+                    <div id="content">
+                    <div class="container-fluid">
+                    <div class="row" style="margin-bottom: 1%;">
+                        <div class="col-md-6 col-xl-9 align-self-center" style="margin-top: 2%;">
+                            <h3 class="mb-0">Book Listing</h3>
+                        </div>
+                        <div class="col-md-6 col-xl-3 offset-xl-0 text-left" style="margin-top: 2%;">
+                            <h:commandButton class="btn btn-primary text-center visible py-0" type="button" style="height: 100%;width: 100%;background: rgb(223,87,78);" value="Add a Book">
+                            </h:commandButton>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                            <div class="col-md-6 col-lg-6 col-xl-4 offset-xl-0 text-nowrap">
+                                <div id="dataTable_length-1" class="dataTables_length" aria-controls="dataTable"></div>
+                                <h:selectOneMenu value="#{bookBean.category}" class="form-control form-control-sm custom-select custom-select-sm" style="width: 100%;">
+                                    <f:selectItem itemValue="-1" itemLabel="--- Category ---" noSelectionOption="true"/>
+                                    <f:selectItems value="#{categoryBean.listCategory}" var="cate" itemLabel="#{cate.categoryName}" itemValue="#{cate.categoryId}"></f:selectItems>
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-xl-4 offset-xl-0 text-nowrap">
+                                <div id="dataTable_length-2" class="dataTables_length" aria-controls="dataTable">
+                                    <h:selectOneMenu value="#{bookBean.author}" class="form-control form-control-sm custom-select custom-select-sm" style="width: 100%;" label="--- Tác giả ---">
+                                        <f:selectItem itemValue="-1" itemLabel="--- Author ---" noSelectionOption="true"/>
+                                        <f:selectItems value="#{authorBean.listAuthor}" var="author" itemLabel="#{author.authorName}" itemValue="#{author.authorID}"></f:selectItems>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-xl-4 offset-xl-0 text-nowrap">
+                                <div id="dataTable_length-3" class="dataTables_length" aria-controls="dataTable">
+                                    <h:selectOneMenu value="#{bookBean.publisher}" class="form-control form-control-sm custom-select custom-select-sm" style="width: 100%;">
+                                        <f:selectItem itemValue="-1" itemLabel="--- Publisher ---" noSelectionOption="true"/>
+                                        <f:selectItems value="#{publisherBean.listPublisher}" var="publisher" itemValue="#{publisher.publisherID}" itemLabel="#{publisher.publisherName}"></f:selectItems>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="col-xl-10 offset-xl-1" style="margin-top: 1%;margin-bottom: 1%;">
+                                <h:inputText class="bg-light form-control form-control-sm input-group-text custom-select-sm" 
+                                             style="width: 90%;margin-left: 0px;margin-right: 6.5px; display: inline-block" 
+                                             value="#{bookBean.keyword}" t:placeholder="Search by name or id..."/>
+                                <h:commandButton id="SearchBtn" class="btn btn-primary py-0" style="height: 30px;" value="Search">
+                                    <f:ajax execute="@form" listener="#{bookBean.searchItem()}" render="fo:test" />
+                                </h:commandButton>
+                            </div>
+                        </div>
+                    
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <div class="card">
+                                <div class="card-header py-3">
+                                    <p class="text-primary m-0 font-weight-bold">Books</p>
+                                </div>
+                                <div class="card-body" style="padding-top: 0px;">
+                                    <div  class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
+                                        <p:dataTable value="#{bookBean.listBook}" var="p"
+                                                     paginator="true"
+                                                     rows="5"
+                                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {LastPageLink} "
+                                                     paginatorPosition="bottom"
+                                                     id="test"
+                                                     tableStyleClass="ui-datatable">
+                                            <p:column headerText="ID" style="width:70px;">    				                                                  
+                                                     <h:outputText value="#{p.bookID}"></h:outputText>
+                                             </p:column>
+                                            <p:column headerText="Image">                                                                                                       
+                                                     <h:graphicImage library="img" name="#{p.image}" styleClass="img-fluid" width="120"></h:graphicImage>
+                                             </p:column>
+                                             <p:column headerText="Name">    				                                                        
+                                                     <h:outputText value="#{p.bookName}"></h:outputText>
+                                             </p:column>
+                                            <p:column headerText="Status">    				                                                        
+                                                <h:outputText value="#{p.status}"></h:outputText>
+                                             </p:column>
+                                            <p:column>
+                                                <h:commandButton class="btn btn-primary btn-sm" 
+                                                                 style="width: 100%;margin-bottom: 10%;height: 200%;background: rgb(116,223,78);" 
+                                                                 value="Borrow" 
+                                                                 disabled="#{p.status eq 'Hết'}">
+                                                </h:commandButton>
+                                                <h:commandButton actionListener="#{bookBean.test(p.bookID)}" class="btn btn-primary btn-sm" style="width: 100%;margin-bottom: 10%;height: 200%;" value="Detail">
+                                                    
+                                                </h:commandButton>
+                                             </p:column>
+                                         </p:dataTable>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </h:form>
+            </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a></div>
+        <div class="input-group-append"></div>
+        <h:outputScript name="js/jquery.min.js"/>
+        <h:outputScript name="js/bootstrap.min.js"/>
+        <h:outputScript name="js/chart.min.js"/>
+        <h:outputScript name="js/bs-init.js"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+        <h:outputScript name="js/theme.js"/>
+    </h:body>
+</html>
