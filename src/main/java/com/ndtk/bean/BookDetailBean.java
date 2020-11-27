@@ -10,7 +10,11 @@ import com.ndtk.pojo.Book;
 import com.ndtk.pojo.Category;
 import com.ndtk.pojo.Publisher;
 import com.ndtk.service.BookService;
+import java.io.IOException;
 import java.sql.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -24,40 +28,61 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 public class BookDetailBean {
     private static BookService bookSvc = new BookService();
-    private int bookID;
+    private static int bookID;
+    
     private String bookName;
     private Date publishingDate;
     private String image;
     private String bookDescription;
-    private int quantity;
+    private boolean bookStatus;
     private Category category;
     private Author author;
     private Publisher publisher;
     private String status;
     
-    public BookDetailBean(){   
+    public BookDetailBean() throws IOException{   
         if (!FacesContext.getCurrentInstance().isPostback()) {
             String id = FacesContext.getCurrentInstance()
                     .getExternalContext().getRequestParameterMap().get("bookID");
             
-            if (id != null && !id.isEmpty()) {
-                Book b = bookSvc.getBookByID(Integer.parseInt(id));
-                this.setBookID(b.getBookID());
-                this.setBookName(b.getBookName());
-                this.setPublishingDate(b.getPublishingDate());
-                this.setImage(b.getImage());
-                this.setBookDescription(b.getBookDescription());
-                this.setQuantity(b.getQuantity());
-                this.setCategory(b.getCategory());
-                this.setAuthor(b.getAuthor());
-                this.setPublisher(b.getPublisher());
-                if (b.getQuantity() > 0)
-                    this.setStatus("Còn");
+            if (id != null && !id.isEmpty()){
+                Pattern pattern = Pattern.compile("^[0-9]*$");
+                Matcher matcher = pattern.matcher(id);
+                
+                if (matcher.matches()) {
+                    Book b = bookSvc.getBookByID(Integer.parseInt(id));
+                    if (b != null) {
+                        this.setBookID(b.getBookID());
+                        this.setBookID(b.getBookID());
+                        this.setBookName(b.getBookName());
+                        this.setPublishingDate(b.getPublishingDate());
+                        this.setImage(b.getImage());
+                        this.setBookDescription(b.getBookDescription());
+                        this.setBookStatus(b.getBookStatus());
+                        this.setCategory(b.getCategory());
+                        this.setAuthor(b.getAuthor());
+                        this.setPublisher(b.getPublisher());
+                        if (b.getBookStatus())
+                            this.setStatus("Còn");
+                        else
+                            this.setStatus("Hết");
+                    }
+                    else
+                        FacesContext.getCurrentInstance()
+                                    .getExternalContext().redirect("book.xhtml");
+                }
                 else
-                    this.setStatus("Hết");
+                    FacesContext.getCurrentInstance()
+                                    .getExternalContext().redirect("book.xhtml");
             }
         }
     }
+    
+    public void updateBook(){
+        FacesContext.getCurrentInstance()
+                .addMessage(null, new FacesMessage("Successful",  "Your message: "));
+    }
+        
     
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
     /**
@@ -147,15 +172,15 @@ public class BookDetailBean {
     /**
      * @return the quantity
      */
-    public int getQuantity() {
-        return quantity;
+    public boolean getBookStatus() {
+        return bookStatus;
     }
 
     /**
      * @param quantity the quantity to set
      */
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setBookStatus(boolean bookStatus) {
+        this.bookStatus = bookStatus;
     }
 
     /**

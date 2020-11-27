@@ -65,7 +65,7 @@ public class BookBean {
         String status;
         
         for (Book b : books) {
-            if (b.getQuantity() > 0)
+            if (b.getBookStatus())
                 status = "Còn";
             else
                 status = "Hết";

@@ -8,7 +8,8 @@ and open the template in the editor.
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:t="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"/>
@@ -35,10 +36,12 @@ and open the template in the editor.
                     <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
                 </div>
             </nav>
+            
             <div class="d-flex flex-column" id="content-wrapper">
                 <div id="content">
                     <div class="container-fluid">
                         <h3 class="text-dark mb-4" style="margin-top: 2%;">Book Detail</h3>
+                        <div role="alert" class="alert alert-danger"><span>Alert</span></div>
                         <div class="row mb-3">
                             <div class="col-lg-4">
                                 <div class="card mb-3">
@@ -56,58 +59,88 @@ and open the template in the editor.
                                                 <p class="text-primary m-0 font-weight-bold">Infomation</p>
                                             </div>
                                             <div class="card-body">
-                                                <form>
+                                                <h:form>
                                                     <div class="form-row">
                                                         <div class="col">
                                                             <div class="form-group"><label><strong>Book ID</strong><br/></label>
-                                                                <h:inputText class="form-control" t:placeholder="ID" value="#{bookDetailBean.bookID}"/>
+                                                                <h:inputText class="form-control" 
+                                                                             t:placeholder="ID" value="#{bookDetailBean.bookID}"
+                                                                             readonly="true"/>
                                                             </div>
                                                         </div>
                                                         <div class="col">
                                                             <div class="form-group"><label><strong>Status</strong><br/></label>
-                                                                <h:inputText class="form-control" t:placeholder="Status" value="#{bookDetailBean.status}"/></div>
+                                                                <h:inputText class="form-control" 
+                                                                             t:placeholder="Status" value="#{bookDetailBean.status}"
+                                                                             readonly="true"/>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="form-row">
                                                         <div class="col-xl-12">
                                                             <div class="form-group"><label><strong>Book Name</strong><br/></label>
-                                                                <h:inputText class="form-control" t:placeholder="Name" value="#{bookDetailBean.bookName}" required=""/>
+                                                                <h:inputText class="form-control" 
+                                                                             t:placeholder="Name" value="#{bookDetailBean.bookName}" 
+                                                                             required=""
+                                                                             readonly="true"/>
                                                             </div>
                                                         </div>
                                                         <div class="col-xl-12">
                                                             <div class="form-group"><label><strong>Category</strong></label>
-                                                                <h:selectOneMenu class="form-control" required="">
-                                                                    <f:selectItem itemValue="#{bookDetailBean.category.categoryId}" itemLabel="#{bookDetailBean.category.categoryName}" noSelectionOption="true"/>
-                                                                </h:selectOneMenu>
+                                                                <h:inputText class="form-control" 
+                                                                             t:placeholder="Name" value="#{bookDetailBean.category.categoryName}" 
+                                                                             required=""
+                                                                             readonly="true"/>
                                                             </div>
                                                         </div>
                                                         <div class="col-xl-12">
                                                             <div class="form-group"><label><strong>Author</strong><br/></label>
-                                                                <h:inputText class="form-control" t:placeholder="Author" value="#{bookDetailBean.author.authorName}" required=""/>
+                                                                <h:inputText class="form-control" 
+                                                                             t:placeholder="Author" value="#{bookDetailBean.author.authorName}" 
+                                                                             required=""
+                                                                             readonly="true"/>
                                                             </div>
                                                         </div>
                                                         <div class="col-xl-12">
                                                             <div class="form-group"><label><strong>Publisher</strong><br/></label>
-                                                                <h:inputText class="form-control" t:placeholder="Publisher" value="#{bookDetailBean.publisher.publisherName}" required=""/>
+                                                                <h:inputText class="form-control" 
+                                                                             t:placeholder="Publisher" value="#{bookDetailBean.publisher.publisherName}" 
+                                                                             required=""
+                                                                             readonly="true"/>
                                                             </div>
                                                         </div>
-                                                        <div class="col">
+                                                        <div class="col" style="display: none">
                                                             <div class="form-group"><label><strong>Quantity</strong><br/></label>
-                                                                <h:inputText class="form-control" 
-                                                                             style="display: none"
-                                                                             t:placeholder="Quantity" value="" required=""/>
+                                                                <h:inputText class="form-control"
+                                                                             t:placeholder="Quantity" value="" 
+                                                                             required=""
+                                                                             readonly="true"/>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="form-group"><label><strong>Description</strong></label>
-                                                        <h:inputTextarea  class="form-control" t:placeholder="Description" value="#{bookDetailBean.bookDescription}" style="width: 100%;height: 200px; resize: none;"></h:inputTextarea>
+                                                        <h:inputTextarea  class="form-control" 
+                                                                          t:placeholder="Description" value="#{bookDetailBean.bookDescription}" 
+                                                                          style="width: 100%;height: 200px; resize: none;"
+                                                                          readonly="true">
+                                                        </h:inputTextarea>
                                                     </div>
                                                     <div class="form-group text-center" style="margin-top: 4%;">
-                                                        <button class="btn btn-primary btn-sm" type="button" style="width: 20%;">Save</button>
-                                                        <button class="btn btn-primary btn-sm" type="button" style="margin-left: 5%;background: rgb(223,87,78);width: 20%;">Delete</button></div>
-                                                    <div
-                                                        class="form-group text-center" style="margin-top: 4%;"><button class="btn btn-primary btn-sm" type="button" style="width: 20%;background: rgb(116,223,78);">Borrow</button></div>
-                                            </form>
+                                                        <h:commandButton 
+                                                            action="#{bookDetailBean.updateBook()}"
+                                                            class="btn btn-primary btn-sm" style="width: 20%;"
+                                                            value="Save">
+                                                        </h:commandButton>
+                                                        <h:commandButton value="Delete" class="btn btn-primary btn-sm" type="button" style="margin-left: 5%;background: rgb(223,87,78);width: 20%;">
+                                                            
+                                                        </h:commandButton>
+                                                        
+                                                    </div>
+                                                    <div class="form-group text-center" style="margin-top: 4%;">
+                                                        <h:commandButton value="Borrow" class="btn btn-primary btn-sm" type="button" style="width: 20%;background: rgb(116,223,78);">
+                                                        </h:commandButton>
+                                                    </div>
+                                            </h:form>
                                         </div>
                                     </div>
                                     <div class="card shadow"></div>

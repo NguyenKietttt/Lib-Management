@@ -7,6 +7,8 @@ package com.ndtk.pojo;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,6 +17,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -41,8 +44,8 @@ public class Book implements Serializable{
     @Column(name = "BookDescription")
     private String bookDescription;
     
-    @Column(name = "Quantity")
-    private int quantity;
+    @Column(name = "BookStatus")
+    private boolean bookStatus;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CategoryID")
@@ -56,6 +59,9 @@ public class Book implements Serializable{
     @JoinColumn(name = "PublisherID")
     private Publisher publisher;
     
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    private Set<BorrowReturnDetail> listBorrowReturnDetail;
+        
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
     /**
      * @return the bookID
@@ -171,15 +177,29 @@ public class Book implements Serializable{
     /**
      * @return the quantity
      */
-    public int getQuantity() {
-        return quantity;
+    public boolean getBookStatus() {
+        return bookStatus;
     }
 
     /**
      * @param quantity the quantity to set
      */
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void bookBookStatus(boolean bookStatus) {
+        this.bookStatus = bookStatus;
+    }
+    
+    /**
+     * @return the listBorrowReturnDetail
+     */
+    public Set<BorrowReturnDetail> getListBorrowReturnDetail() {
+        return listBorrowReturnDetail;
+    }
+
+    /**
+     * @param listBorrowReturnDetail the listBorrowReturnDetail to set
+     */
+    public void setListBorrowReturnDetail(Set<BorrowReturnDetail> listBorrowReturnDetail) {
+        this.listBorrowReturnDetail = listBorrowReturnDetail;
     }
     // </editor-fold>
 }

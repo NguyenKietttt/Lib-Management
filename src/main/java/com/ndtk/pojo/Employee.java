@@ -5,62 +5,124 @@
  */
 package com.ndtk.pojo;
 
+import java.io.Serializable;
+import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 /**
  *
  * @author ACER
  */
-public class Employee {
-   private String name;
-   private String department;
-   private int age;
-   private double salary;
-   private boolean canEdit;
 
-   public Employee (String name,String department,int age,double salary) {
-      this.name = name;
-      this.department = department;
-      this.age = age;
-      this.salary = salary;
-      canEdit = false;
-   }
+@Entity
+@Table(name = "Employee")
+public class Employee implements Serializable{
+    @Id
+    private String employeeID;
+    
+    @Column(name = "EmployeeName")
+    private String employeeName;
+    
+    @Column(name = "Email")
+    private String email;
+    
+    @Column(name = "Phone")
+    private String phone;
+    
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    private Set<BorrowReturn> listBorrowReturn;
+    
+    @OneToMany(mappedBy = "employee")
+    private Set<Account> listAccount;
+    
+    // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
+    /**
+     * @return the employeeID
+     */
+    public String getEmployeeID() {
+        return employeeID;
+    }
 
-   public String getName() {
-      return name;
-   }
+    /**
+     * @param employeeID the employeeID to set
+     */
+    public void setEmployeeID(String employeeID) {
+        this.employeeID = employeeID;
+    }
 
-   public void setName(String name) {
-      this.name = name;
-   }
+    /**
+     * @return the employeeName
+     */
+    public String getEmployeeName() {
+        return employeeName;
+    }
 
-   public String getDepartment() {
-      return department;
-   }
+    /**
+     * @param employeeName the employeeName to set
+     */
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
+    }
 
-   public void setDepartment(String department) {
-      this.department = department;
-   }
+    /**
+     * @return the email
+     */
+    public String getEmail() {
+        return email;
+    }
 
-   public int getAge() {
-      return age;
-   }
+    /**
+     * @param email the email to set
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-   public void setAge(int age) {
-      this.age = age;
-   }
+    /**
+     * @return the phone
+     */
+    public String getPhone() {
+        return phone;
+    }
 
-   public double getSalary() {
-      return salary;
-   }
+    /**
+     * @param phone the phone to set
+     */
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+    
+    /**
+     * @return the listBorrowReturn
+     */
+    public Set<BorrowReturn> getListBorrowReturn() {
+        return listBorrowReturn;
+    }
 
-   public void setSalary(double salary) {
-      this.salary = salary;
-   }
+    /**
+     * @param listBorrowReturn the listBorrowReturn to set
+     */
+    public void setListBorrowReturn(Set<BorrowReturn> listBorrowReturn) {
+        this.listBorrowReturn = listBorrowReturn;
+    }
+    
+    /**
+     * @return the listAccount
+     */
+    public Set<Account> getListAccount() {
+        return listAccount;
+    }
 
-   public boolean isCanEdit() {
-      return canEdit;
-   }
-
-   public void setCanEdit(boolean canEdit) {
-      this.canEdit = canEdit;
-   }	
+    /**
+     * @param listAccount the listAccount to set
+     */
+    public void setListAccount(Set<Account> listAccount) {
+        this.listAccount = listAccount;
+    }
+    // </editor-fold>
 }

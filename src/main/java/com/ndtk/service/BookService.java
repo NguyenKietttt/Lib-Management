@@ -34,8 +34,11 @@ public class BookService {
             root.fetch("category", JoinType.INNER);
             root.fetch("author", JoinType.INNER);
             root.fetch("publisher", JoinType.INNER);
-                    
-            query.orderBy(builder.asc(root.get("bookID"))).select(root);
+            root.fetch("listBorrowReturnDetail", JoinType.LEFT);
+            
+            Predicate p = builder.equal(root.get("bookID"), ID);
+            
+            query.select(root).where(p);
             
             ArrayList<Book> listBook = (ArrayList<Book>) session.createQuery(query).getResultList();
             

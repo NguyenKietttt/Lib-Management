@@ -29,6 +29,7 @@ public class AccountService {
                 query.setParameter("AccountID", acc.getAccountID());
                 query.setParameter("Password", acc.getPasswordHash());
                 query.setParameter("Salt", acc.getSalt());
+                query.setParameter("EmployeeID", acc.getEmployee().getEmployeeID());
                 
                 query.execute();
                 

@@ -8,8 +8,13 @@ package com.ndtk.Library_web;
 import com.ndtk.pojo.Account;
 import com.ndtk.pojo.Author;
 import com.ndtk.pojo.Book;
+import com.ndtk.pojo.BorrowReturn;
+import com.ndtk.pojo.BorrowReturnDetail;
+import com.ndtk.pojo.Card;
 import com.ndtk.pojo.Category;
+import com.ndtk.pojo.Employee;
 import com.ndtk.pojo.Publisher;
+import com.ndtk.pojo.Reader;
 import java.util.Properties;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -39,6 +44,11 @@ public class HibernateUtil {
         conf.addAnnotatedClass(Author.class);
         conf.addAnnotatedClass(Publisher.class);
         conf.addAnnotatedClass(Book.class);
+        conf.addAnnotatedClass(Employee.class);
+        conf.addAnnotatedClass(Card.class);
+        conf.addAnnotatedClass(Reader.class);
+        conf.addAnnotatedClass(BorrowReturn.class);
+        conf.addAnnotatedClass(BorrowReturnDetail.class);
         
         ServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .applySettings(conf.getProperties())
