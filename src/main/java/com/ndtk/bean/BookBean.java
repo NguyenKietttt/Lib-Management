@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.persistence.Transient;
 
 /**
  *
@@ -25,17 +26,24 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 public class BookBean {
     private static BookService bookSvc = new BookService();
-    private static CategoryService cateSvc = new CategoryService();
-    private static AuthorService authorSvc = new AuthorService();
-    private static PublisherService publisherSvc = new PublisherService();
+    
+    @Transient
     private static ArrayList<BookRes> listBook;
         
     private int id;
     private String bookName;
     private String status;
+    
+    @Transient
     private int categoryID = -1;
+    
+    @Transient
     private int authorID = -1;
+    
+    @Transient
     private int publisherID = -1;
+    
+    @Transient
     private String keyword;
     
     public BookBean(){

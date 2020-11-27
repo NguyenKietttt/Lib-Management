@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.persistence.Transient;
 
 /**
  *
@@ -28,6 +29,8 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 public class BookDetailBean {
     private static BookService bookSvc = new BookService();
+    
+    @Transient
     private static int bookID = 0;
     
     private String bookName;
@@ -38,8 +41,12 @@ public class BookDetailBean {
     private Category category;
     private Author author;
     private Publisher publisher;
+    
+    @Transient
     private String status;
-    private String alert = "alert";
+    
+    @Transient
+    private String alert;
     
     public BookDetailBean() throws IOException{   
         if (!FacesContext.getCurrentInstance().isPostback()) {
