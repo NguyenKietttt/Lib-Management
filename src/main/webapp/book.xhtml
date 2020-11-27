@@ -94,16 +94,16 @@
                                                      paginatorPosition="bottom"
                                                      id="test"
                                                      tableStyleClass="ui-datatable">
-                                            <p:column headerText="ID" style="width:70px;">    				                                                  
+                                            <p:column headerText="ID" style="width:70px;" sortBy="#{p.bookID}">    				                                                  
                                                      <h:outputText value="#{p.bookID}"></h:outputText>
                                              </p:column>
                                             <p:column headerText="Image">                                                                                                       
                                                      <h:graphicImage library="img" name="#{p.image}" styleClass="img-fluid" width="120"></h:graphicImage>
                                              </p:column>
-                                             <p:column headerText="Name">    				                                                        
+                                             <p:column headerText="Name" sortBy="#{p.bookName}">    				                                                        
                                                      <h:outputText value="#{p.bookName}"></h:outputText>
                                              </p:column>
-                                            <p:column headerText="Status">    				                                                        
+                                            <p:column headerText="Status" sortBy="#{p.status}">    				                                                        
                                                 <h:outputText value="#{p.status}"></h:outputText>
                                              </p:column>
                                             <p:column>

@@ -9,7 +9,8 @@ and open the template in the editor.
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:t="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"/>
@@ -41,7 +42,6 @@ and open the template in the editor.
                 <div id="content">
                     <div class="container-fluid">
                         <h3 class="text-dark mb-4" style="margin-top: 2%;">Book Detail</h3>
-                        <div role="alert" class="alert alert-danger"><span>Alert</span></div>
                         <div class="row mb-3">
                             <div class="col-lg-4">
                                 <div class="card mb-3">
@@ -59,7 +59,11 @@ and open the template in the editor.
                                                 <p class="text-primary m-0 font-weight-bold">Infomation</p>
                                             </div>
                                             <div class="card-body">
-                                                <h:form>
+                                                <h:form id="fo">
+                                                    <div id="alertUpdate" role="alert" class="alert alert-danger"
+                                                        style="display: none">
+                                                        <h:outputText id="notification" value="#{bookDetailBean.welcomeMessage}"></h:outputText>
+                                                   </div>
                                                     <div class="form-row">
                                                         <div class="col">
                                                             <div class="form-group"><label><strong>Book ID</strong><br/></label>
@@ -82,7 +86,7 @@ and open the template in the editor.
                                                                 <h:inputText class="form-control" 
                                                                              t:placeholder="Name" value="#{bookDetailBean.bookName}" 
                                                                              required=""
-                                                                             readonly="true"/>
+                                                                             />
                                                             </div>
                                                         </div>
                                                         <div class="col-xl-12">
@@ -126,10 +130,11 @@ and open the template in the editor.
                                                         </h:inputTextarea>
                                                     </div>
                                                     <div class="form-group text-center" style="margin-top: 4%;">
-                                                        <h:commandButton 
-                                                            action="#{bookDetailBean.updateBook()}"
-                                                            class="btn btn-primary btn-sm" style="width: 20%;"
+                                                        <h:commandButton class="btn btn-primary btn-sm" style="width: 20%;"
                                                             value="Save">
+                                                            <f:ajax execute="@form" listener="#{bookDetailBean.updateBook()}"
+                                                                    render="fo:notification"
+                                                                    onevent="updateFail"/>
                                                         </h:commandButton>
                                                         <h:commandButton value="Delete" class="btn btn-primary btn-sm" type="button" style="margin-left: 5%;background: rgb(223,87,78);width: 20%;">
                                                             
@@ -159,5 +164,11 @@ and open the template in the editor.
         <h:outputScript name="js/bs-init.js"/>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
         <h:outputScript name="js/theme.js"/>
+        <script>
+            function updateFail() {
+              document.getElementById("alertUpdate").style.display = "block";
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        </script>
     </h:body>
 </html>

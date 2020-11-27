@@ -7,6 +7,7 @@ package com.ndtk.bean;
 
 import com.ndtk.pojo.Author;
 import com.ndtk.pojo.Book;
+import com.ndtk.pojo.BorrowReturnDetail;
 import com.ndtk.pojo.Category;
 import com.ndtk.pojo.Publisher;
 import com.ndtk.service.BookService;
@@ -14,7 +15,6 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -28,7 +28,7 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 public class BookDetailBean {
     private static BookService bookSvc = new BookService();
-    private static int bookID;
+    private static int bookID = 0;
     
     private String bookName;
     private Date publishingDate;
@@ -39,9 +39,11 @@ public class BookDetailBean {
     private Author author;
     private Publisher publisher;
     private String status;
+    private String alert = "alert";
     
     public BookDetailBean() throws IOException{   
         if (!FacesContext.getCurrentInstance().isPostback()) {
+
             String id = FacesContext.getCurrentInstance()
                     .getExternalContext().getRequestParameterMap().get("bookID");
             
@@ -78,10 +80,34 @@ public class BookDetailBean {
         }
     }
     
-    public void updateBook(){
-        FacesContext.getCurrentInstance()
-                .addMessage(null, new FacesMessage("Successful",  "Your message: "));
+    public void updateBook() throws IOException, Exception{
+        Book b = bookSvc.getBookByID(this.getBookID());
+        
+        if (b == null){
+            this.setAlert("Book has been borrowed cannot delete!");
+            return;
+        }
+        
+        if (b.getListBorrowReturnDetail().size() > 0) {
+            for (BorrowReturnDetail borrowReturnDetail : b.getListBorrowReturnDetail()) {
+                if (!borrowReturnDetail.isReturned()){
+                    this.setAlert("Book has been borrowed cannot delete!");
+                    return;
+                }
+            }
+        }
+        
+        b.setBookName(this.bookName);
+        
+        if (bookSvc.addOrSaveBook(b)) {
+            FacesContext.getCurrentInstance()
+                .getExternalContext().redirect("book-detail.xhtml?bookID=" + this.getBookID());
+        }
     }
+    
+    public String getWelcomeMessage() {
+      return alert;
+   }
         
     
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
@@ -238,5 +264,20 @@ public class BookDetailBean {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    /**
+     * @return the alert
+     */
+    public String getAlert() {
+        return alert;
+    }
+
+    /**
+     * @param alert the alert to set
+     */
+    public void setAlert(String alert) {
+        this.alert = alert;
+    }
     // </editor-fold>
+
 }
