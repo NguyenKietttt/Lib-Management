@@ -48,7 +48,7 @@ public class AccountService {
         }
     }
     
-    public boolean addOrSaveAccount(Account acc){
+    public boolean addAccountByStore(Account acc){
         try(Session session = factory.openSession()){
             try{
                 EntityManager em = factory.createEntityManager();
@@ -72,5 +72,50 @@ public class AccountService {
         }
         
         return true;
+    }
+    
+    public boolean addOrSaveAccount(Account account){
+        try(Session session = factory.openSession()){
+            try{
+                session.getTransaction().begin();
+
+                session.saveOrUpdate(account);
+
+                session.getTransaction().commit();
+            }
+            catch(Exception ex){
+                session.getTransaction().rollback();
+                return false;
+            }
+        }
+
+        return true;
+    }
+    
+    public int updatePassword(String accountID, String oldPassword, String newPassword){
+        try(Session session = factory.openSession()){
+            try{
+                EntityManager em = factory.createEntityManager();
+                em.getTransaction().begin();
+                
+                StoredProcedureQuery query = em.createNamedStoredProcedureQuery("spUpdatePassword");
+                query.setParameter("AccountID", accountID);
+                query.setParameter("OldPassword", oldPassword);
+                query.setParameter("NewPassword", newPassword);
+                
+                query.execute();
+                
+                int count = (int) query.getOutputParameterValue("OutValue");
+                
+                em.getTransaction().commit();
+                em.close();
+                
+                return count;
+            }
+            catch(Exception ex){
+                session.getTransaction().rollback();
+                return 0;
+            }
+        }
     }
 }

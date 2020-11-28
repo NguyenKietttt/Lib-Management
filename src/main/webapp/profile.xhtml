@@ -114,32 +114,26 @@ and open the template in the editor.
                                                     <div class="form-row">
                                                         <div class="col">
                                                             <label><strong>Old Password</strong><br/></label>
-                                                            <div id="alertUpdate" style="display: none">
-                                                                <h:outputText style="color: rgb(223,87,78)" id="notification" value="#{accountBean.message}"></h:outputText>
-                                                            </div>
-                                                            <h:message style="color: rgb(223,87,78)" for="oldPassword" />
                                                             <h:inputSecret id="oldPassword" class="form-control form-control-user" 
                                                                          t:placeholder="Old Password" 
-                                                                         style="font-size: 12.8px;" 
-                                                                         required="true" requiredMessage=" *"
-                                                                         value="#{accountBean.password}"/>
+                                                                         style="font-size: 12.8px;"
+                                                                         value="#{accountBean.oldPassword}"/>
                                                         </div>
                                                         <div class="col-lg-6 align-self-center">
                                                             <label><strong>New Password</strong><br/></label>
-                                                            <h:message style="color: rgb(223,87,78)" for="newPassword" />
                                                             <h:inputSecret id="newPassword" class="form-control form-control-user" 
                                                                          t:placeholder="New Password" 
-                                                                         style="font-size: 12.8px;" 
-                                                                         required="true" requiredMessage=" *"
-                                                                         value=""/>
+                                                                         style="font-size: 12.8px;"
+                                                                         value="#{accountBean.newPassword}"/>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <hr/>
-                                                <h:commandButton id="confirm" class="btn btn-primary btn-block text-white btn-user" value="Register Account">
-                                                    <f:ajax execute="@form" listener="#{accountBean.addAccount()}"
-                                                                                render="@form"
-                                                                                onevent="updateFail"/>
+                                                <h:commandButton id="confirm" 
+                                                                 class="btn btn-primary btn-block text-white btn-user" 
+                                                                 value="Save">
+                                                    <f:ajax execute="@form" listener="#{accountBean.updateAccount()}"
+                                                                                render="@form"/>
                                                 </h:commandButton>
                                                 
                                             </h:form>
@@ -163,16 +157,6 @@ and open the template in the editor.
         <script>
             if(window.history.replaceState){
                 window.history.replaceState(null, null, window.location.href);
-            }
-            
-            function updateFail(data) {
-                if (data.status === "success") {
-                    var temp = document.getElementById('fo:notification').innerHTML;
-                    if (temp !== "") {
-                        document.getElementById("alertUpdate").style.display = "inline";
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }
-                }
             }
         </script>
     </h:body>

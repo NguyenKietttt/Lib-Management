@@ -51,11 +51,11 @@ public class Book implements Serializable{
     @JoinColumn(name = "CategoryID")
     private Category category;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "AuthorID")
     private Author author;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "PublisherID")
     private Publisher publisher;
     

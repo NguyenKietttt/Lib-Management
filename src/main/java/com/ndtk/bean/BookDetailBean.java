@@ -7,12 +7,14 @@ package com.ndtk.bean;
 
 import com.ndtk.pojo.Author;
 import com.ndtk.pojo.Book;
-import com.ndtk.pojo.BorrowReturnDetail;
 import com.ndtk.pojo.Category;
 import com.ndtk.pojo.Publisher;
 import com.ndtk.service.BookService;
+import com.ndtk.service.CategoryService;
 import java.io.IOException;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.faces.bean.ManagedBean;
@@ -29,18 +31,28 @@ import javax.persistence.Transient;
 @RequestScoped
 public class BookDetailBean {
     private static BookService bookSvc = new BookService();
+    private static CategoryService categorySvc = new CategoryService();
     
     @Transient
     private static int bookID = 0;
+    
+    @Transient
+    private static int categoryID = 0;
+    
+    @Transient
+    private static String categoryName = "@@@";
+    
+    @Transient
+    private static ArrayList<Category> listCate = new ArrayList<>();
     
     private String bookName;
     private Date publishingDate;
     private String image;
     private String bookDescription;
     private boolean bookStatus;
-    private Category category;
-    private Author author;
-    private Publisher publisher;
+    private Category category = new Category();
+    private Author author = new Author();
+    private Publisher publisher = new Publisher();
     
     @Transient
     private String status;
@@ -48,7 +60,7 @@ public class BookDetailBean {
     @Transient
     private String alert;
     
-    public BookDetailBean() throws IOException{   
+    public BookDetailBean() {   
         if (!FacesContext.getCurrentInstance().isPostback()) {
             FacesContext context = FacesContext.getCurrentInstance();
 
@@ -62,7 +74,6 @@ public class BookDetailBean {
                     Book b = bookSvc.getBookByID(Integer.parseInt(id));
                     if (b != null) {
                         this.setBookID(b.getBookID());
-                        this.setBookID(b.getBookID());
                         this.setBookName(b.getBookName());
                         this.setPublishingDate(b.getPublishingDate());
                         this.setImage(b.getImage());
@@ -75,6 +86,11 @@ public class BookDetailBean {
                             this.setStatus("Còn");
                         else
                             this.setStatus("Hết");
+                        
+                        this.setCategoryID(b.getCategory().getCategoryId());
+                        this.setCategoryName(b.getCategory().getCategoryName());
+                        
+                        listCate = categorySvc.getAllCategory();
                     }
                     else{
                         context.getApplication().getNavigationHandler()
@@ -93,37 +109,83 @@ public class BookDetailBean {
         }
     }
     
-    public void updateBook() throws IOException, Exception{
-        Book b = bookSvc.getBookByID(this.getBookID());
+    public ArrayList<Category> getListCategoryEdit(){
+        String id = FacesContext.getCurrentInstance().getExternalContext()
+                .getRequestParameterMap().get("bookID");
         
-        if (b == null){
-            this.setAlert("Book has been borrowed cannot update!");
-            return;
-        }
+        Book b = bookSvc.getBookByID(Integer.parseInt(id));
         
-        if (b.getListBorrowReturnDetail().size() > 0) {
-            for (BorrowReturnDetail borrowReturnDetail : b.getListBorrowReturnDetail()) {
-                if (borrowReturnDetail.getBorrowReturn().getReturnDate() == null){
-                    this.setAlert("Book has been borrowed cannot update!");
-                    return;
-                }
+        listCate = categorySvc.getAllCategory();
+        
+        for (Iterator<Category> iter = listCate.iterator(); iter.hasNext(); ){
+            Category c = iter.next();
+            
+            if (c.getCategoryId() == b.getCategory().getCategoryId()) {
+                iter.remove();
             }
         }
         
-        b.setBookName(this.bookName);
-        
-        if (bookSvc.addOrSaveBook(b)) {
-            FacesContext.getCurrentInstance()
-                .getExternalContext().redirect("book-detail.xhtml?bookID=" + this.getBookID());
-        }
+        return listCate;
     }
     
-    public String getWelcomeMessage() {
+    public void updateBook() throws IOException, Exception{
+        Book b = bookSvc.getBookByID(this.getBookID());
+        
+//        if (b == null){
+//            this.setAlert("Book has been borrowed cannot update!");
+//            return;
+//        }
+//        
+//        if (b.getListBorrowReturnDetail().size() > 0) {
+//            for (BorrowReturnDetail borrowReturnDetail : b.getListBorrowReturnDetail()) {
+//                if (borrowReturnDetail.getBorrowReturn().getReturnDate() == null){
+//                    this.setAlert("Book has been borrowed cannot update!");
+//                    return;
+//                }
+//            }
+//        }
+//        
+        b.setBookName(this.bookName);
+        
+//        if (bookSvc.addOrSaveBook(b)) {
+//            FacesContext.getCurrentInstance()
+//                .getExternalContext().redirect("book-detail.xhtml?bookID=" + this.getBookID());
+//        }
+    }
+    
+    public String getMessage() {
       return alert;
    }
         
-    
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
+    /**
+     * @return the categoryID
+     */
+    public int getCategoryID() {
+        return categoryID;
+    }
+
+    /**
+     * @param categoryID the categoryID to set
+     */
+    public void setCategoryID(int categoryID) {
+        this.categoryID = categoryID;
+    }
+
+    /**
+     * @return the categoryName
+     */
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    /**
+     * @param categoryName the categoryName to set
+     */
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+    
     /**
      * @return the bookSvc
      */
@@ -293,4 +355,17 @@ public class BookDetailBean {
     }
     // </editor-fold>
 
+    /**
+     * @return the listCate
+     */
+    public ArrayList<Category> getListCate() {
+        return listCate;
+    }
+
+    /**
+     * @param listCate the listCate to set
+     */
+    public void setListCate(ArrayList<Category> listCate) {
+        this.listCate = listCate;
+    }
 }

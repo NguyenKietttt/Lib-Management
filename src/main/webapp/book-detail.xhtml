@@ -74,7 +74,11 @@ and open the template in the editor.
                                 <div class="card mb-3">
                                     <div class="card-body text-center shadow">
                                         <h:graphicImage class="img-thumbnail mb-3 mt-4" library="img" name="#{bookDetailBean.image}" width="160" height="160"/>
-                                        <div class="mb-3"><button class="btn btn-primary btn-sm" type="button">Change Photo</button></div>
+                                        <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType eq 'Admin'}">
+                                            <div class="mb-3">
+                                                <button class="btn btn-primary btn-sm" type="button">Change Photo</button>
+                                            </div>
+                                        </c:if>
                                     </div>
                                 </div>
                             </div>
@@ -87,10 +91,6 @@ and open the template in the editor.
                                             </div>
                                             <div class="card-body">
                                                 <h:form id="fo">
-                                                    <div id="alertUpdate" role="alert" class="alert alert-danger"
-                                                        style="display: none">
-                                                        <h:outputText id="notification" value="#{bookDetailBean.welcomeMessage}"></h:outputText>
-                                                   </div>
                                                     <div class="form-row">
                                                         <div class="col">
                                                             <div class="form-group">
@@ -101,74 +101,105 @@ and open the template in the editor.
                                                             </div>
                                                         </div>
                                                         <div class="col">
-                                                            <div class="form-group"><label><strong>Status</strong><br/></label>
-                                                                <h:inputText class="form-control" 
+                                                            <div class="form-group">
+                                                                <label>
+                                                                    <strong>Status</strong>
+                                                                    <h:message style="color: red" for="status" />
+                                                                    <br/>
+                                                                </label>
+                                                                <h:inputText id="status" class="form-control" 
                                                                              t:placeholder="Status" value="#{bookDetailBean.status}"
-                                                                             readonly="true"/>
+                                                                             required="true" requiredMessage=" *"
+                                                                             readonly="#{facesContext.externalContext.sessionMap
+                                                                                         .get('user').userType eq 'Admin' ? false : true}"/>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="form-row">
                                                         <div class="col-xl-12">
-                                                            <div class="form-group"><label><strong>Book Name</strong><br/></label>
-                                                                <h:inputText class="form-control" 
+                                                            <div class="form-group">
+                                                                <label>
+                                                                    <strong>Book Name</strong>
+                                                                    <h:message style="color: red" for="bookname" />
+                                                                    <br/>
+                                                                </label>
+                                                                <h:inputText id="bookname" class="form-control" 
                                                                              t:placeholder="Name" value="#{bookDetailBean.bookName}" 
-                                                                             required=""
-                                                                             />
+                                                                             required="true" requiredMessage=" *"
+                                                                             readonly="#{facesContext.externalContext.sessionMap
+                                                                                         .get('user').userType eq 'Admin' ? false : true}"/>
                                                             </div>
                                                         </div>
                                                         <div class="col-xl-12">
                                                             <div class="form-group"><label><strong>Category</strong></label>
-                                                                <h:inputText class="form-control" 
-                                                                             t:placeholder="Name" value="#{bookDetailBean.category.categoryName}" 
-                                                                             required=""
-                                                                             readonly="true"/>
+                                                                <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType eq 'Admin'}">
+                                                                    <h:selectOneMenu class="form-control" 
+                                                                                     t:placeholder="Name" 
+                                                                                     value="#{bookDetailBean.categoryID}">
+                                                                        
+                                                                        <f:selectItems value="#{bookDetailBean.listCate}" var="cate" itemLabel="#{cate.categoryName}" itemValue="#{cate.categoryId}"/>
+                                                                    </h:selectOneMenu>
+                                                                </c:if>
+                                                                <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType ne 'Admin'}">
+                                                                    <h:inputText class="form-control" 
+                                                                                 t:placeholder="Name" value="#{bookDetailBean.category.categoryName}"
+                                                                                 readonly="true"/>
+                                                                </c:if>
                                                             </div>
                                                         </div>
                                                         <div class="col-xl-12">
-                                                            <div class="form-group"><label><strong>Author</strong><br/></label>
-                                                                <h:inputText class="form-control" 
+                                                            <div class="form-group">
+                                                                <label>
+                                                                    <strong>Author</strong>
+                                                                    <h:message style="color: red" for="author" />
+                                                                    <br/>
+                                                                </label>
+                                                                <h:inputText id="author" class="form-control" 
                                                                              t:placeholder="Author" value="#{bookDetailBean.author.authorName}" 
-                                                                             required=""
-                                                                             readonly="true"/>
+                                                                             required="true" requiredMessage=" *"
+                                                                             readonly="#{facesContext.externalContext.sessionMap
+                                                                                         .get('user').userType eq 'Admin' ? false : true}"/>
                                                             </div>
                                                         </div>
                                                         <div class="col-xl-12">
-                                                            <div class="form-group"><label><strong>Publisher</strong><br/></label>
-                                                                <h:inputText class="form-control" 
+                                                            <div class="form-group">
+                                                                <label>
+                                                                    <strong>Publisher</strong>
+                                                                    <h:message style="color: red" for="publisher" />
+                                                                    <br/>
+                                                                </label>
+                                                                <h:inputText id="publisher" class="form-control" 
                                                                              t:placeholder="Publisher" value="#{bookDetailBean.publisher.publisherName}" 
-                                                                             required=""
-                                                                             readonly="true"/>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col" style="display: none">
-                                                            <div class="form-group"><label><strong>Quantity</strong><br/></label>
-                                                                <h:inputText class="form-control"
-                                                                             t:placeholder="Quantity" value="" 
-                                                                             required=""
-                                                                             readonly="true"/>
+                                                                             required="true" requiredMessage=" *"
+                                                                             readonly="#{facesContext.externalContext.sessionMap
+                                                                                         .get('user').userType eq 'Admin' ? false : true}"/>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group"><label><strong>Description</strong></label>
+                                                    <div class="form-group">
+                                                        <label>
+                                                            <strong>Description</strong>
+                                                        </label>
                                                         <h:inputTextarea  class="form-control" 
                                                                           t:placeholder="Description" value="#{bookDetailBean.bookDescription}" 
                                                                           style="width: 100%;height: 200px; resize: none;"
-                                                                          readonly="true">
+                                                                          readonly="#{facesContext.externalContext.sessionMap
+                                                                                         .get('user').userType eq 'Admin' ? false : true}">
                                                         </h:inputTextarea>
                                                     </div>
-                                                    <div class="form-group text-center" style="margin-top: 4%;">
-                                                        <h:commandButton class="btn btn-primary btn-sm" style="width: 20%;"
-                                                            value="Save">
-                                                            <f:ajax execute="@form" listener="#{bookDetailBean.updateBook()}"
-                                                                    render="fo:notification"
-                                                                    onevent="updateFail"/>
-                                                        </h:commandButton>
-                                                        <h:commandButton value="Delete" class="btn btn-primary btn-sm" type="button" style="margin-left: 5%;background: rgb(223,87,78);width: 20%;">
-                                                            
-                                                        </h:commandButton>
-                                                        
-                                                    </div>
+                                                    <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType eq 'Admin'}">
+                                                        <div class="form-group text-center" style="margin-top: 4%;">
+                                                            <h:commandButton class="btn btn-primary btn-sm" style="width: 20%;"
+                                                                value="Save">
+                                                                <f:ajax execute="@form" listener="#{bookDetailBean.updateBook()}"
+                                                                        render="@form"/>
+                                                            </h:commandButton>
+                                                            <h:commandButton value="Delete" class="btn btn-primary btn-sm" type="button" style="margin-left: 5%;background: rgb(223,87,78);width: 20%;">
+
+                                                            </h:commandButton>
+
+                                                        </div>
+                                                    </c:if>
                                                     <div class="form-group text-center" style="margin-top: 4%;">
                                                         <h:commandButton value="Borrow" class="btn btn-primary btn-sm" type="button" style="width: 20%;background: rgb(116,223,78);">
                                                         </h:commandButton>
@@ -192,11 +223,5 @@ and open the template in the editor.
         <h:outputScript name="js/bs-init.js"/>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
         <h:outputScript name="js/theme.js"/>
-        <script>
-            function updateFail() {
-              document.getElementById("alertUpdate").style.display = "block";
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        </script>
     </h:body>
 </html>

@@ -24,6 +24,9 @@ import javax.persistence.Transient;
 @ManagedBean(name = "accountBean")
 @RequestScoped
 public class AccountBean {
+    private static AccountService accountSvc = new AccountService();
+    private static EmployeeService employeeSvc = new EmployeeService();
+    
     private String accountID;
     private String password;
     private String employeeID;
@@ -37,11 +40,20 @@ public class AccountBean {
     @Transient
     private String confirmPassword;
     
-    private static AccountService accountSvc = new AccountService();
-    private static EmployeeService employeeSvc = new EmployeeService();
-    
+    private String oldPassword;
+    private String newPassword;
+
     public AccountBean(){
-        
+        if (FacesContext.getCurrentInstance().getExternalContext()
+                .getSessionMap().get("user") != null) {
+            Account acc = (Account) FacesContext.getCurrentInstance().getExternalContext()
+                .getSessionMap().get("user");
+            
+            this.setAccountID(acc.getAccountID());
+            this.setFullName(acc.getEmployee().getEmployeeName());
+            this.setEmail(acc.getEmployee().getEmail());
+            this.setPhone(acc.getEmployee().getPhone());
+        }
     }
     
     public void checkLogin(){
@@ -77,7 +89,7 @@ public class AccountBean {
         FacesContext.getCurrentInstance().responseComplete();
     }
     
-    public void loginAccount() throws IOException{
+    public void loginAccount() {
         if (accountSvc.loginAccount(this.accountID, this.password) > 0) {
             this.setAlert("");
             
@@ -98,7 +110,7 @@ public class AccountBean {
          this.setAlert("Username or Password is wrong");
     }
     
-    public void addAccount() throws IOException{
+    public void addAccount() {
         Employee e = new Employee();
         
         int id = getEmployeeSvc().getEmployeeID() + 1;
@@ -117,7 +129,7 @@ public class AccountBean {
             a.setSalt(salt);
             a.setEmployee(e);
 
-            if (accountSvc.addOrSaveAccount(a)) {
+            if (accountSvc.addAccountByStore(a)) {
                 this.setAlert("");
                 FacesContext context = FacesContext.getCurrentInstance();
                 context.getApplication().getNavigationHandler()
@@ -132,11 +144,82 @@ public class AccountBean {
          this.setAlert(" - Username has been used");
     }
     
+    public void updateAccount() {
+        Account acc = accountSvc.getAccountByID(this.accountID);
+        
+        if (acc != null){
+            acc.getEmployee().setEmployeeName(this.fullName);
+            acc.getEmployee().setEmail(this.email);
+            acc.getEmployee().setPhone(this.phone);
+            
+            if (this.oldPassword != null || this.oldPassword.equals("") && 
+                    this.newPassword != null || this.newPassword.equals("")) {
+                if (accountSvc.updatePassword(this.accountID, this.oldPassword, this.newPassword) > 0) {
+                    Account acc2 = accountSvc.getAccountByID(this.accountID);
+                    acc2.setEmployee(acc.getEmployee());
+                    
+                    if (accountSvc.addOrSaveAccount(acc2)) {
+                        this.setAlert("");
+                        FacesContext context = FacesContext.getCurrentInstance();
+                        
+                        context.getExternalContext().getSessionMap().replace("user", acc2);
+                        
+                        context.getApplication().getNavigationHandler()
+                            .handleNavigation(context, null, "profile?faces-redirect=true");
+
+                        FacesContext.getCurrentInstance().responseComplete();
+                    }
+                }
+                else{
+                    if (accountSvc.addOrSaveAccount(acc)) {
+                        this.setAlert("");
+                        FacesContext context = FacesContext.getCurrentInstance();
+                        
+                        context.getExternalContext().getSessionMap().replace("user", acc);
+                        
+                        context.getApplication().getNavigationHandler()
+                            .handleNavigation(context, null, "profile?faces-redirect=true");
+
+                        FacesContext.getCurrentInstance().responseComplete();
+                    }
+                }
+            }
+        }
+    }
+    
     public String getMessage() {
       return alert;
    }
     
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
+    /**
+     * @return the oldPassword
+     */
+    public String getOldPassword() {
+        return oldPassword;
+    }
+
+    /**
+     * @param oldPassword the oldPassword to set
+     */
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
+    }
+
+    /**
+     * @return the newPassword
+     */
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    /**
+     * @param newPassword the newPassword to set
+     */
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
+    
     /**
      * @return the confirmPassword
      */

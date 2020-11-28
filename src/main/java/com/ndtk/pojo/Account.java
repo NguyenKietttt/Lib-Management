@@ -6,6 +6,7 @@
 package com.ndtk.pojo;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -44,6 +45,17 @@ import javax.persistence.Table;
             @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "Password"),
             @StoredProcedureParameter(mode = ParameterMode.OUT, type = Integer.class, name = "OutValue")
         }
+    ),
+    
+    @NamedStoredProcedureQuery(
+        name = "spUpdatePassword",
+        procedureName = "spUpdatePassword",
+        parameters = {
+            @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "AccountID"),
+            @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "OldPassword"),
+            @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "NewPassword"),
+            @StoredProcedureParameter(mode = ParameterMode.OUT, type = Integer.class, name = "OutValue")
+        }
     )
 })
 
@@ -61,7 +73,7 @@ public class Account implements Serializable{
     @Column(name = "UserType")
     private String userType;
     
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "EmployeeID")
     private Employee employee;
 
