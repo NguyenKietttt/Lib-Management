@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:t="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <f:metadata>
+            <f:viewAction action="#{accountBean.checkNotLogin()}"></f:viewAction>
+        </f:metadata>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"/>
+        <title>Profile</title>
+        <h:outputStylesheet name="css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"/>
+        <h:outputStylesheet name="fonts/fontawesome-all.min.css"/>
+        <h:outputStylesheet name="fonts/simple-line-icons.min.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"/>
+    </h:head>
+    <h:body id="page-top">
+    <div id="wrapper">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+            <div class="container-fluid d-flex flex-column p-0">
+                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="book.xhtml">
+                    <div class="sidebar-brand-icon"><i class="fas fa-ethernet"></i></div>
+                    <div class="sidebar-brand-text mx-3"><span>Library</span></div>
+                </a>
+                <hr class="sidebar-divider my-0"/>
+                <h:form>
+                    <ul class="nav navbar-nav text-light" id="accordionSidebar">
+                        <li class="nav-item">
+                            <h:commandLink class="nav-link" action="book?faces-redirect=true">
+                                <i class="fas fa-filter"></i>
+                                <span>Book Listing</span>
+                            </h:commandLink>
+                        </li>
+                        <li class="nav-item">
+                            <h:commandLink class="nav-link active" action="profile?faces-redirect=true">
+                                <i class="fas fa-user"></i>
+                                <span>Profile</span>
+                            </h:commandLink>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <h:commandLink class="nav-link" action="#{accountBean.logoutAccount()}">
+                                <i class="icon-logout"></i>
+                                <span>Logout</span>
+                            </h:commandLink>
+                        </li>
+                    </ul>
+                </h:form>
+                <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
+            </div>
+        </nav>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <div class="container-fluid">
+                    <h3 class="text-dark mb-4" style="margin-top: 2%;">Profile</h3>
+                    <div class="row justify-content-center mb-3">
+                        <div class="col-lg-8">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card shadow mb-3">
+                                        <div class="card-body">
+                                            <h:form id="fo" class="user">
+                                                <div class="form-group">
+                                                    <label><strong>Full Name</strong><br/></label>
+                                                    <h:message style="color: rgb(223,87,78)" for="fullname" />
+                                                    <h:inputText id="fullname" class="form-control form-control-user" 
+                                                                 t:placeholder="Full Name" 
+                                                                 style="font-size: 12.8px;" 
+                                                                 required="true" requiredMessage=" *"
+                                                                 value="#{accountBean.fullName}"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="form-row">
+                                                        <div class="col-lg-6 align-self-center">
+                                                            <label><strong>Email</strong><br/></label>
+                                                            <h:message style="color: rgb(223,87,78)" for="mailaddress" />
+                                                            <h:inputText id="mailaddress" class="form-control form-control-user"
+                                                                         t:placeholder="Email" 
+                                                                         style="font-size: 12.8px;" 
+                                                                         required="true" requiredMessage=" *" 
+                                                                         validatorMessage=" - Invalid email"
+                                                                         value="#{accountBean.email}">
+                                                                <f:validateRegex pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" />
+                                                            </h:inputText>
+                                                        </div>
+                                                        <div class="col">
+                                                            <label><strong>Phone</strong><br/></label>
+                                                            <h:message style="color: rgb(223,87,78)" for="phone" />
+                                                            <h:inputText id="phone" class="form-control form-control-user" 
+                                                                         t:placeholder="Phone Number" 
+                                                                         style="font-size: 12.8px;"
+                                                                         required="true" requiredMessage=" *"
+                                                                         validatorMessage=" - Invalid phone"
+                                                                         value="#{accountBean.phone}">
+                                                                <f:validateRegex pattern="(0[3|5|7|8|9]|01[2|6|8|9])+([0-9]{8})\b" />
+                                                            </h:inputText>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="form-row">
+                                                        <div class="col">
+                                                            <label><strong>Old Password</strong><br/></label>
+                                                            <div id="alertUpdate" style="display: none">
+                                                                <h:outputText style="color: rgb(223,87,78)" id="notification" value="#{accountBean.message}"></h:outputText>
+                                                            </div>
+                                                            <h:message style="color: rgb(223,87,78)" for="oldPassword" />
+                                                            <h:inputSecret id="oldPassword" class="form-control form-control-user" 
+                                                                         t:placeholder="Old Password" 
+                                                                         style="font-size: 12.8px;" 
+                                                                         required="true" requiredMessage=" *"
+                                                                         value="#{accountBean.password}"/>
+                                                        </div>
+                                                        <div class="col-lg-6 align-self-center">
+                                                            <label><strong>New Password</strong><br/></label>
+                                                            <h:message style="color: rgb(223,87,78)" for="newPassword" />
+                                                            <h:inputSecret id="newPassword" class="form-control form-control-user" 
+                                                                         t:placeholder="New Password" 
+                                                                         style="font-size: 12.8px;" 
+                                                                         required="true" requiredMessage=" *"
+                                                                         value=""/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr/>
+                                                <h:commandButton id="confirm" class="btn btn-primary btn-block text-white btn-user" value="Register Account">
+                                                    <f:ajax execute="@form" listener="#{accountBean.addAccount()}"
+                                                                                render="@form"
+                                                                                onevent="updateFail"/>
+                                                </h:commandButton>
+                                                
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                    <div class="card shadow"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a></div>
+        <h:outputScript name="js/jquery.min.js"/>
+        <h:outputScript name="js/jquery.easing.js"/>
+        <h:outputScript name="js/bootstrap.min.js"/>
+        <h:outputScript name="js/chart.min.js"/>
+        <h:outputScript name="js/bs-init.js"/>
+        <h:outputScript name="js/theme.js"/>
+        <script>
+            if(window.history.replaceState){
+                window.history.replaceState(null, null, window.location.href);
+            }
+            
+            function updateFail(data) {
+                if (data.status === "success") {
+                    var temp = document.getElementById('fo:notification').innerHTML;
+                    if (temp !== "") {
+                        document.getElementById("alertUpdate").style.display = "inline";
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                }
+            }
+        </script>
+    </h:body>
+</html>

@@ -10,6 +10,9 @@ and open the template in the editor.
       xmlns:t="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
+        <f:metadata>
+            <f:viewAction action="#{accountBean.checkLogin()}"></f:viewAction>
+        </f:metadata>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"/>
         <title>Register</title>
@@ -31,9 +34,9 @@ and open the template in the editor.
                                 <h:form id="fo" class="user">
                                     <div class="form-group">
                                         <label><strong>UserName</strong><br/></label>
-                                        <h:message style="color: red" for="username" />
+                                        <h:message style="color: rgb(223,87,78)" for="username" />
                                         <div id="alertUpdate" style="display: none">
-                                            <h:outputText style="color: red" id="notification" value="#{accountBean.message}"></h:outputText>
+                                            <h:outputText style="color: rgb(223,87,78)" id="notification" value="#{accountBean.message}"></h:outputText>
                                         </div>
                                         <h:inputText id="username" class="form-control form-control-user" 
                                                      t:placeholder="Username" 
@@ -43,7 +46,7 @@ and open the template in the editor.
                                     </div>
                                     <div class="form-group">
                                         <label><strong>Full Name</strong><br/></label>
-                                        <h:message style="color: red" for="fullname" />
+                                        <h:message style="color: rgb(223,87,78)" for="fullname" />
                                         <h:inputText id="fullname" class="form-control form-control-user" 
                                                      t:placeholder="Full Name" 
                                                      style="font-size: 12.8px;" 
@@ -54,7 +57,7 @@ and open the template in the editor.
                                         <div class="form-row">
                                             <div class="col-lg-6 align-self-center">
                                                 <label><strong>Email</strong><br/></label>
-                                                <h:message style="color: red" for="mailaddress" />
+                                                <h:message style="color: rgb(223,87,78)" for="mailaddress" />
                                                 <h:inputText id="mailaddress" class="form-control form-control-user"
                                                              t:placeholder="Email" 
                                                              style="font-size: 12.8px;" 
@@ -66,7 +69,7 @@ and open the template in the editor.
                                             </div>
                                             <div class="col">
                                                 <label><strong>Phone</strong><br/></label>
-                                                <h:message style="color: red" for="phone" />
+                                                <h:message style="color: rgb(223,87,78)" for="phone" />
                                                 <h:inputText id="phone" class="form-control form-control-user" 
                                                              t:placeholder="Phone Number" 
                                                              style="font-size: 12.8px;"
@@ -82,7 +85,7 @@ and open the template in the editor.
                                         <div class="form-row">
                                             <div class="col-lg-6 align-self-center">
                                                 <label><strong>Password</strong><br/></label>
-                                                <h:message style="color: red" for="password" />
+                                                <h:message style="color: rgb(223,87,78)" for="password" />
                                                 <h:inputSecret id="password" class="form-control form-control-user" 
                                                              t:placeholder="Password" 
                                                              style="font-size: 12.8px;" 
@@ -93,14 +96,14 @@ and open the template in the editor.
                                             <div class="col">
                                                 <label><strong>Password Confirm</strong><br/></label>
                                                 <div id="checkPass" style="display: none">
-                                                    <h:outputText style="color: red" value=" - Not matching"></h:outputText>
+                                                    <h:outputText style="color: rgb(223,87,78)" value=" - Not matching"></h:outputText>
                                                 </div>
-                                                <h:message style="color: red" for="passwordConfirm" />
+                                                <h:message style="color: rgb(223,87,78)" for="passwordConfirm" />
                                                 <h:inputSecret id="passwordConfirm" class="form-control form-control-user" 
                                                              t:placeholder="Password" 
                                                              style="font-size: 12.8px;" 
                                                              required="true" requiredMessage=" *"
-                                                             value="#{accountBean.password}"
+                                                             value="#{accountBean.confirmPassword}"
                                                              onkeyup="check()"/>
                                             </div>
                                         </div>
@@ -133,13 +136,18 @@ and open the template in the editor.
                 window.history.replaceState(null, null, window.location.href);
             }
             
-            function createFail() {
-              document.getElementById("alertUpdate").style.display = "inline";
-              window.scrollTo({ top: 0, behavior: 'smooth' });
+            function createFail(data) {
+                if (data.status === "success") {
+                    var temp = document.getElementById('fo:notification').innerHTML;
+                    if (temp !== "") {
+                        document.getElementById("alertUpdate").style.display = "inline";
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                }
             }
             
-            var check = function() {
-                if (document.getElementById('fo:password').value !=
+            function check() {
+                if (document.getElementById('fo:password').value !==
                   document.getElementById('fo:passwordConfirm').value) {
                     document.getElementById("checkPass").style.display = "inline";
                     document.getElementById("fo:confirm").disabled = true;
@@ -148,7 +156,7 @@ and open the template in the editor.
                     document.getElementById("checkPass").style.display = "none";
                     document.getElementById("fo:confirm").disabled = false;
                 }
-            }
+            };
         </script>
     </h:body>
 </html>

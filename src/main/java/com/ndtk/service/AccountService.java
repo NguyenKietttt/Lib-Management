@@ -19,6 +19,35 @@ import org.hibernate.SessionFactory;
 public class AccountService {
     private static final SessionFactory factory = HibernateUtil.getFACTORY();
     
+    public Account getAccountByID(String accountID){
+        try(Session session = factory.openSession()){
+            return session.get(Account.class, accountID);
+        }
+    }
+    
+    public int loginAccount(String accountID, String Password){
+        try(Session session = factory.openSession()){
+            try{
+                EntityManager em = factory.createEntityManager();
+
+                StoredProcedureQuery query = em.createNamedStoredProcedureQuery("spLogin");
+                query.setParameter("AccountID", accountID);
+                query.setParameter("Password", Password);
+                query.execute();
+                
+                int count = (int) query.getOutputParameterValue("OutValue");
+                
+                em.close();
+                
+                return count;
+            }
+            catch(Exception ex){
+                session.getTransaction().rollback();
+                return 0;
+            }
+        }
+    }
+    
     public boolean addOrSaveAccount(Account acc){
         try(Session session = factory.openSession()){
             try{

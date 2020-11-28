@@ -7,14 +7,10 @@ package com.ndtk.bean;
 
 import com.ndtk.pojo.Book;
 import com.ndtk.res.BookRes;
-import com.ndtk.service.AuthorService;
 import com.ndtk.service.BookService;
-import com.ndtk.service.CategoryService;
-import com.ndtk.service.PublisherService;
 import java.util.ArrayList;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.faces.context.FacesContext;
 import javax.persistence.Transient;
 
 /**

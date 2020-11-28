@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedStoredProcedureQueries;
 import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureParameter;
@@ -23,8 +24,8 @@ import javax.persistence.Table;
  */
 
 @Entity
-
-@NamedStoredProcedureQuery(
+@NamedStoredProcedureQueries({
+    @NamedStoredProcedureQuery(
         name = "spAddAccount",
         procedureName = "spAddAccount",
         parameters = {
@@ -33,7 +34,18 @@ import javax.persistence.Table;
             @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "Salt"),
             @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "EmployeeID")
         }
-)
+    ),
+    
+    @NamedStoredProcedureQuery(
+        name = "spLogin",
+        procedureName = "spLogin",
+        parameters = {
+            @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "AccountID"),
+            @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "Password"),
+            @StoredProcedureParameter(mode = ParameterMode.OUT, type = Integer.class, name = "OutValue")
+        }
+    )
+})
 
 @Table(name = "Account")
 public class Account implements Serializable{
@@ -46,11 +58,28 @@ public class Account implements Serializable{
     @Column(name = "Salt")
     private String Salt;
     
+    @Column(name = "UserType")
+    private String userType;
+    
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "EmployeeID")
     private Employee employee;
 
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
+    /**
+     * @return the userType
+     */
+    public String getUserType() {
+        return userType;
+    }
+
+    /**
+     * @param userType the userType to set
+     */
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+    
     /**
      * @param AccountID the AccountID to set
      */

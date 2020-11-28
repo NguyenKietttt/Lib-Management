@@ -36,9 +36,6 @@ public class BorrowReturnDetail implements Serializable{
     @JoinColumn(name = "BookID")
     private Book book;
     
-    @Column(name = "Returned")
-    private boolean returned;
-    
     @Column(name = "Lost")
     private boolean lost;
     
@@ -83,20 +80,6 @@ public class BorrowReturnDetail implements Serializable{
      */
     public void setBook(Book book) {
         this.book = book;
-    }
-
-    /**
-     * @return the returned
-     */
-    public boolean isReturned() {
-        return returned;
-    }
-
-    /**
-     * @param returned the returned to set
-     */
-    public void setReturned(boolean returned) {
-        this.returned = returned;
     }
 
     /**

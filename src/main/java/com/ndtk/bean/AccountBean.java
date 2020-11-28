@@ -44,6 +44,60 @@ public class AccountBean {
         
     }
     
+    public void checkLogin(){
+        FacesContext context = FacesContext.getCurrentInstance();
+         
+        if (context.getExternalContext().getSessionMap().get("user") != null) {
+            context.getApplication()
+                .getNavigationHandler().handleNavigation(context, null, "book?faces-redirect=true");
+            
+            FacesContext.getCurrentInstance().responseComplete();
+        }
+    }
+    
+    public void checkNotLogin(){
+        FacesContext context = FacesContext.getCurrentInstance();
+         
+        if (context.getExternalContext().getSessionMap().get("user") == null) {
+            context.getApplication()
+                .getNavigationHandler().handleNavigation(context, null, "login?faces-redirect=true");
+            
+            FacesContext.getCurrentInstance().responseComplete();
+        }
+    }
+    
+    public void logoutAccount(){
+        FacesContext context = FacesContext.getCurrentInstance();
+        
+        context.getExternalContext().getSessionMap().remove("user");
+        
+        context.getApplication()
+            .getNavigationHandler().handleNavigation(context, null, "login?faces-redirect=true");
+            
+        FacesContext.getCurrentInstance().responseComplete();
+    }
+    
+    public void loginAccount() throws IOException{
+        if (accountSvc.loginAccount(this.accountID, this.password) > 0) {
+            this.setAlert("");
+            
+            Account acc = accountSvc.getAccountByID(this.accountID);
+            
+            FacesContext context = FacesContext.getCurrentInstance();
+            
+            context.getExternalContext().getSessionMap().put("user", acc);
+            
+            context.getApplication()
+                    .getNavigationHandler().handleNavigation(context, null, "book?faces-redirect=true");
+            
+            FacesContext.getCurrentInstance().responseComplete();
+            
+            return;
+        }
+        
+         this.setAlert("Username or Password is wrong");
+    }
+    
     public void addAccount() throws IOException{
         Employee e = new Employee();
         
@@ -64,8 +118,12 @@ public class AccountBean {
             a.setEmployee(e);
 
             if (accountSvc.addOrSaveAccount(a)) {
-                FacesContext.getCurrentInstance()
-                    .getExternalContext().redirect("login.xhtml");
+                this.setAlert("");
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.getApplication().getNavigationHandler()
+                    .handleNavigation(context, null, "login?faces-redirect=true");
+                
+                FacesContext.getCurrentInstance().responseComplete();
             }
             else
                 employeeSvc.DeleteEmployee(e);

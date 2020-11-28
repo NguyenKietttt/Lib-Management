@@ -8,8 +8,11 @@ and open the template in the editor.
 <html xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    xmlns:t="http://xmlns.jcp.org/jsf/passthrough">
     <h:head>
+        <f:metadata>
+            <f:viewAction action="#{accountBean.checkLogin()}"></f:viewAction>
+        </f:metadata>
         <title>Login</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <h:outputStylesheet name="css/bootstrap.min.css"></h:outputStylesheet>
@@ -24,20 +27,37 @@ and open the template in the editor.
                             <div class="row">
                                 <div class="col-lg-6 offset-lg-3">
                                     <div class="p-5">
-                                        <c:if test="#{testBean.check == true}">
-                                            <div role="alert" class="alert alert-danger" style="display: none"><span>Alert</span></div>
-                                        </c:if>
-                                        <c:if test="#{testBean.check == false}">
-                                            <div role="alert" class="alert alert-danger"><span>Alert</span></div>
-                                        </c:if>
                                         <div class="text-center">
                                             <h4 class="text-dark mb-4">LOGIN FORM</h4>
                                         </div>
-                                        <h:form class="user">
-                                            <div class="form-group"><input class="form-control form-control-user" type="text" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Your Username" name="username" required=""/></div>
-                                            <div class="form-group"><input class="form-control form-control-user" type="password" id="exampleInputPassword" placeholder="Your Password" name="password" required=""/>
+                                        <h:form id="fo" class="user">
+                                            <div class="form-group">
+                                                <label><strong>UserName</strong><br/></label>
+                                                <h:message style="color: red" for="username" />
+                                                <div id="alertUpdate" role="alert" class="alert alert-danger" style="display: none">
+                                                    <h:outputText id="notification" value="#{accountBean.message}"></h:outputText>
+                                                </div>
+                                                <h:inputText id="username" class="form-control form-control-user" 
+                                                             t:placeholder="Username" 
+                                                             style="font-size: 12.8px;"
+                                                             value="#{accountBean.accountID}"
+                                                             required="true" requiredMessage=" *"/>
                                             </div>
-                                            <h:commandButton action="#{testBean.doCheck}" class="btn btn-primary btn-block text-white btn-user" type="submit" value="Login"></h:commandButton>
+                                            <div class="form-group">
+                                                <label><strong>Password</strong><br/></label>
+                                                <h:message style="color: red" for="password" />
+                                                <h:inputSecret id="password" class="form-control form-control-user" 
+                                                             t:placeholder="Password" 
+                                                             redisplay="true"
+                                                             style="font-size: 12.8px;" 
+                                                             required="true" requiredMessage=" *"
+                                                             value="#{accountBean.password}"/>
+                                            </div>
+                                            <h:commandButton class="btn btn-primary btn-block text-white btn-user" type="submit" value="Login">
+                                                <f:ajax execute="@form" listener="#{accountBean.loginAccount()}"
+                                                    render="@form"
+                                                    onevent="loginFail"/>
+                                            </h:commandButton>
                                             <hr/>
                                         </h:form>
                                         <div class="text-center"></div>
@@ -53,5 +73,29 @@ and open the template in the editor.
         <h:outputScript name="js/jquery.min.js"></h:outputScript>
         <h:outputScript name="js/bootstrap.min.js"></h:outputScript>
         <h:outputScript name="js/theme.js"></h:outputScript>
+        <script>
+            if(window.history.replaceState){
+                window.history.replaceState(null, null, window.location.href);
+            }
+            
+            function loginFail(data) {
+                if (data.status == "success") {
+                    var acc = document.getElementById('fo:username').value;
+                    var pass = document.getElementById('fo:password').value;
+
+                    var temp = document.getElementById('fo:notification').innerHTML;
+
+                    if (temp !== "") {
+                        if (acc !== null &amp;&amp; acc !== "") {
+                            if (pass !== null &amp;&amp; pass !== "") {
+                                document.getElementById("alertUpdate").style.display = "block";
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }
+                        }
+                    }
+                }
+            }
+            
+        </script>
     </h:body>
 </html>

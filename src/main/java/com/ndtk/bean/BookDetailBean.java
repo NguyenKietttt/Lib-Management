@@ -50,9 +50,9 @@ public class BookDetailBean {
     
     public BookDetailBean() throws IOException{   
         if (!FacesContext.getCurrentInstance().isPostback()) {
+            FacesContext context = FacesContext.getCurrentInstance();
 
-            String id = FacesContext.getCurrentInstance()
-                    .getExternalContext().getRequestParameterMap().get("bookID");
+            String id = context.getExternalContext().getRequestParameterMap().get("bookID");
             
             if (id != null && !id.isEmpty()){
                 Pattern pattern = Pattern.compile("^[0-9]*$");
@@ -76,13 +76,19 @@ public class BookDetailBean {
                         else
                             this.setStatus("Hết");
                     }
-                    else
-                        FacesContext.getCurrentInstance()
-                                    .getExternalContext().redirect("book.xhtml");
+                    else{
+                        context.getApplication().getNavigationHandler()
+                            .handleNavigation(context, null, "book?faces-redirect=true");
+                        
+                        FacesContext.getCurrentInstance().responseComplete();
+                    }
                 }
-                else
-                    FacesContext.getCurrentInstance()
-                                    .getExternalContext().redirect("book.xhtml");
+                else{
+                    context.getApplication().getNavigationHandler()
+                            .handleNavigation(context, null, "book?faces-redirect=true");
+                    
+                    FacesContext.getCurrentInstance().responseComplete();
+                }
             }
         }
     }
@@ -91,14 +97,14 @@ public class BookDetailBean {
         Book b = bookSvc.getBookByID(this.getBookID());
         
         if (b == null){
-            this.setAlert("Book has been borrowed cannot delete!");
+            this.setAlert("Book has been borrowed cannot update!");
             return;
         }
         
         if (b.getListBorrowReturnDetail().size() > 0) {
             for (BorrowReturnDetail borrowReturnDetail : b.getListBorrowReturnDetail()) {
-                if (!borrowReturnDetail.isReturned()){
-                    this.setAlert("Book has been borrowed cannot delete!");
+                if (borrowReturnDetail.getBorrowReturn().getReturnDate() == null){
+                    this.setAlert("Book has been borrowed cannot update!");
                     return;
                 }
             }

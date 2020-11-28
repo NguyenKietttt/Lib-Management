@@ -12,28 +12,55 @@ and open the template in the editor.
       xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
+        <f:metadata>
+            <f:viewAction action="#{accountBean.checkNotLogin()}"></f:viewAction>
+        </f:metadata>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"/>
         <title>Book Detail</title>
         <h:outputStylesheet name="css/bootstrap.min.css"/>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"/>
         <h:outputStylesheet name="fonts/fontawesome-all.min.css"/>
+        <h:outputStylesheet name="fonts/simple-line-icons.min.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"/>
     </h:head>
     <h:body id="page-top">
         <div id="wrapper">
             <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
-                <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="index.html"><div class="sidebar-brand-icon"><i class="fas fa-ethernet"></i></div><div class="sidebar-brand-text mx-3"><span>Library</span></div></a>
+                <div class="container-fluid d-flex flex-column p-0">
+                    <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="book.xhtml">
+                        <div class="sidebar-brand-icon"><i class="fas fa-ethernet"></i></div>
+                        <div class="sidebar-brand-text mx-3"><span>Library</span></div>
+                    </a>
                     <hr class="sidebar-divider my-0"/>
-                    <ul class="nav navbar-nav text-light" id="accordionSidebar">
-                        <li class="nav-item"><a class="nav-link" href="table.html"><i class="fas fa-filter"></i><span>Book Listing</span></a></li>
-                        <li class="nav-item"><a class="nav-link" href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a><a class="nav-link" href="index.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a><a class="nav-link" href="user.html"><i class="fas fa-user-friends"></i><span>User</span></a>
-                            <a class="nav-link" href="reader.html"><i class="fas fa-book-reader"></i><span>Reader</span></a>
-                        </li>
-                        <li class="nav-item"></li>
-                        <li class="nav-item"></li>
-                        <li class="nav-item"></li>
-                    </ul>
+                    <h:form>
+                        <ul class="nav navbar-nav text-light" id="accordionSidebar">
+                            <li class="nav-item">
+                                <h:commandLink class="nav-link" action="book?faces-redirect=true">
+                                    <i class="fas fa-filter"></i>
+                                    <span>Book Listing</span>
+                                </h:commandLink>
+                            </li>
+                            <li class="nav-item">
+                                <h:commandLink class="nav-link" action="profile?faces-redirect=true">
+                                    <i class="fas fa-user"></i>
+                                    <span>Profile</span>
+                                </h:commandLink>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <h:commandLink class="nav-link" action="#{accountBean.logoutAccount()}">
+                                    <i class="icon-logout"></i>
+                                    <span>Logout</span>
+                                </h:commandLink>
+                            </li>
+                        </ul>
+                    </h:form>
                     <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
                 </div>
             </nav>
