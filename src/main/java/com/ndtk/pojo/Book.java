@@ -59,7 +59,7 @@ public class Book implements Serializable{
     @JoinColumn(name = "PublisherID")
     private Publisher publisher;
     
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private Set<BorrowReturnDetail> listBorrowReturnDetail;
         
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">

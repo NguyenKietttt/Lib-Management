@@ -65,6 +65,19 @@ public class AccountBean {
         }
     }
     
+    public void checkAdmin(){
+        FacesContext context = FacesContext.getCurrentInstance();
+        Account acc = (Account) context.getExternalContext().getSessionMap().get("user");
+        if (acc != null) {
+            if (!acc.getUserType().equals("Admin")) {
+                context.getApplication()
+                    .getNavigationHandler().handleNavigation(context, null, "book?faces-redirect=true");
+            
+                FacesContext.getCurrentInstance().responseComplete();
+            }
+        }
+    }
+    
     public void checkNotLogin(){
         FacesContext context = FacesContext.getCurrentInstance();
          

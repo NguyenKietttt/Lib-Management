@@ -142,11 +142,6 @@ public class BookDetailBean {
     public void updateBook() throws IOException {
         Book b = bookSvc.getBookByID(this.getBookDetailRes().getBookID());
         
-        if (b == null) {
-            this.setAlert("Cannot update");
-            return;
-        }
-        
         if (b.getListBorrowReturnDetail().size() > 0) {
             for (BorrowReturnDetail borrowReturnDetail : b.getListBorrowReturnDetail()) {
                 if (borrowReturnDetail.getBorrowReturn().getReturnDate() == null){
@@ -157,7 +152,13 @@ public class BookDetailBean {
         }
         
         // Book Name
-        b.setBookName(bookDetailRes.getBookName());
+        if (!bookDetailRes.getBookName().trim().equals("")) {
+            b.setBookName(bookDetailRes.getBookName());
+         }
+         else{
+            this.setAlert("Book Name cannot be blank");
+            return;
+         }
         
         // Book Publishing Date      
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -176,50 +177,75 @@ public class BookDetailBean {
             b.setImage(bookDetailRes.getImage());
         
         // Book Description
-        b.setBookDescription(bookDetailRes.getBookDescription());
+        if (!bookDetailRes.getBookDescription().trim().equals("")) {
+            b.setBookDescription(bookDetailRes.getBookDescription());
+         }
+         else{
+            this.setAlert("Book Description cannot be blank");
+            return;
+         }
         
         // Book Category
         Category cateNew = categorySvc.getCategoryByID(cateID);
         b.setCategory(cateNew);
         
         // Book Author
-        Author authorNew = new Author();
-        Author authorOld = new Author();
-        
-        authorOld = authorSvc.getAuthorByName(bookDetailRes.getAuthor().getAuthorName());
-        if (authorOld == null) {
-            authorNew.setAuthorName(bookDetailRes.getAuthor().getAuthorName());
-            
-            authorSvc.addOrSaveAuthor(authorNew);
+        if (!bookDetailRes.getAuthor().getAuthorName().trim().equals("")) {
+            Author authorNew = new Author();
+            Author authorOld = new Author();
+
+            authorOld = authorSvc.getAuthorByName(bookDetailRes.getAuthor().getAuthorName());
+            if (authorOld == null) {
+                authorNew.setAuthorName(bookDetailRes.getAuthor().getAuthorName());
+
+                authorSvc.addOrSaveAuthor(authorNew);
+            }
+
+            if (authorNew.getAuthorName() == null)
+                b.setAuthor(authorOld);
+            else
+                b.setAuthor(authorNew);
         }
-        
-        if (authorNew.getAuthorName() == null)
-            b.setAuthor(authorOld);
-        else
-            b.setAuthor(authorNew);
+        else{
+            this.setAlert("Author cannot be blank");
+            return;
+        }
         
         // Book Publisher
-        Publisher publisherNew = new Publisher();
-        Publisher publisherOld = new Publisher();
+        if (!bookDetailRes.getPublisher().getPublisherName().trim().equals("")) {
+            Publisher publisherNew = new Publisher();
+            Publisher publisherOld = new Publisher();
 
-        publisherOld = publisherSvc.getPublisherByName(bookDetailRes.getPublisher().getPublisherName());
-        if (publisherOld == null) {
-            publisherNew.setPublisherName(bookDetailRes.getPublisher().getPublisherName());
-            
-            publisherSvc.addOrSavePubliser(publisherNew);
+            publisherOld = publisherSvc.getPublisherByName(bookDetailRes.getPublisher().getPublisherName());
+            if (publisherOld == null) {
+                publisherNew.setPublisherName(bookDetailRes.getPublisher().getPublisherName());
+
+                publisherSvc.addOrSavePubliser(publisherNew);
+            }
+
+            if (publisherNew.getPublisherName() == null)
+                b.setPublisher(publisherOld);
+            else
+                b.setPublisher(publisherNew);
+        }
+        else{
+            this.setAlert("Publisher cannot be blank");
+            return;
         }
         
-        if (publisherNew.getPublisherName() == null)
-            b.setPublisher(publisherOld);
-        else
-            b.setPublisher(publisherNew);
         
         // Book Status
-        if (bookDetailRes.getStatus().equals("Còn"))
-            b.setBookStatus(true);
-        else
-            b.setBookStatus(false);
-        
+        if (!bookDetailRes.getStatus().trim().equals("")) {
+            if (bookDetailRes.getStatus().equals("Còn"))
+                b.setBookStatus(true);
+            else
+                b.setBookStatus(false);
+        }
+        else{
+            this.setAlert("Book Status cannot be blank");
+            return;
+        }
+            
         // Update
         if (bookSvc.addOrSaveBook(b)) {
             this.setAlert("");
@@ -227,6 +253,30 @@ public class BookDetailBean {
             context.getApplication().getNavigationHandler()
                 .handleNavigation(context, null, "book-detail?faces-redirect=true&bookID=" + bookDetailRes.getBookID());
         }
+        else
+            this.setAlert("Cannot be update");
+    }
+    
+    public void deleteBook(){
+        Book b = bookSvc.getBookByID(this.getBookDetailRes().getBookID());
+        
+        if (b.getListBorrowReturnDetail().size() > 0) {
+            for (BorrowReturnDetail borrowReturnDetail : b.getListBorrowReturnDetail()) {
+                if (borrowReturnDetail.getBorrowReturn().getReturnDate() == null){
+                    this.setAlert("Book has been borrowed cannot be delete");
+                    return;
+                }
+            }
+        }
+        
+        if (bookSvc.deleteBook(b)) {
+            this.setAlert("");
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.getApplication().getNavigationHandler()
+                .handleNavigation(context, null, "book?faces-redirect=true");
+        }
+        else
+            this.setAlert("Cannot be delete");
     }
 
     public String getMessage() {

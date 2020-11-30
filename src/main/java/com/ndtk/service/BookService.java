@@ -123,4 +123,22 @@ public class BookService {
 
         return true;
     }
+    
+    public boolean deleteBook(Book book){
+        try(Session session = factory.openSession()){
+            try{
+                session.getTransaction().begin();
+
+                session.delete(book);
+
+                session.getTransaction().commit();
+            }
+            catch(Exception ex){
+                session.getTransaction().rollback();
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

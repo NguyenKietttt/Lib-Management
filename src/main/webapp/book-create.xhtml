@@ -6,7 +6,7 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <f:metadata>
-            <f:viewAction action="#{accountBean.checkNotLogin()}"></f:viewAction>
+            <f:viewAction action="#{accountBean.checkAdmin()}"></f:viewAction>
         </f:metadata>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"/>
@@ -69,14 +69,14 @@
                                 <div class="card mb-3">
                                     <div class="card-body text-center shadow">
                                         <h:graphicImage id="bookImg" class="img-thumbnail mb-3 mt-4" 
-                                                        library="img" name="#{bookDetailBean.bookDetailRes.image}" 
+                                                        library="img" name="#{bookCreateBean.image}" 
                                                         width="160" height="160"/>
-                                        <div class="mb-3" style="#{facesContext.externalContext.sessionMap.get('user').userType ne 'Admin' ? 'display: none;' : 'display: block;'}">
+                                        <div class="mb-3">
                                             <h:outputLabel for="file-upload" value="Upload" 
                                                            styleClass="btn btn-primary btn-sm" style="width: 50%;" />
                                             <p style="color: red" id="file-name"></p>
                                             <h:inputFile id="file-upload" styleClass="upload" 
-                                                         value="#{bookDetailBean.part}">
+                                                         value="#{bookCreateBean.part}">
                                             </h:inputFile>
                                         </div>
                                     </div>
@@ -92,16 +92,9 @@
                                             <div class="card-body">
                                                 <div id="alertUpdate" role="alert" class="alert alert-danger"
                                                     style="display: none">
-                                                    <h:outputText id="notification" value="#{bookDetailBean.message}"></h:outputText>
+                                                    <h:outputText id="notification" value="#{bookCreateBean.message}"></h:outputText>
                                                </div>
                                                 <div class="form-row">
-                                                    <div class="col">
-                                                        <div class="form-group"><label><strong>Book ID</strong><br/></label>
-                                                            <h:inputText class="form-control" 
-                                                                         t:placeholder="ID" value="#{bookDetailBean.bookDetailRes.bookID}"
-                                                                         readonly="true"/>
-                                                        </div>
-                                                    </div>
                                                     <div class="col">
                                                         <div class="form-group">
                                                             <label>
@@ -110,11 +103,9 @@
                                                                 <br/>
                                                             </label>
                                                             <h:inputText id="status" class="form-control" 
-                                                                         t:placeholder="Status" value="#{bookDetailBean.bookDetailRes.status}"
+                                                                         t:placeholder="Status" value="#{bookCreateBean.status}"
                                                                          required="true" requiredMessage=" *"
-                                                                         validatorMessage=" - chấp nhận giá trị Còn hoặc Hết"
-                                                                         readonly="#{facesContext.externalContext.sessionMap
-                                                                                     .get('user').userType eq 'Admin' ? false : true}">
+                                                                         validatorMessage=" - chấp nhận giá trị Còn hoặc Hết">
                                                                 <f:validateRegex pattern="\bCòn\b|\bHết\b"/>
                                                             </h:inputText>
                                                         </div>
@@ -129,10 +120,8 @@
                                                             <br/>
                                                         </label>
                                                         <h:inputText id="bookName" class="form-control" 
-                                                                     t:placeholder="Name" value="#{bookDetailBean.bookDetailRes.bookName}" 
-                                                                     required="true" requiredMessage=" *"
-                                                                     readonly="#{facesContext.externalContext.sessionMap
-                                                                                 .get('user').userType eq 'Admin' ? false : true}"/>
+                                                                     t:placeholder="Name" value="#{bookCreateBean.bookName}" 
+                                                                     required="true" requiredMessage=" *"/>
                                                     </div>
                                                 </div>
                                                 <div class="col-xl-12">
@@ -143,11 +132,9 @@
                                                             <br/>
                                                         </label>
                                                         <h:inputText id="pubDate" class="form-control" 
-                                                                     t:placeholder="Publishing Date" value="#{bookDetailBean.dateString}" 
+                                                                     t:placeholder="Publishing Date" value="#{bookCreateBean.dateUtil}" 
                                                                      required="true" requiredMessage=" *"
-                                                                     converterMessage=" - Sai định dạng. Ví dụ: 27/5/2020"
-                                                                     readonly="#{facesContext.externalContext.sessionMap
-                                                                                 .get('user').userType eq 'Admin' ? false : true}">
+                                                                     converterMessage=" - Sai định dạng. Ví dụ: 27/5/2020">
                                                             <f:convertDateTime type="date" pattern = "dd/MM/yyyy" />
                                                         </h:inputText>
                                                     </div>
@@ -157,22 +144,11 @@
                                                         <label>
                                                             <strong>Category</strong>
                                                         </label>
-                                                        <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType eq 'Admin'}">
-                                                            <h:selectOneMenu class="form-control"
-                                                                            value="#{bookDetailBean.cateID}">
-                                                                <f:selectItem itemValue="#{bookDetailBean.bookDetailRes.category.categoryId}" 
-                                                                              itemLabel="#{bookDetailBean.bookDetailRes.category.categoryName}"
-                                                                              noSelectionOption="true"/>
-                                                                <f:selectItems value="#{bookDetailBean.listCategoryEdit}" var="cate" 
-                                                                           itemLabel="#{cate.categoryName}" itemValue="#{cate.categoryId}"/>
-                                                            </h:selectOneMenu>
-                                                        </c:if>
-                                                        <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType ne 'Admin'}">
-                                                            <h:inputText class="form-control" 
-                                                                         t:placeholder="Name" 
-                                                                         value="#{bookDetailBean.bookDetailRes.category.categoryName}"
-                                                                         readonly="true"/>
-                                                        </c:if>
+                                                        <h:selectOneMenu class="form-control"
+                                                                         value="#{bookCreateBean.cateID}">
+                                                            <f:selectItems value="#{categoryBean.listCategory}" var="cate" 
+                                                                       itemLabel="#{cate.categoryName}" itemValue="#{cate.categoryId}"/>
+                                                        </h:selectOneMenu>
                                                     </div>
                                                 </div>
                                                 <div class="col-xl-12">
@@ -183,10 +159,8 @@
                                                             <br/>
                                                         </label>
                                                         <h:inputText id="author" class="form-control" 
-                                                                     t:placeholder="Author" value="#{bookDetailBean.bookDetailRes.author.authorName}" 
-                                                                     required="true" requiredMessage=" *"
-                                                                     readonly="#{facesContext.externalContext.sessionMap
-                                                                                 .get('user').userType eq 'Admin' ? false : true}"/>
+                                                                     t:placeholder="Author" value="#{bookCreateBean.authorName}" 
+                                                                     required="true" requiredMessage=" *"/>
                                                     </div>
                                                 </div>
                                                 <div class="col-xl-12">
@@ -197,10 +171,8 @@
                                                             <br/>
                                                         </label>
                                                         <h:inputText id="publisher" class="form-control" 
-                                                                     t:placeholder="Publisher" value="#{bookDetailBean.bookDetailRes.publisher.publisherName}" 
-                                                                     required="true" requiredMessage=" *"
-                                                                     readonly="#{facesContext.externalContext.sessionMap
-                                                                                 .get('user').userType eq 'Admin' ? false : true}"/>
+                                                                     t:placeholder="Publisher" value="#{bookCreateBean.publisherName}" 
+                                                                     required="true" requiredMessage=" *"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -210,32 +182,20 @@
                                                     <h:message id="mDes" style="color: red" for="des" />
                                                 </label>
                                                 <h:inputTextarea  id="des" class="form-control" 
-                                                                  t:placeholder="Description" value="#{bookDetailBean.bookDetailRes.bookDescription}" 
+                                                                  t:placeholder="Description" value="#{bookCreateBean.bookDescription}" 
                                                                   style="width: 100%;height: 200px; resize: none;"
-                                                                  required="true" requiredMessage=" *"
-                                                                  readonly="#{facesContext.externalContext.sessionMap
-                                                                                 .get('user').userType eq 'Admin' ? false : true}">
+                                                                  required="true" requiredMessage=" *">
                                                 </h:inputTextarea>
                                             </div>
                                             <div class="form-group text-center" style="margin-top: 4%;">
 
                                                 <h:commandButton id="save" class="btn btn-primary btn-sm" style="width: 20%;"
                                                     value="Save">
-                                                    <f:ajax execute="@form" listener="#{bookDetailBean.updateBook()}"
+                                                    <f:ajax execute="@form" listener="#{bookCreateBean.addBook()}"
                                                             render="@form"
                                                             onevent="updateFail"/>
                                                 </h:commandButton>
-                                                <h:commandButton value="Delete" class="btn btn-primary btn-sm" type="button" 
-                                                                 style="margin-left: 5%;background: rgb(223,87,78);width: 20%;">
-                                                    <f:ajax execute="@form" listener="#{bookDetailBean.deleteBook()}"
-                                                            render="@form"
-                                                            onevent="updateFail"/>
-                                                </h:commandButton>
-
-                                            </div>
-                                            <div class="form-group text-center" style="margin-top: 4%;">
-                                                <h:commandButton value="Borrow" class="btn btn-primary btn-sm" type="button" style="width: 20%;background: rgb(116,223,78);">
-                                                </h:commandButton>
+                                              
                                             </div>
                                     </div>
                                         </div>

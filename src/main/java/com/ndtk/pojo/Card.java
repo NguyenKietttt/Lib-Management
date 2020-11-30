@@ -13,6 +13,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -32,8 +33,8 @@ public class Card implements Serializable{
     @Column(name = "DueDate")
     private Date dueDate;
     
-    @OneToMany(mappedBy = "card")
-    private Set<Reader> listReader;
+    @OneToOne(mappedBy = "card")
+    private Reader reader;
     
     @OneToMany(mappedBy = "card", cascade = CascadeType.ALL)
     private Set<BorrowReturn> listBorrowReturn;
@@ -84,15 +85,15 @@ public class Card implements Serializable{
     /**
      * @return the listReader
      */
-    public Set<Reader> getListReader() {
-        return listReader;
+    public Reader getReader() {
+        return reader;
     }
 
     /**
      * @param listReader the listReader to set
      */
-    public void setListReader(Set<Reader> listReader) {
-        this.listReader = listReader;
+    public void setListReader(Reader reader) {
+        this.reader = reader;
     }
     
     /**
