@@ -75,10 +75,12 @@ and open the template in the editor.
                         </div>
                         <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType eq 'Admin'}">
                             <div class="col-md-6 col-xl-3 offset-xl-0 text-left" style="margin-top: 2%;">
-                                <h:commandButton class="btn btn-primary text-center visible py-0" 
-                                                 style="height: 100%;width: 100%;background: rgb(223,87,78);" 
-                                                 value="Add a Book">
-                                </h:commandButton>
+                                <h:link class="btn btn-primary btn-sm" 
+                                                 style="width: 100%;background: rgb(223,87,78); padding-top: "
+                                                 
+                                                 value="Add a Book"
+                                                 outcome="book-detail?faces-redirect=true">
+                                </h:link>
                             </div>
                         </c:if>
                     </div>

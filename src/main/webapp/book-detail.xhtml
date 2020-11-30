@@ -1,15 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:t="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <f:metadata>
@@ -21,46 +14,23 @@ and open the template in the editor.
         <h:outputStylesheet name="css/bootstrap.min.css"/>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"/>
         <h:outputStylesheet name="fonts/fontawesome-all.min.css"/>
-        <h:outputStylesheet name="fonts/simple-line-icons.min.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"/>
+        <h:outputStylesheet name="css/custom.css"/>
     </h:head>
     <h:body id="page-top">
         <div id="wrapper">
             <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
-                <div class="container-fluid d-flex flex-column p-0">
-                    <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="book.xhtml">
-                        <div class="sidebar-brand-icon"><i class="fas fa-ethernet"></i></div>
-                        <div class="sidebar-brand-text mx-3"><span>Library</span></div>
-                    </a>
+                <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="index.html"><div class="sidebar-brand-icon"><i class="fas fa-ethernet"></i></div><div class="sidebar-brand-text mx-3"><span>Library</span></div></a>
                     <hr class="sidebar-divider my-0"/>
-                    <h:form>
-                        <ul class="nav navbar-nav text-light" id="accordionSidebar">
-                            <li class="nav-item">
-                                <h:commandLink class="nav-link" action="book?faces-redirect=true">
-                                    <i class="fas fa-filter"></i>
-                                    <span>Book Listing</span>
-                                </h:commandLink>
-                            </li>
-                            <li class="nav-item">
-                                <h:commandLink class="nav-link" action="profile?faces-redirect=true">
-                                    <i class="fas fa-user"></i>
-                                    <span>Profile</span>
-                                </h:commandLink>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <i class="fas fa-tachometer-alt"></i>
-                                    <span>Dashboard</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <h:commandLink class="nav-link" action="#{accountBean.logoutAccount()}">
-                                    <i class="icon-logout"></i>
-                                    <span>Logout</span>
-                                </h:commandLink>
-                            </li>
-                        </ul>
-                    </h:form>
+                    <ul class="nav navbar-nav text-light" id="accordionSidebar">
+                        <li class="nav-item"><a class="nav-link" href="table.html"><i class="fas fa-filter"></i><span>Book Listing</span></a></li>
+                        <li class="nav-item"><a class="nav-link" href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a><a class="nav-link" href="index.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a><a class="nav-link" href="user.html"><i class="fas fa-user-friends"></i><span>User</span></a>
+                            <a class="nav-link" href="reader.html"><i class="fas fa-book-reader"></i><span>Reader</span></a>
+                        </li>
+                        <li class="nav-item"></li>
+                        <li class="nav-item"></li>
+                        <li class="nav-item"></li>
+                    </ul>
                     <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
                 </div>
             </nav>
@@ -69,16 +39,22 @@ and open the template in the editor.
                 <div id="content">
                     <div class="container-fluid">
                         <h3 class="text-dark mb-4" style="margin-top: 2%;">Book Detail</h3>
-                        <div class="row mb-3">
+                        <h:form id="fo" enctype="multipart/form-data">
+                            <div class="row mb-3">
                             <div class="col-lg-4">
                                 <div class="card mb-3">
                                     <div class="card-body text-center shadow">
-                                        <h:graphicImage class="img-thumbnail mb-3 mt-4" library="img" name="#{bookDetailBean.image}" width="160" height="160"/>
-                                        <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType eq 'Admin'}">
-                                            <div class="mb-3">
-                                                <button class="btn btn-primary btn-sm" type="button">Change Photo</button>
-                                            </div>
-                                        </c:if>
+                                        <h:graphicImage id="bookImg" class="img-thumbnail mb-3 mt-4" 
+                                                        library="img" name="#{bookDetailBean.bookDetailRes.image}" 
+                                                        width="160" height="160"/>
+                                        <div class="mb-3" style="#{facesContext.externalContext.sessionMap.get('user').userType ne 'Admin' ? 'display: none;' : 'display: block;'}">
+                                            <h:outputLabel for="file-upload" value="Upload" 
+                                                           styleClass="btn btn-primary btn-sm" style="width: 50%;" />
+                                            <p style="color: red" id="file-name"></p>
+                                            <h:inputFile id="file-upload" styleClass="upload" 
+                                                         value="#{bookDetailBean.part}">
+                                            </h:inputFile>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -87,134 +63,164 @@ and open the template in the editor.
                                     <div class="col">
                                         <div class="card shadow mb-3">
                                             <div class="card-header py-3">
-                                                <p class="text-primary m-0 font-weight-bold">Infomation</p>
-                                            </div>
+                                            <p class="text-primary m-0 font-weight-bold">Infomation</p>
+                                        </div>
                                             <div class="card-body">
-                                                <h:form id="fo">
-                                                    <div class="form-row">
-                                                        <div class="col">
-                                                            <div class="form-group">
-                                                                <label><strong>Book ID</strong><br/></label>
-                                                                <h:inputText class="form-control" 
-                                                                             t:placeholder="ID" value="#{bookDetailBean.bookID}"
-                                                                             readonly="true"/>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col">
-                                                            <div class="form-group">
-                                                                <label>
-                                                                    <strong>Status</strong>
-                                                                    <h:message style="color: red" for="status" />
-                                                                    <br/>
-                                                                </label>
-                                                                <h:inputText id="status" class="form-control" 
-                                                                             t:placeholder="Status" value="#{bookDetailBean.status}"
-                                                                             required="true" requiredMessage=" *"
-                                                                             readonly="#{facesContext.externalContext.sessionMap
-                                                                                         .get('user').userType eq 'Admin' ? false : true}"/>
-                                                            </div>
+                                                <div id="alertUpdate" role="alert" class="alert alert-danger"
+                                                    style="display: none">
+                                                    <h:outputText id="notification" value="#{bookDetailBean.message}"></h:outputText>
+                                               </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <div class="form-group"><label><strong>Book ID</strong><br/></label>
+                                                            <h:inputText class="form-control" 
+                                                                         t:placeholder="ID" value="#{bookDetailBean.bookDetailRes.bookID}"
+                                                                         readonly="true"/>
                                                         </div>
                                                     </div>
-                                                    <div class="form-row">
-                                                        <div class="col-xl-12">
-                                                            <div class="form-group">
-                                                                <label>
-                                                                    <strong>Book Name</strong>
-                                                                    <h:message style="color: red" for="bookname" />
-                                                                    <br/>
-                                                                </label>
-                                                                <h:inputText id="bookname" class="form-control" 
-                                                                             t:placeholder="Name" value="#{bookDetailBean.bookName}" 
-                                                                             required="true" requiredMessage=" *"
-                                                                             readonly="#{facesContext.externalContext.sessionMap
-                                                                                         .get('user').userType eq 'Admin' ? false : true}"/>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xl-12">
-                                                            <div class="form-group"><label><strong>Category</strong></label>
-                                                                <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType eq 'Admin'}">
-                                                                    <h:selectOneMenu class="form-control" 
-                                                                                     t:placeholder="Name" 
-                                                                                     value="#{bookDetailBean.categoryID}">
-                                                                        
-                                                                        <f:selectItems value="#{bookDetailBean.listCate}" var="cate" itemLabel="#{cate.categoryName}" itemValue="#{cate.categoryId}"/>
-                                                                    </h:selectOneMenu>
-                                                                </c:if>
-                                                                <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType ne 'Admin'}">
-                                                                    <h:inputText class="form-control" 
-                                                                                 t:placeholder="Name" value="#{bookDetailBean.category.categoryName}"
-                                                                                 readonly="true"/>
-                                                                </c:if>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xl-12">
-                                                            <div class="form-group">
-                                                                <label>
-                                                                    <strong>Author</strong>
-                                                                    <h:message style="color: red" for="author" />
-                                                                    <br/>
-                                                                </label>
-                                                                <h:inputText id="author" class="form-control" 
-                                                                             t:placeholder="Author" value="#{bookDetailBean.author.authorName}" 
-                                                                             required="true" requiredMessage=" *"
-                                                                             readonly="#{facesContext.externalContext.sessionMap
-                                                                                         .get('user').userType eq 'Admin' ? false : true}"/>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xl-12">
-                                                            <div class="form-group">
-                                                                <label>
-                                                                    <strong>Publisher</strong>
-                                                                    <h:message style="color: red" for="publisher" />
-                                                                    <br/>
-                                                                </label>
-                                                                <h:inputText id="publisher" class="form-control" 
-                                                                             t:placeholder="Publisher" value="#{bookDetailBean.publisher.publisherName}" 
-                                                                             required="true" requiredMessage=" *"
-                                                                             readonly="#{facesContext.externalContext.sessionMap
-                                                                                         .get('user').userType eq 'Admin' ? false : true}"/>
-                                                            </div>
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                <strong>Status</strong>
+                                                                <h:message id="mStatus" style="color: red" for="status" />
+                                                                <br/>
+                                                            </label>
+                                                            <h:inputText id="status" class="form-control" 
+                                                                         t:placeholder="Status" value="#{bookDetailBean.bookDetailRes.status}"
+                                                                         required="true" requiredMessage=" *"
+                                                                         validatorMessage=" - chấp nhận giá trị Còn hoặc Hết"
+                                                                         readonly="#{facesContext.externalContext.sessionMap
+                                                                                     .get('user').userType eq 'Admin' ? false : true}">
+                                                                <f:validateRegex pattern="\bCòn\b|\bHết\b"/>
+                                                            </h:inputText>
                                                         </div>
                                                     </div>
+                                                </div>
+                                            <div class="form-row">
+                                                <div class="col-xl-12">
                                                     <div class="form-group">
                                                         <label>
-                                                            <strong>Description</strong>
+                                                            <strong>Book Name</strong>
+                                                            <h:message id="mBookName" style="color: red" for="bookName" />
+                                                            <br/>
                                                         </label>
-                                                        <h:inputTextarea  class="form-control" 
-                                                                          t:placeholder="Description" value="#{bookDetailBean.bookDescription}" 
-                                                                          style="width: 100%;height: 200px; resize: none;"
-                                                                          readonly="#{facesContext.externalContext.sessionMap
-                                                                                         .get('user').userType eq 'Admin' ? false : true}">
-                                                        </h:inputTextarea>
+                                                        <h:inputText id="bookName" class="form-control" 
+                                                                     t:placeholder="Name" value="#{bookDetailBean.bookDetailRes.bookName}" 
+                                                                     required="true" requiredMessage=" *"
+                                                                     readonly="#{facesContext.externalContext.sessionMap
+                                                                                 .get('user').userType eq 'Admin' ? false : true}"/>
                                                     </div>
-                                                    <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType eq 'Admin'}">
-                                                        <div class="form-group text-center" style="margin-top: 4%;">
-                                                            <h:commandButton class="btn btn-primary btn-sm" style="width: 20%;"
-                                                                value="Save">
-                                                                <f:ajax execute="@form" listener="#{bookDetailBean.updateBook()}"
-                                                                        render="@form"/>
-                                                            </h:commandButton>
-                                                            <h:commandButton value="Delete" class="btn btn-primary btn-sm" type="button" style="margin-left: 5%;background: rgb(223,87,78);width: 20%;">
-
-                                                            </h:commandButton>
-
-                                                        </div>
-                                                    </c:if>
-                                                    <div class="form-group text-center" style="margin-top: 4%;">
-                                                        <h:commandButton value="Borrow" class="btn btn-primary btn-sm" type="button" style="width: 20%;background: rgb(116,223,78);">
-                                                        </h:commandButton>
+                                                </div>
+                                                <div class="col-xl-12">
+                                                    <div class="form-group">
+                                                        <label>
+                                                            <strong>Publishing Date</strong>
+                                                            <h:message id="mPubDate" style="color: red" for="pubDate" />
+                                                            <br/>
+                                                        </label>
+                                                        <h:inputText id="pubDate" class="form-control" 
+                                                                     t:placeholder="Publishing Date" value="#{bookDetailBean.dateString}" 
+                                                                     required="true" requiredMessage=" *"
+                                                                     converterMessage=" - Sai định dạng. Ví dụ: 27/5/2020"
+                                                                     readonly="#{facesContext.externalContext.sessionMap
+                                                                                 .get('user').userType eq 'Admin' ? false : true}">
+                                                            <f:convertDateTime type="date" pattern = "dd/MM/yyyy" />
+                                                        </h:inputText>
                                                     </div>
-                                            </h:form>
-                                        </div>
+                                                </div>
+                                                <div class="col-xl-12">
+                                                    <div class="form-group">
+                                                        <label>
+                                                            <strong>Category</strong>
+                                                        </label>
+                                                        <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType eq 'Admin'}">
+                                                            <h:selectOneMenu class="form-control"
+                                                                            value="#{bookDetailBean.cateID}">
+                                                                <f:selectItem itemValue="#{bookDetailBean.bookDetailRes.category.categoryId}" 
+                                                                              itemLabel="#{bookDetailBean.bookDetailRes.category.categoryName}"
+                                                                              noSelectionOption="true"/>
+                                                                <f:selectItems value="#{bookDetailBean.listCategoryEdit}" var="cate" 
+                                                                           itemLabel="#{cate.categoryName}" itemValue="#{cate.categoryId}"/>
+                                                            </h:selectOneMenu>
+                                                        </c:if>
+                                                        <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType ne 'Admin'}">
+                                                            <h:inputText class="form-control" 
+                                                                         t:placeholder="Name" 
+                                                                         value="#{bookDetailBean.bookDetailRes.category.categoryName}"
+                                                                         readonly="true"/>
+                                                        </c:if>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-12">
+                                                    <div class="form-group">
+                                                        <label>
+                                                            <strong>Author</strong>
+                                                            <h:message id="mAuthor" style="color: red" for="author" />
+                                                            <br/>
+                                                        </label>
+                                                        <h:inputText id="author" class="form-control" 
+                                                                     t:placeholder="Author" value="#{bookDetailBean.bookDetailRes.author.authorName}" 
+                                                                     required="true" requiredMessage=" *"
+                                                                     readonly="#{facesContext.externalContext.sessionMap
+                                                                                 .get('user').userType eq 'Admin' ? false : true}"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-12">
+                                                    <div class="form-group">
+                                                        <label>
+                                                            <strong>Publisher</strong>
+                                                            <h:message id="mPublisher" style="color: red" for="publisher" />
+                                                            <br/>
+                                                        </label>
+                                                        <h:inputText id="publisher" class="form-control" 
+                                                                     t:placeholder="Publisher" value="#{bookDetailBean.bookDetailRes.publisher.publisherName}" 
+                                                                     required="true" requiredMessage=" *"
+                                                                     readonly="#{facesContext.externalContext.sessionMap
+                                                                                 .get('user').userType eq 'Admin' ? false : true}"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>
+                                                    <strong>Description</strong>
+                                                    <h:message id="mDes" style="color: red" for="des" />
+                                                </label>
+                                                <h:inputTextarea  id="des" class="form-control" 
+                                                                  t:placeholder="Description" value="#{bookDetailBean.bookDetailRes.bookDescription}" 
+                                                                  style="width: 100%;height: 200px; resize: none;"
+                                                                  required="true" requiredMessage=" *"
+                                                                  readonly="#{facesContext.externalContext.sessionMap
+                                                                                 .get('user').userType eq 'Admin' ? false : true}">
+                                                </h:inputTextarea>
+                                            </div>
+                                            <div class="form-group text-center" style="margin-top: 4%;">
+
+                                                <h:commandButton id="save" class="btn btn-primary btn-sm" style="width: 20%;"
+                                                    value="Save">
+                                                    <f:ajax execute="@form" listener="#{bookDetailBean.updateBook()}"
+                                                            render="@form"
+                                                            onevent="updateFail"/>
+                                                </h:commandButton>
+                                                <h:commandButton value="Delete" class="btn btn-primary btn-sm" type="button" style="margin-left: 5%;background: rgb(223,87,78);width: 20%;">
+
+                                                </h:commandButton>
+
+                                            </div>
+                                            <div class="form-group text-center" style="margin-top: 4%;">
+                                                <h:commandButton value="Borrow" class="btn btn-primary btn-sm" type="button" style="width: 20%;background: rgb(116,223,78);">
+                                                </h:commandButton>
+                                            </div>
                                     </div>
-                                    <div class="card shadow"></div>
+                                        </div>
+                                        <div class="card shadow"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        </h:form>
                     </div>
                 </div>
             </div>
-        </div>
             <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
         </div>
         <h:outputScript name="js/jquery.min.js"/>
@@ -223,5 +229,72 @@ and open the template in the editor.
         <h:outputScript name="js/bs-init.js"/>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
         <h:outputScript name="js/theme.js"/>
+        <script>
+            function updateFail() {
+                var temp = document.getElementById('fo:notification').innerHTML;
+                var status = document.getElementById("fo:status").value;
+                var bookName = document.getElementById("fo:bookName").value;
+                var pubDate = document.getElementById("fo:pubDate").value;
+
+                console.log(status);
+                
+                if (temp !== "alert") {
+                    document.getElementById("alertUpdate").style.display = "block";
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                };
+                
+                
+                if (status === "" || status !== "Còn" &amp;&amp; status !== "Hết") {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                };
+                
+                if (bookName === "") {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                };
+                
+                if (pubDate === "" || !/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(pubDate)) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            };
+            
+            var imgType, imgSize;
+            const validImageTypes = ['image/jpeg', 'image/png'];
+            
+            function readURL(input) {
+                if (input.files &amp;&amp; input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $("[id='fo:bookImg']").attr('src', e.target.result);
+                    };
+
+                    reader.readAsDataURL(input.files[0]);
+                    
+                    imgType = input.files[0].type;
+                    imgSize = input.files[0].size;
+                }
+            }
+            
+            $("[id='fo:file-upload']").change(function(){
+                readURL(this);
+                if (imgSize > 2097152){
+                    document.getElementById("fo:save").disabled = true;
+                    document.querySelector("#file-name").textContent = "File lesser than 2MB";
+                }
+                else{
+                    document.getElementById("fo:save").disabled = false;
+                    document.querySelector("#file-name").textContent = "Preview";
+                }
+                
+                if (!validImageTypes.includes(imgType)){
+                    document.getElementById("fo:save").disabled = true;
+                    document.querySelector("#file-name").textContent = "File must be png/jgp";
+                }
+                else{
+                    document.getElementById("fo:save").disabled = false;
+                    document.querySelector("#file-name").textContent = "Preview";
+                }
+            });
+        </script>
     </h:body>
 </html>

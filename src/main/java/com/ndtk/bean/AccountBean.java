@@ -33,11 +33,9 @@ public class AccountBean {
     private String fullName;
     private String email;
     private String phone;
-    
-    @Transient
+
     private String alert;
     
-    @Transient
     private String confirmPassword;
     
     private String oldPassword;

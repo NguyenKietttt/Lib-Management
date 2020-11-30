@@ -12,6 +12,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -37,8 +38,8 @@ public class Employee implements Serializable{
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     private Set<BorrowReturn> listBorrowReturn;
     
-    @OneToMany(mappedBy = "employee")
-    private Set<Account> listAccount;
+    @OneToOne(mappedBy = "employee")
+    private Account account;
     
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
     /**
@@ -114,15 +115,15 @@ public class Employee implements Serializable{
     /**
      * @return the listAccount
      */
-    public Set<Account> getListAccount() {
-        return listAccount;
+    public Account getAccount() {
+        return account;
     }
 
     /**
      * @param listAccount the listAccount to set
      */
-    public void setListAccount(Set<Account> listAccount) {
-        this.listAccount = listAccount;
+    public void setAccount(Account listAccount) {
+        this.account = listAccount;
     }
     // </editor-fold>
 }

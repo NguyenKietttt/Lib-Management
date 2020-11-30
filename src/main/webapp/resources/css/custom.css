@@ -47,3 +47,15 @@ background-color: #221F4B;
     font-size: 1rem;
     line-height: 1.5;
 }
+
+label.upload {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+    padding: 2px;
+    cursor: pointer;
+}
+
+input.upload {
+    display: none;
+}

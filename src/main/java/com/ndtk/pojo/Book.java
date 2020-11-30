@@ -51,15 +51,15 @@ public class Book implements Serializable{
     @JoinColumn(name = "CategoryID")
     private Category category;
     
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AuthorID")
     private Author author;
     
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PublisherID")
     private Publisher publisher;
     
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "book")
     private Set<BorrowReturnDetail> listBorrowReturnDetail;
         
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
@@ -184,7 +184,7 @@ public class Book implements Serializable{
     /**
      * @param quantity the quantity to set
      */
-    public void bookBookStatus(boolean bookStatus) {
+    public void setBookStatus(boolean bookStatus) {
         this.bookStatus = bookStatus;
     }
     
