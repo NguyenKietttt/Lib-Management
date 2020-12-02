@@ -86,7 +86,15 @@ public class BorrowBean implements Serializable{
         Map<Integer, Object> cart = (Map<Integer, Object>) FacesContext.getCurrentInstance()
                 .getExternalContext().getSessionMap().get("cart");
         
-        cart.remove(bookID);
+        Map<String, Object> b = (Map<String, Object>) cart.get(bookID);
+        
+        int temp = (int) b.get("count");
+        if (temp > 1) {
+            temp -= 1;
+            b.put("count", temp);
+        }
+        else
+            cart.remove(bookID);
     }
 
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">

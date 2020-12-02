@@ -37,6 +37,7 @@ public class HibernateUtil {
         pros.put(Environment.URL, "jdbc:mysql://127.0.0.1:3306/Library");
         pros.put(Environment.USER, "admin");
         pros.put(Environment.PASS, "123");
+        pros.put(Environment.SHOW_SQL, "true");
         conf.setProperties(pros);
         
         conf.addAnnotatedClass(Account.class);

@@ -98,6 +98,17 @@
                                 <div class="col-xl-12">
                                     <div class="form-group">
                                         <label>
+                                            <strong>Book can Borrow</strong>
+                                            <br/>
+                                        </label>
+                                        <h:inputText id="bookBorrow" class="form-control" 
+                                                     t:placeholder="Book can Borrow" 
+                                                     value="#{readerBean.bookBorrow}" readonly="true"/>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="form-group">
+                                        <label>
                                             <strong>Name</strong>
                                             <br/>
                                         </label>
@@ -129,7 +140,10 @@
                                 <div class="form-group text-center" style="margin-top: 4%;">
                                     <h:commandButton styleClass="btn btn-success" type="button"
                                                      style="width: 50%"
-                                                      value="Borrow">
+                                                     value="Borrow">
+                                        <f:ajax render="@form" execute="@form"
+                                                listener="#{readerBean.borrowBook()}"
+                                                onevent="addFail"/>
                                     </h:commandButton>
                                 </div>
                             </div>

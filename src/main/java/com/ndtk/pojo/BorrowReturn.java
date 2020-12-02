@@ -12,6 +12,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -50,7 +51,7 @@ public class BorrowReturn implements Serializable{
     @Column(name = "Fines")
     private BigDecimal fines;
     
-    @OneToMany(mappedBy = "borrowReturn", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "borrowReturn", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<BorrowReturnDetail> listBorrowReturnDetail;
     
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
