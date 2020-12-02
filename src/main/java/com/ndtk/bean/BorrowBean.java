@@ -73,12 +73,14 @@ public class BorrowBean implements Serializable{
             b.put("count", 1);
 
             cart.put(bookID, b);
+            this.alert = "";
         }
         else{
             Map<String, Object> b = (Map<String, Object>) cart.get(bookID);
 
             int temp = (int) b.get("count") + 1;
             b.put("count", temp);
+            this.alert = "";
         }
     }
     

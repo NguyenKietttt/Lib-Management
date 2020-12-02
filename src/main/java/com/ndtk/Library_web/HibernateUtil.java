@@ -33,11 +33,10 @@ public class HibernateUtil {
         Configuration conf = new Configuration();
         Properties pros = new Properties();
         pros.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect");
-        pros.put(Environment.DRIVER, "com.mysql.jdbc.Driver");
-        pros.put(Environment.URL, "jdbc:mysql://127.0.0.1:3306/Library");
+        pros.put(Environment.DRIVER, "com.p6spy.engine.spy.P6SpyDriver");
+        pros.put(Environment.URL, "jdbc:p6spy:mysql://127.0.0.1:3306/Library");
         pros.put(Environment.USER, "admin");
         pros.put(Environment.PASS, "123");
-        pros.put(Environment.SHOW_SQL, "true");
         conf.setProperties(pros);
         
         conf.addAnnotatedClass(Account.class);

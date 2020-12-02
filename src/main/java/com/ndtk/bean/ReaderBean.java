@@ -5,9 +5,14 @@
  */
 package com.ndtk.bean;
 
+import com.ndtk.pojo.Account;
+import com.ndtk.pojo.Book;
 import com.ndtk.pojo.BorrowReturn;
+import com.ndtk.pojo.BorrowReturnDetail;
 import com.ndtk.pojo.Card;
 import com.ndtk.pojo.Reader;
+import com.ndtk.service.BookService;
+import com.ndtk.service.BorrowReturnService;
 import com.ndtk.service.CardService;
 import com.ndtk.service.ReaderService;
 import java.sql.Date;
@@ -29,15 +34,16 @@ import javax.faces.context.FacesContext;
 public class ReaderBean {
     private static ReaderService readerSvc = new ReaderService();
     private static CardService cardSvc = new CardService();
+    private static BookService bookSvc = new BookService();
+    private static BorrowReturnService brSvc = new BorrowReturnService();
+    
+    private static int bookBorrow;
     
     private String cardID;
-    private Date createDate = null;
-    private Date dueDate = null;
     private String readerName = "";
     private String email = "";
     private String phone = "";
     private String status = "";
-    private static int bookBorrow;
     
     public ReaderBean(){
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
@@ -54,7 +60,7 @@ public class ReaderBean {
 //        java.util.Date dueDate = r.getCard().getDueDate();
 //        java.util.Date currentDate = new java.util.Date();
 //        if (dueDate.before(currentDate)) {
-//            this.status = "Card is expired. Please update your library card";
+//            this.status = "Card is expired. Please extend your library card";
 //            return;
 //        }
 
@@ -62,15 +68,18 @@ public class ReaderBean {
         Set<BorrowReturn> listBR = c.getListBorrowReturn();
         listBR.stream().filter(p -> p.getReturnDate() == null);
         
-        if (listBR != null || listBR.size() > 0) {
+        if (listBR.size() > 0) {
             for (BorrowReturn br : listBR) {
-                if (br.getListBorrowReturnDetail().size() >= 5) {
+                if (br.getListBorrowReturnDetail().size() > 5) {
                     this.status = "You have borrowed 5 books";
                     return;
                 }
                 else
                     this.bookBorrow = 5 - br.getListBorrowReturnDetail().size();
             } 
+        }
+        else{
+            this.bookBorrow = 5;
         }
         
         Map<Integer, Object> cart = (Map<Integer, Object>) FacesContext.getCurrentInstance()
@@ -86,45 +95,100 @@ public class ReaderBean {
             Map<String, Object> b = (Map<String, Object>) o;
             
             int temp = (int) b.get("count");
+            countBook -= temp;
             
-            if (countBook - temp < 0) {
+            if (countBook < 0) {
                 this.status = "You can't borrow greater than " + this.bookBorrow;
                 return;
             }
         }
         
-        
-        this.setCreateDate(r.getCard().getCreateDate());
-        this.setDueDate(r.getCard().getDueDate());
         this.setReaderName(r.getReaderName());
         this.setEmail(r.getEmail());
         this.setPhone(r.getPhone());
-
     }
 
-    
-//    public void borrowBook(){
-//        Map<Integer, Object> cart = (Map<Integer, Object>) FacesContext.getCurrentInstance()
-//            .getExternalContext().getSessionMap().get("cart");
-//        
-//        if (cart.size() < 1) {
-//            return;
-//        }
-//        
-//        int countBook = this.bookBorrow;
-//        for (Object o : cart.values()) {
-//            Map<String, Object> b = (Map<String, Object>) o;
-//            
-//            int temp = (int) b.get("count");
-//            
-//            if (countBook - temp < 1) {
-//                this.status = "You can't borrow greater than" + this.bookBorrow;
-//                return;
-//            }
-//        }
-//    }
+    public void borrowBook(){
+        FacesContext context = FacesContext.getCurrentInstance();
+        
+        Map<Integer, Object> cart = (Map<Integer, Object>) context.getExternalContext()
+                                    .getSessionMap().get("cart");
+        
+        if (cart.size() < 1) {
+            this.status = "You don't have any book to borrow";
+            return;
+        }
+        
+        BorrowReturn br = new BorrowReturn();
+        
+        // ID
+        int id = brSvc.getBorrowReturnID() + 1;
+        br.setBorrowReturnID("BR" + String.valueOf(id));
+        
+        // CardID
+        Card c = cardSvc.getCardByID(this.cardID);
+        br.setCard(c);
+        
+        // EmployeeID
+        Account acc = (Account) context.getExternalContext().getSessionMap().get("user");
+        br.setEmployee(acc.getEmployee());
+        
+        // BorrowDate
+        Date date = new Date(java.util.Calendar.getInstance().getTime().getTime());
+        br.setBorrowDate(date);
+        
+        // List BorrowReturnDetail
+        ArrayList<BorrowReturnDetail> listBRD = new ArrayList<>();
+        for (Object o : cart.values()) {
+            Map<String, Object> bMap = (Map<String, Object>) o;
+            
+            if ((int) bMap.get("count") > 1) {
+                for (int i = 0; i < (int) bMap.get("count"); i++) {
+                    BorrowReturnDetail brd = new BorrowReturnDetail();
+                    Book b = bookSvc.getBookByID((int) bMap.get("bookID"));
+                    
+                    brd.setBorrowReturn(br);
+                    brd.setBook(b);
+                    
+                    listBRD.add(brd);
+                }
+            }
+            else{
+                BorrowReturnDetail brd = new BorrowReturnDetail();
+                Book b = bookSvc.getBookByID((int) bMap.get("bookID"));
+                
+                brd.setBorrowReturn(br);
+                brd.setBook(b);
+                
+                listBRD.add(brd);
+            }
+        }
+        
+        br.setListBorrowReturnDetail(listBRD);
+        
+        if (brSvc.addOrSaveBorrowReturn(br)) {
+            this.status = "";
+            cart.clear();
+            context.getApplication().getNavigationHandler()
+                .handleNavigation(context, null, "book?faces-redirect=true");
+        }
+    }
     
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
+    /**
+     * @return the bookSvc
+     */
+    public static BookService getBookSvc() {
+        return bookSvc;
+    }
+
+    /**
+     * @param aBookSvc the bookSvc to set
+     */
+    public static void setBookSvc(BookService aBookSvc) {
+        bookSvc = aBookSvc;
+    }
+    
         /**
      * @return the status
      */
@@ -180,35 +244,7 @@ public class ReaderBean {
     public void setCardID(String cardID) {
         this.cardID = cardID;
     }
-
-    /**
-     * @return the createDate
-     */
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    /**
-     * @param createDate the createDate to set
-     */
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    /**
-     * @return the dueDate
-     */
-    public Date getDueDate() {
-        return dueDate;
-    }
-
-    /**
-     * @param dueDate the dueDate to set
-     */
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
-    }
-
+    
     /**
      * @return the readerName
      */

@@ -6,11 +6,10 @@
 package com.ndtk.service;
 
 import com.ndtk.Library_web.HibernateUtil;
-import com.ndtk.pojo.Employee;
+import com.ndtk.pojo.BorrowReturn;
 import java.util.ArrayList;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -20,51 +19,33 @@ import org.hibernate.SessionFactory;
  * @author ACER
  */
 
-public class EmployeeService {
+public class BorrowReturnService {
     private static final SessionFactory factory = HibernateUtil.getFACTORY();
     
-    public int getEmployeeID(){
+    public int getBorrowReturnID(){
         try(Session session = factory.openSession()){
             CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
-            Root<Employee> root = query.from(Employee.class);
+            CriteriaQuery<BorrowReturn> query = builder.createQuery(BorrowReturn.class);
+            Root<BorrowReturn> root = query.from(BorrowReturn.class);
             
             query.select(root);
             
-            ArrayList<Employee> listEmployee = (ArrayList<Employee>) session.createQuery(query).getResultList();
+            ArrayList<BorrowReturn> listBR = (ArrayList<BorrowReturn>) session.createQuery(query).getResultList();
             
-            if (listEmployee.size() > 0) {
-                return listEmployee.size();
+            if (listBR.size() > 0) {
+                return listBR.size();
             }
            
             return 0;
         }
     }
     
-    public boolean addOrSaveEmployee(Employee employee){
+    public boolean addOrSaveBorrowReturn(BorrowReturn br){
         try(Session session = factory.openSession()){
             try{
                 session.getTransaction().begin();
 
-                session.saveOrUpdate(employee);
-
-                session.getTransaction().commit();
-            }
-            catch(Exception ex){
-                session.getTransaction().rollback();
-                return false;
-            }
-        }
-
-        return true;
-    }
-    
-    public boolean DeleteEmployee(Employee employee){
-        try(Session session = factory.openSession()){
-            try{
-                session.getTransaction().begin();
-
-                session.delete(employee);
+                session.saveOrUpdate(br);
 
                 session.getTransaction().commit();
             }

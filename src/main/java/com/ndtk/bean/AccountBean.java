@@ -124,7 +124,7 @@ public class AccountBean {
     public void addAccount() {
         Employee e = new Employee();
         
-        int id = getEmployeeSvc().getEmployeeID() + 1;
+        int id = employeeSvc.getEmployeeID() + 1;
         e.setEmployeeID("NV" + String.valueOf(id));
         e.setEmployeeName(fullName);
         e.setEmail(email);

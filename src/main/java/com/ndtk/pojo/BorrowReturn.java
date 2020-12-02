@@ -8,7 +8,7 @@ package com.ndtk.pojo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.util.Set;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,8 +31,7 @@ import javax.persistence.Table;
 public class BorrowReturn implements Serializable{
     @Id
     @Column(name = "BorrowReturnID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int borrowReturnID;
+    private String borrowReturnID;
     
     @ManyToOne
     @JoinColumn(name = "CardID")
@@ -52,20 +51,20 @@ public class BorrowReturn implements Serializable{
     private BigDecimal fines;
     
     @OneToMany(mappedBy = "borrowReturn", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<BorrowReturnDetail> listBorrowReturnDetail;
+    private List<BorrowReturnDetail> listBorrowReturnDetail;
     
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
     /**
      * @return the borrowReturnID
      */
-    public int getBorrowReturnID() {
+    public String getBorrowReturnID() {
         return borrowReturnID;
     }
 
     /**
      * @param borrowReturnID the borrowReturnID to set
      */
-    public void setBorrowReturnID(int borrowReturnID) {
+    public void setBorrowReturnID(String borrowReturnID) {
         this.borrowReturnID = borrowReturnID;
     }
 
@@ -142,14 +141,14 @@ public class BorrowReturn implements Serializable{
     /**
      * @return the listBorrowReturnDetail
      */
-    public Set<BorrowReturnDetail> getListBorrowReturnDetail() {
+    public List<BorrowReturnDetail> getListBorrowReturnDetail() {
         return listBorrowReturnDetail;
     }
 
     /**
      * @param listBorrowReturnDetail the listBorrowReturnDetail to set
      */
-    public void setListBorrowReturnDetail(Set<BorrowReturnDetail> listBorrowReturnDetail) {
+    public void setListBorrowReturnDetail(List<BorrowReturnDetail> listBorrowReturnDetail) {
         this.listBorrowReturnDetail = listBorrowReturnDetail;
     }
     // </editor-fold>
