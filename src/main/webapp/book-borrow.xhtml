@@ -1,0 +1,162 @@
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:t="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns="http://www.w3.org/1999/xhtml"
+                template="template/base.xhtml">
+    
+    <ui:define name="filter">
+        <f:metadata>
+            <f:viewAction action="#{accountBean.checkNotLogin()}"></f:viewAction>
+        </f:metadata>
+    </ui:define>
+    
+    <ui:define name="title">Book Borrow</ui:define>
+    
+    <ui:define name="book-borrow-nav">
+        <h:commandLink class="nav-link active" action="book-borrow?faces-redirect=true">
+            <i class="fas fa-book-reader"></i>
+            <span>Book Borrow</span>
+        </h:commandLink>
+    </ui:define>
+    
+    <ui:define name="info">Book Borrow</ui:define>
+    
+    <ui:define name="content">
+        <h:form id="fo">
+            <div class="row mb-3">
+                <div class="col-lg-8 col-xl-6">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <div class="card shadow mb-3">
+                                    <div class="card-header py-3">
+                                        <p class="text-primary m-0 font-weight-bold">List Book Borrow</p>
+                                    </div>
+                                        <div class="card-body" style="padding-top: 0px;">
+                                        <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
+                                            <p:dataTable value="#{borrowBean.carts}" var="c"
+                                             rows="5" id="test" tableStyleClass="ui-datatable">
+                                                 <p:column headerText="Name">    				                                                        
+                                                        <h:outputText value="#{c['bookName']}"></h:outputText>
+                                                 </p:column>
+                                                <p:column headerText="Count">    				                                                        
+                                                        <h:outputText value="#{c['count']}"></h:outputText>
+                                                 </p:column>
+                                                <p:column>
+                                                    <h:commandButton styleClass="btn btn-danger btn-sm"
+                                                                    value="Remove" 
+                                                                    disabled="#{p.status eq 'Hết'}">
+                                                        <f:ajax render=":fo:test" listener="#{borrowBean.removeFromCart(c['bookID'])}"/>
+                                                    </h:commandButton>
+                                                 </p:column>
+                                             </p:dataTable>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6">
+                    <div class="card shadow mb-3">
+                        <div class="card-header py-3">
+                            <p class="text-primary m-0 font-weight-bold">Reader Infomation</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label>
+                                            <strong>Card ID</strong>
+                                            <h:message id="mCardID" style="color: red" for="cardID" />
+                                            <br/>
+                                        </label>
+                                        <h:inputText id="cardID" class="form-control" t:placeholder="CardID"
+                                                     required="true" requiredMessage=" *"
+                                                     validatorMessage=" - Ví dụ: C1"
+                                                     value="#{readerBean.cardID}">
+                                            <f:validateRegex pattern="^[C.0-9]*$"/>
+                                        </h:inputText>
+                                    </div>
+                                </div>
+                                <div class="col text-center align-self-center">
+                                    <h:commandButton styleClass="btn btn-primary" 
+                                                     style="width: 100%;margin-top: 16px;"
+                                                     value="Search">
+                                        <f:ajax render="@form" execute="@form"
+                                                listener="#{readerBean.searchReader()}"
+                                                onevent="addFail"/>
+                                    </h:commandButton>
+                                </div>
+                            </div>
+                            <div id="alertUpdate" role="alert" class="alert alert-danger" style="display: none">
+                                <h:outputText id="notification" value="#{readerBean.status}"></h:outputText>
+                            </div>
+                            <div id="info" class="form-row" style="display: none">
+                                <div class="col-xl-12">
+                                    <div class="form-group">
+                                        <label>
+                                            <strong>Name</strong>
+                                            <br/>
+                                        </label>
+                                        <h:inputText id="nameReader" class="form-control" 
+                                                     t:placeholder="Name" 
+                                                     value="#{readerBean.readerName}" readonly="true"/>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="form-group">
+                                        <label>
+                                            <strong>Email</strong>
+                                            <br/>
+                                        </label>
+                                        <h:inputText class="form-control" t:placeholder="Email" 
+                                                     value="#{readerBean.email}" readonly="true"/>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="form-group">
+                                        <label for="first_name">
+                                            <strong>Phone</strong>
+                                            <br/>
+                                        </label>
+                                        <h:inputText class="form-control" t:placeholder="Phone" 
+                                                     value="#{readerBean.phone}" readonly="true"/>
+                                    </div>
+                                </div>
+                                <div class="form-group text-center" style="margin-top: 4%;">
+                                    <h:commandButton styleClass="btn btn-success" type="button"
+                                                     style="width: 50%"
+                                                      value="Borrow">
+                                    </h:commandButton>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+    
+    <ui:define name="custom-script">
+        <script>
+            function addFail(data) {
+                if (data.status === "success"){
+                    var name = document.getElementById('fo:nameReader').value;
+                    var card = document.getElementById('fo:cardID').value;
+                    
+                    console.log(card);
+                    
+                    if (card !== "" &amp;&amp; /^[C.0-9]*$/.test(card)) {
+                        if (name !== "")
+                            document.getElementById('info').style.display = "block";
+                        else
+                            document.getElementById('alertUpdate').style.display = "block";
+                    }    
+                };
+            };
+        </script>
+    </ui:define>
+</ui:composition>

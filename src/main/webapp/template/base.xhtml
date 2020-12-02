@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns = "http://www.w3.org/1999/xhtml"   
+   xmlns:h = "http://java.sun.com/jsf/html"
+   xmlns:ui = "http://java.sun.com/jsf/facelets"
+   xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <ui:insert name="filter" />
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"/>
+        <title><ui:insert name="title">Title</ui:insert></title>
+        <h:outputStylesheet name="css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"/>
+        <h:outputStylesheet name="fonts/fontawesome-all.min.css"/>
+        <h:outputStylesheet name="fonts/simple-line-icons.min.css"/>
+        <h:outputStylesheet name="css/custom.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"/>
+    </h:head>
+    <h:body id="page-top">
+        <div id="wrapper">
+            <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+                <div class="container-fluid d-flex flex-column p-0">
+                    <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="book.xhtml">
+                        <div class="sidebar-brand-icon"><i class="fas fa-ethernet"></i></div>
+                        <div class="sidebar-brand-text mx-3"><span>Library</span></div>
+                    </a>
+                    <hr class="sidebar-divider my-0"/>
+                    <h:form>
+                        <ul class="nav navbar-nav text-light" id="accordionSidebar">
+                            <li class="nav-item">
+                                <ui:insert name="book-listing-nav">
+                                    <h:commandLink class="nav-link" action="book?faces-redirect=true">
+                                        <i class="fas fa-filter"></i>
+                                        <span>Book Listing</span>
+                                    </h:commandLink>
+                                </ui:insert>
+                            </li>
+                            <li class="nav-item">
+                                <ui:insert name="book-borrow-nav">
+                                    <h:commandLink class="nav-link" action="book-borrow?faces-redirect=true">
+                                        <i class="fas fa-book-reader"></i>
+                                        <span>Book Borrow</span>
+                                    </h:commandLink>
+                                </ui:insert>
+                            </li>
+                            <li class="nav-item">
+                                <ui:insert name="profile-nav">
+                                    <h:commandLink class="nav-link" action="profile?faces-redirect=true">
+                                        <i class="fas fa-user"></i>
+                                        <span>Profile</span>
+                                    </h:commandLink>
+                                </ui:insert>
+                            </li>
+                            <li class="nav-item">
+                                <ui:insert name="dashboard-nav">
+                                    <a class="nav-link" href="#">
+                                        <i class="fas fa-tachometer-alt"></i>
+                                        <span>Dashboard</span>
+                                    </a>
+                                </ui:insert>
+                            </li>
+                            <li class="nav-item">
+                                <h:commandLink class="nav-link" action="#{accountBean.logoutAccount()}">
+                                    <i class="icon-logout"></i>
+                                    <span>Logout</span>
+                                </h:commandLink>
+                            </li>
+                        </ul>
+                    </h:form>
+                    <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
+                </div>
+            </nav>
+            
+            <div class="d-flex flex-column" id="content-wrapper">
+                <div id="content">
+                    <div class="container-fluid">
+                        <div class="row" style="margin-bottom: 1%;">
+                            <div class="col-md-6 col-xl-9 align-self-center" style="margin-top: 2%;">
+                                <h3 class="text-dark mb-4"><ui:insert name = "info" >Book</ui:insert></h3>
+                            </div>
+                            <ui:insert name="add-book"></ui:insert>
+                        </div>
+                        <ui:insert name = "content" >
+                            <ui:include src = "/template/content.xhtml"/>
+                        </ui:insert> 
+                    </div>
+                </div>
+            </div>
+            
+            <ui:insert name = "footer" >
+                <ui:include src = "/template/footer.xhtml" />
+            </ui:insert> 
+        </div>
+        <div class="input-group-append"></div>
+        
+        <h:outputScript name="js/jquery.min.js"/>
+        <h:outputScript name="js/bootstrap.min.js"/>
+        <h:outputScript name="js/chart.min.js"/>
+        <h:outputScript name="js/bs-init.js"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+        <h:outputScript name="js/theme.js"/>
+        <ui:insert name="custom-script" />
+    </h:body>
+</html>

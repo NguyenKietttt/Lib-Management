@@ -1,136 +1,112 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:t="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h:head>
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:t="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns="http://www.w3.org/1999/xhtml"
+                template="template/base-login.xhtml">
+                
+    <ui:define name="filter">
         <f:metadata>
             <f:viewAction action="#{accountBean.checkLogin()}"></f:viewAction>
         </f:metadata>
-        <meta charset="utf-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"/>
-        <title>Register</title>
-        <h:outputStylesheet name="css/bootstrap.min.css"></h:outputStylesheet>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"/>
-        <h:outputStylesheet name="fonts/fontawesome-all.min.css"></h:outputStylesheet>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"/>
-    </h:head>
-    <h:body class="bg-gradient-primary">
-        <div class="container">
-            <div class="card shadow-lg o-hidden border-0 my-5">
-                <div class="card-body p-0">
-                    <div class="row">
-                        <div class="col-lg-8 offset-lg-2">
-                            <div class="p-5">
-                                <div class="text-center">
-                                    <h4 class="text-dark mb-4">Create an Account!</h4>
-                                </div>
-                                <h:form id="fo" class="user">
-                                    <div class="form-group">
-                                        <label><strong>UserName</strong><br/></label>
-                                        <h:message style="color: red" for="username" />
-                                        <div id="alertUpdate" style="display: none">
-                                            <h:outputText style="color: red" id="notification" value="#{accountBean.message}"></h:outputText>
-                                        </div>
-                                        <h:inputText id="username" class="form-control form-control-user" 
-                                                     t:placeholder="Username" 
-                                                     style="font-size: 12.8px;"
-                                                     value="#{accountBean.accountID}"
-                                                     required="true" requiredMessage=" *"/>
-                                    </div>
-                                    <div class="form-group">
-                                        <label><strong>Full Name</strong><br/></label>
-                                        <h:message style="color: red" for="fullname" />
-                                        <h:inputText id="fullname" class="form-control form-control-user" 
-                                                     t:placeholder="Full Name" 
-                                                     style="font-size: 12.8px;" 
-                                                     required="true" requiredMessage=" *"
-                                                     value="#{accountBean.fullName}"/>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="form-row">
-                                            <div class="col-lg-6 align-self-center">
-                                                <label><strong>Email</strong><br/></label>
-                                                <h:message style="color: red" for="mailaddress" />
-                                                <h:inputText id="mailaddress" class="form-control form-control-user"
-                                                             t:placeholder="Email" 
-                                                             style="font-size: 12.8px;" 
-                                                             required="true" requiredMessage=" *" 
-                                                             validatorMessage=" - Invalid email"
-                                                             value="#{accountBean.email}">
-                                                    <f:validateRegex pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" />
-                                                </h:inputText>
-                                            </div>
-                                            <div class="col">
-                                                <label><strong>Phone</strong><br/></label>
-                                                <h:message style="color: red" for="phone" />
-                                                <h:inputText id="phone" class="form-control form-control-user" 
-                                                             t:placeholder="Phone Number" 
-                                                             style="font-size: 12.8px;"
-                                                             required="true" requiredMessage=" *"
-                                                             validatorMessage=" - Invalid phone"
-                                                             value="#{accountBean.phone}">
-                                                    <f:validateRegex pattern="(0[3|5|7|8|9]|01[2|6|8|9])+([0-9]{8})\b" />
-                                                </h:inputText>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="form-row">
-                                            <div class="col-lg-6 align-self-center">
-                                                <label><strong>Password</strong><br/></label>
-                                                <h:message style="color: red" for="password" />
-                                                <h:inputSecret id="password" class="form-control form-control-user" 
-                                                             t:placeholder="Password" 
-                                                             style="font-size: 12.8px;" 
-                                                             required="true" requiredMessage=" *"
-                                                             value="#{accountBean.password}"
-                                                             onkeyup="check()"/>
-                                            </div>
-                                            <div class="col">
-                                                <label><strong>Password Confirm</strong><br/></label>
-                                                <div id="checkPass" style="display: none">
-                                                    <h:outputText style="color: red" value=" - Not matching"></h:outputText>
-                                                </div>
-                                                <h:message style="color: red" for="passwordConfirm" />
-                                                <h:inputSecret id="passwordConfirm" class="form-control form-control-user" 
-                                                             t:placeholder="Password" 
-                                                             style="font-size: 12.8px;" 
-                                                             required="true" requiredMessage=" *"
-                                                             value="#{accountBean.confirmPassword}"
-                                                             onkeyup="check()"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <h:commandButton id="confirm" class="btn btn-primary btn-block text-white btn-user" value="Register Account">
-                                        <f:ajax execute="@form" listener="#{accountBean.addAccount()}"
-                                                                    render="@form"
-                                                                    onevent="createFail"/>
-                                    </h:commandButton>
-                                    <hr/>
-                                </h:form>
-                                <div class="text-center"></div>
-                                <div class="text-center">
-                                    <h:link class="small" outcome="login.xhtml">Already have an account? Login!</h:link>
-                                </div>
-                            </div>
-                        </div>
+    </ui:define>
+    
+    <ui:define name="title">Register</ui:define>
+    <ui:define name="info">Register Form</ui:define>
+    
+    <ui:define name="link">
+        <h:link class="small" outcome="login.xhtml">Already have an account? Login!</h:link>
+    </ui:define>
+    
+    <ui:define name="content">
+        <h:form id="fo" class="user">
+            <div class="form-group">
+                <label><strong>UserName</strong><br/></label>
+                <h:message style="color: red" for="username" />
+                <div id="alertUpdate" style="display: none">
+                    <h:outputText style="color: red" id="notification" value="#{accountBean.message}"></h:outputText>
+                </div>
+                <h:inputText id="username" class="form-control form-control-user" 
+                             t:placeholder="Username" 
+                             style="font-size: 12.8px;"
+                             value="#{accountBean.accountID}"
+                             required="true" requiredMessage=" *"/>
+            </div>
+            <div class="form-group">
+                <label><strong>Full Name</strong><br/></label>
+                <h:message style="color: red" for="fullname" />
+                <h:inputText id="fullname" class="form-control form-control-user" 
+                             t:placeholder="Full Name" 
+                             style="font-size: 12.8px;" 
+                             required="true" requiredMessage=" *"
+                             value="#{accountBean.fullName}"/>
+            </div>
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="col-lg-6 align-self-center">
+                        <label><strong>Email</strong><br/></label>
+                        <h:message style="color: red" for="mailaddress" />
+                        <h:inputText id="mailaddress" class="form-control form-control-user"
+                                     t:placeholder="Email" 
+                                     style="font-size: 12.8px;" 
+                                     required="true" requiredMessage=" *" 
+                                     validatorMessage=" - Invalid email"
+                                     value="#{accountBean.email}">
+                            <f:validateRegex pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" />
+                        </h:inputText>
+                    </div>
+                    <div class="col">
+                        <label><strong>Phone</strong><br/></label>
+                        <h:message style="color: red" for="phone" />
+                        <h:inputText id="phone" class="form-control form-control-user" 
+                                     t:placeholder="Phone Number" 
+                                     style="font-size: 12.8px;"
+                                     required="true" requiredMessage=" *"
+                                     validatorMessage=" - Invalid phone"
+                                     value="#{accountBean.phone}">
+                            <f:validateRegex pattern="^(0[3|5|7|8|9]|01[2|6|8|9])+([0-9]{8})$" />
+                        </h:inputText>
                     </div>
                 </div>
             </div>
-        </div>
-        <h:outputScript name="js/jquery.min.js"></h:outputScript>
-        <h:outputScript name="js/bootstrap.min.js"></h:outputScript>
-        <h:outputScript name="js/chart.min.js"/>
-        <h:outputScript name="js/bs-init.js"/>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
-        <h:outputScript name="js/theme.js"></h:outputScript>
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="col-lg-6 align-self-center">
+                        <label><strong>Password</strong><br/></label>
+                        <h:message style="color: red" for="password" />
+                        <h:inputSecret id="password" class="form-control form-control-user" 
+                                     t:placeholder="Password" 
+                                     style="font-size: 12.8px;" 
+                                     required="true" requiredMessage=" *"
+                                     value="#{accountBean.password}"
+                                     onkeyup="check()"/>
+                    </div>
+                    <div class="col">
+                        <label><strong>Password Confirm</strong><br/></label>
+                        <div id="checkPass" style="display: none">
+                            <h:outputText style="color: red" value=" - Not matching"></h:outputText>
+                        </div>
+                        <h:message style="color: red" for="passwordConfirm" />
+                        <h:inputSecret id="passwordConfirm" class="form-control form-control-user" 
+                                     t:placeholder="Password" 
+                                     style="font-size: 12.8px;" 
+                                     required="true" requiredMessage=" *"
+                                     value="#{accountBean.confirmPassword}"
+                                     onkeyup="check()"/>
+                    </div>
+                </div>
+            </div>
+            <h:commandButton id="confirm" class="btn btn-primary btn-block text-white btn-user" value="Register Account">
+                <f:ajax execute="@form" listener="#{accountBean.addAccount()}"
+                                            render="@form"
+                                            onevent="createFail"/>
+            </h:commandButton>
+            <hr/>
+        </h:form>
+    </ui:define>
+    
+    <ui:define name="custom-script">
         <script>
             if(window.history.replaceState){
                 window.history.replaceState(null, null, window.location.href);
@@ -158,5 +134,5 @@ and open the template in the editor.
                 }
             };
         </script>
-    </h:body>
-</html>
+    </ui:define>
+</ui:composition>

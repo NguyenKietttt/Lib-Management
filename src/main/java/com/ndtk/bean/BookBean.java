@@ -11,7 +11,6 @@ import com.ndtk.service.BookService;
 import java.util.ArrayList;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.persistence.Transient;
 
 /**
  *
@@ -23,23 +22,14 @@ import javax.persistence.Transient;
 public class BookBean {
     private static BookService bookSvc = new BookService();
     
-    @Transient
     private static ArrayList<BookRes> listBook;
         
     private int id;
     private String bookName;
     private String status;
-    
-    @Transient
     private int categoryID = -1;
-    
-    @Transient
     private int authorID = -1;
-    
-    @Transient
     private int publisherID = -1;
-    
-    @Transient
     private String keyword;
     
     public BookBean(){

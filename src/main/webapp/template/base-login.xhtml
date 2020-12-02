@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <ui:insert name="filter" />
+        <title><ui:insert name="title">Title</ui:insert></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <h:outputStylesheet name="css/bootstrap.min.css"></h:outputStylesheet>
+        <h:outputStylesheet name="fonts/fontawesome-all.min.css"></h:outputStylesheet>
+    </h:head>
+    <h:body class="bg-gradient-primary">
+        <div class="container">
+            <div class="container">
+                <div class="card shadow-lg o-hidden border-0 my-5">
+                    <div class="card-body p-0">
+                        <div class="row">
+                            <div class="col-lg-8 offset-lg-2">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h4 class="text-dark mb-4" style="text-transform: uppercase"><ui:insert name="info">LOGIN FORM</ui:insert></h4>
+                                    </div>
+
+                                    <ui:insert name="content"></ui:insert>
+
+                                    <div class="text-center"></div>
+                                    <div class="text-center">
+                                        <ui:insert name="link"></ui:insert>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h:outputScript name="js/jquery.min.js"></h:outputScript>
+        <h:outputScript name="js/bootstrap.min.js"></h:outputScript>
+        <h:outputScript name="js/theme.js"></h:outputScript>
+        <ui:insert name="custom-script" />
+    </h:body>
+</html>
