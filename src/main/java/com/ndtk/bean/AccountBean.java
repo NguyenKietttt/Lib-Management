@@ -9,12 +9,10 @@ import com.ndtk.pojo.Account;
 import com.ndtk.pojo.Employee;
 import com.ndtk.service.AccountService;
 import com.ndtk.service.EmployeeService;
-import java.io.IOException;
 import java.util.UUID;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
-import javax.persistence.Transient;
 
 /**
  *

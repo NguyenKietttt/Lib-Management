@@ -68,6 +68,8 @@ public class ReaderBean {
         Set<BorrowReturn> listBR = c.getListBorrowReturn();
         listBR.stream().filter(p -> p.getReturnDate() == null);
         
+        this.bookBorrow = 5;
+        
         if (listBR.size() > 0) {
             for (BorrowReturn br : listBR) {
                 if (br.getListBorrowReturnDetail().size() > 5) {
@@ -75,11 +77,8 @@ public class ReaderBean {
                     return;
                 }
                 else
-                    this.bookBorrow = 5 - br.getListBorrowReturnDetail().size();
+                    this.bookBorrow -=  br.getListBorrowReturnDetail().size();
             } 
-        }
-        else{
-            this.bookBorrow = 5;
         }
         
         Map<Integer, Object> cart = (Map<Integer, Object>) FacesContext.getCurrentInstance()
@@ -97,10 +96,15 @@ public class ReaderBean {
             int temp = (int) b.get("count");
             countBook -= temp;
             
-            if (countBook < 0) {
-                this.status = "You can't borrow greater than " + this.bookBorrow;
+            if (this.bookBorrow == 0) {
+                this.status = "You must return book before borrow more";
                 return;
             }
+            else
+                if (countBook < 0) {
+                    this.status = "You can't borrow greater than " + this.bookBorrow;
+                    return;
+                }
         }
         
         this.setReaderName(r.getReaderName());
@@ -169,8 +173,10 @@ public class ReaderBean {
         if (brSvc.addOrSaveBorrowReturn(br)) {
             this.status = "";
             cart.clear();
+            
+            context.getExternalContext().getSessionMap().put("brID", br.getBorrowReturnID());
             context.getApplication().getNavigationHandler()
-                .handleNavigation(context, null, "book?faces-redirect=true");
+                    .handleNavigation(context, null, "book-borrow-detail?faces-redirect=true");
         }
     }
     

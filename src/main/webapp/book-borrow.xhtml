@@ -87,7 +87,7 @@
                                                      value="Search">
                                         <f:ajax render="@form" execute="@form"
                                                 listener="#{readerBean.searchReader()}"
-                                                onevent="addFail"/>
+                                                onevent="searchFail"/>
                                     </h:commandButton>
                                 </div>
                             </div>
@@ -142,8 +142,7 @@
                                                      style="width: 50%"
                                                      value="Borrow">
                                         <f:ajax render="@form" execute="@form"
-                                                listener="#{readerBean.borrowBook()}"
-                                                onevent="addFail"/>
+                                                listener="#{readerBean.borrowBook()}"/>
                                     </h:commandButton>
                                 </div>
                             </div>
@@ -151,18 +150,16 @@
                     </div>
                 </div>
             </div>
-        </h:form>
+        </h:form>  
     </ui:define>
     
     <ui:define name="custom-script">
         <script>
-            function addFail(data) {
+            function searchFail(data) {
                 if (data.status === "success"){
                     var name = document.getElementById('fo:nameReader').value;
                     var card = document.getElementById('fo:cardID').value;
-                    
-                    console.log(card);
-                    
+
                     if (card !== "" &amp;&amp; /^[C.0-9]*$/.test(card)) {
                         if (name !== "")
                             document.getElementById('info').style.display = "block";

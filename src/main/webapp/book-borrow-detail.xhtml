@@ -1,0 +1,116 @@
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:t="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns="http://www.w3.org/1999/xhtml"
+                template="template/base.xhtml">
+    
+    <ui:define name="filter">
+        <f:metadata>
+            <f:viewAction action="#{accountBean.checkNotLogin()}"></f:viewAction>
+        </f:metadata>
+    </ui:define>
+    
+    <ui:define name="title">Book Borrow Detail</ui:define>
+    
+    <ui:define name="info">Book Borrow Detail</ui:define>
+    
+    <ui:define name="content">
+        <h:form id="fo">
+            <div class="row mb-4 justify-content-center">
+                <div class="col-xl-8">
+                    <div class="card shadow mb-3">
+                        <div class="card-header py-3">
+                            <p class="text-primary m-0 font-weight-bold">Infomation</p>
+                        </div>
+                        <div class="card-body">
+                            <div id="info" class="form-row">
+                                <div class="col-xl-12">
+                                    <div class="form-group">
+                                        <label>
+                                            <strong>Card ID</strong>
+                                            <br/>
+                                        </label>
+                                        <h:inputText id="cardID" class="form-control" 
+                                                     t:placeholder="Card ID" 
+                                                     value="#{borrowdetailBean.cardID}" readonly="true"/>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="form-group">
+                                        <label>
+                                            <strong>Name</strong>
+                                            <br/>
+                                        </label>
+                                        <h:inputText id="nameReader" class="form-control" 
+                                                     t:placeholder="Name" 
+                                                     value="#{borrowdetailBean.readerName}" readonly="true"/>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="form-group">
+                                        <label>
+                                            <strong>Email</strong>
+                                            <br/>
+                                        </label>
+                                        <h:inputText class="form-control" t:placeholder="Email" 
+                                                     value="#{borrowdetailBean.email}" readonly="true"/>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="form-group">
+                                        <label>
+                                            <strong>Phone</strong>
+                                            <br/>
+                                        </label>
+                                        <h:inputText class="form-control" t:placeholder="Phone" 
+                                                     value="#{borrowdetailBean.phone}" readonly="true"/>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="form-group">
+                                        <label>
+                                            <strong>Borrow Date</strong>
+                                            <br/>
+                                        </label>
+                                        <h:inputText class="form-control" t:placeholder="Borrow Date" 
+                                                     value="#{borrowdetailBean.borrowDate}" readonly="true">
+                                            <f:convertDateTime type="date" pattern = "dd/MM/yyyy" />
+                                        </h:inputText>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="form-group">
+                                        <label>
+                                            <strong>List Book</strong>
+                                            <br/>
+                                        </label>
+                                         <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
+                                            <p:dataTable value="#{borrowdetailBean.listBook}" var="c"
+                                                rows="5" id="test" tableStyleClass="ui-datatable">
+                                                <p:column headerText="ID" style="width: 20%">    				                                                        
+                                                        <h:outputText value="#{c.bookID}"></h:outputText>
+                                                </p:column>
+                                               <p:column headerText="Book Name">    				                                                        
+                                                   <h:outputText value="#{c.bookName}"></h:outputText>
+                                                </p:column>
+                                            </p:dataTable>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group text-center" style="margin-top: 4%; width: 100%">
+                                    <h:commandButton styleClass="btn btn-success" type="button"
+                                                     style="width: 50%"
+                                                     value="OK">
+                                        <f:ajax listener="#{borrowdetailBean.confirmBorrow()}"/>
+                                    </h:commandButton>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>  
+    </ui:define>
+</ui:composition>

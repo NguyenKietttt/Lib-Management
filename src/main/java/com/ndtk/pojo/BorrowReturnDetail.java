@@ -34,7 +34,7 @@ public class BorrowReturnDetail implements Serializable{
     @JoinColumn(name = "BorrowReturnID")
     private BorrowReturn borrowReturn;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "BookID")
     private Book book;
     
