@@ -89,12 +89,12 @@ public class BookDetailBean {
 
                     }
                     else
-                        FacesContext.getCurrentInstance()
-                                    .getExternalContext().redirect("book.xhtml");
+                        FacesContext.getCurrentInstance().getApplication().getNavigationHandler()
+                            .handleNavigation(FacesContext.getCurrentInstance(), null, "book?faces-redirect=true");
                 }
                 else
-                    FacesContext.getCurrentInstance()
-                                    .getExternalContext().redirect("book.xhtml");
+                    FacesContext.getCurrentInstance().getApplication().getNavigationHandler()
+                            .handleNavigation(FacesContext.getCurrentInstance(), null, "book?faces-redirect=true");
             }
         }
     }

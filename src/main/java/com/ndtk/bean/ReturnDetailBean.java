@@ -5,12 +5,14 @@
  */
 package com.ndtk.bean;
 
-import com.ndtk.pojo.Book;
 import com.ndtk.pojo.BorrowReturn;
 import com.ndtk.pojo.BorrowReturnDetail;
+import com.ndtk.res.BookReturnDetailRes;
 import com.ndtk.service.BorrowReturnService;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -20,33 +22,60 @@ import javax.faces.context.FacesContext;
  * @author ACER
  */
 
-@ManagedBean(name = "borrowdetailBean")
+@ManagedBean(name = "returndetailBean")
 @RequestScoped
-public class BorrowDetailBean {
+public class ReturnDetailBean {
     private static BorrowReturnService brSvc = new BorrowReturnService();
     
+    private String brID;
     private String cardID = "";
     private String readerName = "";
     private String email = "";
     private String phone = "";
+    private String fines;
     private Date borrowDate = null;
-    private ArrayList<Book> listBook = new ArrayList<Book>();
+    private Date returnDate = null;
+    private ArrayList<BookReturnDetailRes> listBRDRes = new ArrayList<BookReturnDetailRes>();
     
-    
-    public BorrowDetailBean(){
+    public ReturnDetailBean(){
         FacesContext context = FacesContext.getCurrentInstance();
+        BorrowReturn br;
+        String brID;
         
-        String brID = (String) context.getExternalContext().getSessionMap().get("brID");
-        BorrowReturn br = brSvc.getBorrowReturnByID(brID);
+        if (context.getExternalContext().getSessionMap().get("brID") != null)
+            brID = (String) context.getExternalContext().getSessionMap().get("brID");
+        else{
+            brID = (String) context.getExternalContext().getRequestParameterMap().get("brID");
+            
+            Pattern pattern = Pattern.compile("^[BR.0-9]*$");
+            Matcher matcher = pattern.matcher(brID);
+            
+            if (!matcher.matches()) {
+                context.getApplication().getNavigationHandler()
+                    .handleNavigation(context, null, "book?faces-redirect=true");
+            }
+        }
+        
+        br = brSvc.getBorrowReturnByID(brID);
         
         if (br != null) {
+            this.brID = br.getBorrowReturnID();
             this.cardID = br.getCard().getCardID();
             this.readerName = br.getCard().getReader().getReaderName();
             this.email = br.getCard().getReader().getEmail();
             this.phone = br.getCard().getReader().getPhone();
+            this.fines = br.getFines() + " VND";
             this.borrowDate = br.getBorrowDate(); 
+            this.returnDate = br.getReturnDate(); 
             for (BorrowReturnDetail brDetail : br.getListBorrowReturnDetail()) {
-                listBook.add(brDetail.getBook());
+                BookReturnDetailRes brdRes = new BookReturnDetailRes();
+                brdRes.setBookName(brDetail.getBook().getBookName());
+                if (brDetail.isLost())
+                    brdRes.setStatus("Lost");
+                else
+                    brdRes.setStatus("Still");
+                
+                listBRDRes.add(brdRes);
             }
         }
         else
@@ -54,7 +83,7 @@ public class BorrowDetailBean {
                     .handleNavigation(context, null, "book?faces-redirect=true");
     }
     
-    public void confirmBorrow(){
+    public void confirmReturn(){
         FacesContext context = FacesContext.getCurrentInstance();
         
         context.getExternalContext().getSessionMap().remove("brID");
@@ -64,6 +93,20 @@ public class BorrowDetailBean {
     }
 
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
+    /**
+     * @return the fines
+     */
+    public String getFines() {
+        return fines;
+    }
+
+    /**
+     * @param fines the fines to set
+     */
+    public void setFines(String fines) {
+        this.fines = fines;
+    }
+    
     /**
      * @return the brSvc
      */
@@ -76,6 +119,20 @@ public class BorrowDetailBean {
      */
     public static void setBrSvc(BorrowReturnService aBrSvc) {
         brSvc = aBrSvc;
+    }
+
+    /**
+     * @return the brID
+     */
+    public String getBrID() {
+        return brID;
+    }
+
+    /**
+     * @param brID the brID to set
+     */
+    public void setBrID(String brID) {
+        this.brID = brID;
     }
 
     /**
@@ -149,18 +206,33 @@ public class BorrowDetailBean {
     }
 
     /**
-     * @return the listBook
+     * @return the returnDate
      */
-    public ArrayList<Book> getListBook() {
-        return listBook;
+    public Date getReturnDate() {
+        return returnDate;
     }
 
     /**
-     * @param listBook the listBook to set
+     * @param returnDate the returnDate to set
      */
-    public void setListBook(ArrayList<Book> listBook) {
-        this.listBook = listBook;
+    public void setReturnDate(Date returnDate) {
+        this.returnDate = returnDate;
+    }
+
+    /**
+     * @return the listBRDRes
+     */
+    public ArrayList<BookReturnDetailRes> getListBRDRes() {
+        return listBRDRes;
+    }
+
+    /**
+     * @param listBRDRes the listBRDRes to set
+     */
+    public void setListBRDRes(ArrayList<BookReturnDetailRes> listBRDRes) {
+        this.listBRDRes = listBRDRes;
     }
     // </editor-fold>
+
 
 }

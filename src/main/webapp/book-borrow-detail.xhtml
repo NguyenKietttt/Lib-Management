@@ -2,7 +2,6 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:t="http://xmlns.jcp.org/jsf/passthrough"
                 xmlns="http://www.w3.org/1999/xhtml"
                 template="template/base.xhtml">
     
@@ -33,8 +32,8 @@
                                             <br/>
                                         </label>
                                         <h:inputText id="cardID" class="form-control" 
-                                                     t:placeholder="Card ID" 
-                                                     value="#{borrowdetailBean.cardID}" readonly="true"/>
+                                                     value="#{borrowdetailBean.cardID}" 
+                                                     readonly="true"/>
                                     </div>
                                 </div>
                                 <div class="col-xl-12">
@@ -43,9 +42,9 @@
                                             <strong>Name</strong>
                                             <br/>
                                         </label>
-                                        <h:inputText id="nameReader" class="form-control" 
-                                                     t:placeholder="Name" 
-                                                     value="#{borrowdetailBean.readerName}" readonly="true"/>
+                                        <h:inputText id="nameReader" class="form-control"
+                                                     value="#{borrowdetailBean.readerName}" 
+                                                     readonly="true"/>
                                     </div>
                                 </div>
                                 <div class="col-xl-12">
@@ -54,8 +53,9 @@
                                             <strong>Email</strong>
                                             <br/>
                                         </label>
-                                        <h:inputText class="form-control" t:placeholder="Email" 
-                                                     value="#{borrowdetailBean.email}" readonly="true"/>
+                                        <h:inputText class="form-control" 
+                                                     value="#{borrowdetailBean.email}" 
+                                                     readonly="true"/>
                                     </div>
                                 </div>
                                 <div class="col-xl-12">
@@ -64,8 +64,9 @@
                                             <strong>Phone</strong>
                                             <br/>
                                         </label>
-                                        <h:inputText class="form-control" t:placeholder="Phone" 
-                                                     value="#{borrowdetailBean.phone}" readonly="true"/>
+                                        <h:inputText class="form-control" 
+                                                     value="#{borrowdetailBean.phone}" 
+                                                     readonly="true"/>
                                     </div>
                                 </div>
                                 <div class="col-xl-12">
@@ -74,7 +75,7 @@
                                             <strong>Borrow Date</strong>
                                             <br/>
                                         </label>
-                                        <h:inputText class="form-control" t:placeholder="Borrow Date" 
+                                        <h:inputText class="form-control" 
                                                      value="#{borrowdetailBean.borrowDate}" readonly="true">
                                             <f:convertDateTime type="date" pattern = "dd/MM/yyyy" />
                                         </h:inputText>
@@ -89,7 +90,7 @@
                                          <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
                                             <p:dataTable value="#{borrowdetailBean.listBook}" var="c"
                                                 rows="5" id="test" tableStyleClass="ui-datatable">
-                                                <p:column headerText="ID" style="width: 20%">    				                                                        
+                                                <p:column headerText="Book ID" style="width: 20%">    				                                                        
                                                         <h:outputText value="#{c.bookID}"></h:outputText>
                                                 </p:column>
                                                <p:column headerText="Book Name">    				                                                        

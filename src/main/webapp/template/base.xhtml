@@ -49,6 +49,14 @@ and open the template in the editor.
                                 </ui:insert>
                             </li>
                             <li class="nav-item">
+                                <ui:insert name="book-return-nav">
+                                    <h:commandLink class="nav-link" action="book-return?faces-redirect=true">
+                                        <i class="fas fa-book"></i>
+                                        <span>Book Return</span>
+                                    </h:commandLink>
+                                </ui:insert>
+                            </li>
+                            <li class="nav-item">
                                 <ui:insert name="profile-nav">
                                     <h:commandLink class="nav-link" action="profile?faces-redirect=true">
                                         <i class="fas fa-user"></i>
@@ -81,7 +89,9 @@ and open the template in the editor.
                     <div class="container-fluid">
                         <div class="row" style="margin-bottom: 1%;">
                             <div class="col-md-6 col-xl-9 align-self-center" style="margin-top: 2%;">
-                                <h3 class="text-dark mb-4"><ui:insert name = "info" >Book</ui:insert></h3>
+                                <h3 class="text-dark mb-4">
+                                    <ui:insert name = "info" >Book</ui:insert>
+                                </h3>
                             </div>
                             <ui:insert name="add-book"></ui:insert>
                         </div>

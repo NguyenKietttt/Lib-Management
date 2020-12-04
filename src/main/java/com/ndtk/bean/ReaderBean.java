@@ -17,9 +17,11 @@ import com.ndtk.service.CardService;
 import com.ndtk.service.ReaderService;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -57,20 +59,21 @@ public class ReaderBean {
             return;
         }
         
-//        java.util.Date dueDate = r.getCard().getDueDate();
-//        java.util.Date currentDate = new java.util.Date();
-//        if (dueDate.before(currentDate)) {
-//            this.status = "Card is expired. Please extend your library card";
-//            return;
-//        }
+        java.util.Date dueDate = r.getCard().getDueDate();
+        java.util.Date currentDate = new java.util.Date();
+        if (dueDate.before(currentDate)) {
+            this.status = "Card is expired. Please extend your library card";
+            return;
+        }
 
         Card c = cardSvc.getCardByID(r.getCard().getCardID());
         Set<BorrowReturn> listBR = c.getListBorrowReturn();
-        listBR.stream().filter(p -> p.getReturnDate() == null);
+        List<BorrowReturn> listFilter = listBR.stream().filter(
+                p -> p.getReturnDate() == null).collect(Collectors.toList());
         
         this.bookBorrow = 5;
         
-        if (listBR.size() > 0) {
+        if (listFilter.size() > 0) {
             for (BorrowReturn br : listBR) {
                 if (br.getListBorrowReturnDetail().size() > 5) {
                     this.status = "You have borrowed 5 books";

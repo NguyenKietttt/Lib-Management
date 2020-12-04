@@ -7,6 +7,12 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
                 template="template/base.xhtml">
     
+    <ui:define name="filter">
+        <f:metadata>
+            <f:viewAction action="#{accountBean.checkNotLogin()}"></f:viewAction>
+        </f:metadata>
+    </ui:define>
+    
     <ui:define name="title">Book Listing</ui:define>
     
     <ui:define name="book-listing-nav">
