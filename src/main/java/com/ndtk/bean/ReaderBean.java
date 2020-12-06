@@ -40,15 +40,21 @@ public class ReaderBean {
     private static BorrowReturnService brSvc = new BorrowReturnService();
     
     private static int bookBorrow;
+    private static ArrayList<Reader> listReader;
     
     private String cardID;
     private String readerName = "";
     private String email = "";
     private String phone = "";
     private String status = "";
+    private String keyword;
     
     public ReaderBean(){
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        
+        if (!FacesContext.getCurrentInstance().isPostback()) {
+            listReader = readerSvc.getListReader(); 
+        }
     }
     
     public void searchReader(){
@@ -183,7 +189,52 @@ public class ReaderBean {
         }
     }
     
+    public void filterReader(){
+        String temp = this.getKeyword().trim().replaceAll("\\s+", " ");
+        
+        if (temp == null || temp.equals("")) {
+            return;
+        }
+        
+        ArrayList<Reader> listR = readerSvc.filterReader(this.keyword);
+        
+        if (listR == null) {
+            listReader.clear();
+            return;
+        }
+        
+        listReader = listR;
+    }
+    
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
+    /**
+     * @return the keyword
+     */
+    public String getKeyword() {
+        return keyword;
+    }
+
+    /**
+     * @param keyword the keyword to set
+     */
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+    
+    /**
+     * @return the listReader
+     */
+    public ArrayList<Reader> getListReader() {
+        return listReader;
+    }
+
+    /**
+     * @param listReader the listReader to set
+     */
+    public void setListReader(ArrayList<Reader> listReader) {
+        this.listReader = listReader;
+    }
+    
     /**
      * @return the bookSvc
      */

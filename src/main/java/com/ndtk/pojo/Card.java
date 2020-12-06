@@ -34,7 +34,7 @@ public class Card implements Serializable{
     @Column(name = "DueDate")
     private Date dueDate;
     
-    @OneToOne(mappedBy = "card", fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "card", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Reader reader;
     
     @OneToMany(mappedBy = "card", cascade = CascadeType.ALL)

@@ -123,6 +123,18 @@
                                         </h:inputText>
                                     </div>
                                 </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label>
+                                            <strong>Employee</strong>
+                                            <br/>
+                                        </label>
+                                        <h:inputText class="form-control"
+                                                     value="#{returndetailBean.employee.employeeName}" 
+                                                     readonly="true">
+                                        </h:inputText>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-row">
                                 <div class="col">
@@ -133,10 +145,7 @@
                                         </label>
                                          <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
                                             <p:dataTable value="#{returndetailBean.listBRDRes}" var="c"
-                                               rows="5" tableStyleClass="ui-datatable">
-                                               <p:column headerText="ID" style="width: 20%">    				                                                        
-                                                   <h:outputText value=""></h:outputText>
-                                               </p:column>
+                                                        rows="5" tableStyleClass="ui-datatable">
                                               <p:column headerText="Book Name">    				                                                        
                                                   <h:outputText value="#{c.bookName}"></h:outputText>
                                                </p:column>
@@ -148,14 +157,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-row text-center">
+                            <div class="form-row text-center" 
+                                 style="#{facesContext.externalContext.getInitParameter('brID') eq null ? 'display: none;' : 'display: block;'}">
                                 <div class="col">
                                     <div class="form-group">
                                         <h:commandButton styleClass="btn btn-success" type="button"
                                                              style="width: 50%"
                                                              value="OK">
-                                            <f:ajax render="@form" execute="@form"
-                                                    listener="#{returndetailBean.confirmReturn()}"/>
+                                            <f:ajax listener="#{returndetailBean.confirmReturn()}"/>
                                         </h:commandButton>
                                     </div>
                                 </div>

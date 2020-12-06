@@ -56,22 +56,46 @@ and open the template in the editor.
                                     </h:commandLink>
                                 </ui:insert>
                             </li>
-                            <li class="nav-item">
-                                <ui:insert name="profile-nav">
-                                    <h:commandLink class="nav-link" action="profile?faces-redirect=true">
-                                        <i class="fas fa-user"></i>
-                                        <span>Profile</span>
-                                    </h:commandLink>
-                                </ui:insert>
-                            </li>
-                            <li class="nav-item">
-                                <ui:insert name="dashboard-nav">
-                                    <a class="nav-link" href="#">
-                                        <i class="fas fa-tachometer-alt"></i>
-                                        <span>Dashboard</span>
-                                    </a>
-                                </ui:insert>
-                            </li>
+                            <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType ne 'Admin'}">
+                                <li class="nav-item">
+                                    <ui:insert name="profile-nav">
+                                        <h:commandLink class="nav-link" action="profile?faces-redirect=true">
+                                            <i class="fas fa-user"></i>
+                                            <span>Profile</span>
+                                        </h:commandLink>
+                                    </ui:insert>
+                                </li>
+                            </c:if>
+                            <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType eq 'Admin'}">
+                                <li class="nav-item">
+                                    <ui:insert name="reader-nav">
+                                        <h:commandLink class="nav-link" action="reader?faces-redirect=true">
+                                            <i class="fas fa-user-friends"></i>
+                                            <span>Reader</span>
+                                        </h:commandLink>
+                                    </ui:insert>
+                                </li>
+                            </c:if>
+                            <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType eq 'Admin'}">
+                                <li class="nav-item">
+                                    <ui:insert name="employee-nav">
+                                        <h:commandLink class="nav-link" action="employee?faces-redirect=true">
+                                            <i class="icon-people"></i>
+                                            <span>Employee</span>
+                                        </h:commandLink>
+                                    </ui:insert>
+                                </li>
+                            </c:if>
+                            <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType eq 'Admin'}">
+                                <li class="nav-item">
+                                    <ui:insert name="dashboard-nav">
+                                        <a class="nav-link" href="#">
+                                            <i class="fas fa-tachometer-alt"></i>
+                                            <span>Dashboard</span>
+                                        </a>
+                                    </ui:insert>
+                                </li>
+                            </c:if>
                             <li class="nav-item">
                                 <h:commandLink class="nav-link" action="#{accountBean.logoutAccount()}">
                                     <i class="icon-logout"></i>

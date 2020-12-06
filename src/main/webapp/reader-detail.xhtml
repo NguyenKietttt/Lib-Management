@@ -1,0 +1,199 @@
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:t="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns="http://www.w3.org/1999/xhtml"
+                template="template/base.xhtml">
+    
+    <ui:define name="filter">
+        <f:metadata>
+            <f:viewAction action="#{accountBean.checkNotLogin()}"></f:viewAction>
+        </f:metadata>
+    </ui:define>
+    
+    <ui:define name="title">Reader Detail</ui:define>
+    
+    <ui:define name="info">Reader Detail</ui:define>
+    
+    <ui:define name="content">
+        <h:form id="fo">
+            <div class="row mb-4 justify-content-center">
+                <div class="col-xl-8">
+                    <div class="card shadow mb-3">
+                        <div class="card-header py-3">
+                            <p class="text-primary m-0 font-weight-bold">Infomation</p>
+                        </div>
+                        <div class="card-body">
+                            <div id="alertUpdate" role="alert" class="alert alert-danger"
+                                style="display: none">
+                                <h:outputText id="notification" value="#{readerdetailBean.alert}"></h:outputText>
+                           </div>
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label>
+                                            <strong>Card ID</strong>
+                                            <br/>
+                                        </label>
+                                        <h:inputText class="form-control"
+                                                     value="#{readerdetailBean.cardID}"
+                                                     readonly="true">
+                                        </h:inputText>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label>
+                                            <strong>Name</strong>
+                                            <h:message style="color: red" for="readerName" />
+                                            <br/>
+                                        </label>
+                                        <h:inputText id="readerName" class="form-control"
+                                                     t:placeholder="Reader Name"
+                                                     required="true" requiredMessage=" *"
+                                                     value="#{readerdetailBean.readerName}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label>
+                                            <strong>Email</strong>
+                                            <h:message style="color: red" for="mailaddress" />
+                                            <br/>
+                                        </label>
+                                        <h:inputText id="mailaddress" class="form-control"
+                                                     t:placeholder="Email" 
+                                                     value="#{readerdetailBean.email}"
+                                                     required="true" requiredMessage=" *" 
+                                                     validatorMessage=" - Invalid email">
+                                            <f:validateRegex pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" />
+                                        </h:inputText>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label>
+                                            <strong>Phone</strong>
+                                            <h:message id="test" style="color: red" for="phone" />
+                                            <br/>
+                                        </label>
+                                        <h:inputText id="phone" class="form-control"
+                                                     value="#{readerdetailBean.phone}"
+                                                     required="true" requiredMessage=" *"
+                                                     validatorMessage=" - Invalid phone number">
+                                            <f:validateRegex pattern="^(0[3|5|7|8|9]|01[2|6|8|9])+([0-9]{8})$" />
+                                        </h:inputText>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label>
+                                            <strong>Create Date</strong>
+                                            <br/>
+                                        </label>
+                                        <h:inputText class="form-control"
+                                                     value="#{readerdetailBean.createDate}"
+                                                     readonly="true"> 
+                                            <f:convertDateTime type="date" pattern = "dd/MM/yyyy" />
+                                        </h:inputText>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label>
+                                            <strong>Due Date</strong>
+                                            <h:message style="color: red" for="dueDate" />
+                                            <br/>
+                                        </label>
+                                        <h:inputText id="dueDate" class="form-control"
+                                                     t:placeholder="Due Date"
+                                                     value="#{readerdetailBean.dueDate}"
+                                                     required="true" requiredMessage=" *"
+                                                     converterMessage=" - Ví dụ: 27/5/2020">
+                                            <f:convertDateTime type="date" pattern = "dd/MM/yyyy" />
+                                        </h:inputText>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label>
+                                            <strong>List Borrow</strong>
+                                            <br/>
+                                        </label>
+                                         <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
+                                             <p:dataTable value="#{readerdetailBean.listBR}" var="c"
+                                                          emptyMessage="No borrow found"
+                                                            rows="5" tableStyleClass="ui-datatable">
+                                               <p:column headerText="ID" style="width: 10%">    				                                                        
+                                                   <h:outputText value="#{c.borrowReturnID}"></h:outputText>
+                                               </p:column>
+                                              <p:column headerText="Borrow Date">    				                                                        
+                                                  <h:outputText value="#{c.borrowDate}">
+                                                      <f:convertDateTime type="date" pattern = "dd/MM/yyyy" />
+                                                  </h:outputText>
+                                               </p:column>
+                                                <p:column headerText="Return Date">    				                                                        
+                                                    <h:outputText value="#{c.returnDate}">
+                                                        <f:convertDateTime type="date" pattern = "dd/MM/yyyy" />
+                                                    </h:outputText>
+                                               </p:column>
+                                                 <p:column>
+                                                    <h:link class="btn btn-primary btn-sm" 
+                                                                   style="width: 100%; height: 200%; color: white;" 
+                                                                   value="Detail"
+                                                                   includeViewParams="true"
+                                                                   outcome="book-return-detail?faces-redirect=true">
+                                                        <f:param name="brID" value="#{c.borrowReturnID}"/>
+                                                    </h:link>
+                                                 </p:column>
+                                           </p:dataTable>
+                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row text-center">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <h:commandButton styleClass="btn btn-success" type="button"
+                                                             style="width: 25%; margin-right: 5%"
+                                                             value="Update">
+                                            <f:ajax render="@form" execute="@form"
+                                                    listener="#{readerdetailBean.updateReader()}" onevent="updateFail"/>
+                                        </h:commandButton>
+                                        <h:commandButton styleClass="btn btn-danger" type="button"
+                                                             style="width: 25%"
+                                                             value="Delete">
+                                            <f:ajax render="@form" execute="@form" 
+                                                    onevent="updateFail" listener="#{readerdetailBean.deleteBook()}"/>
+                                        </h:commandButton>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form> 
+    </ui:define>
+    
+    <ui:define name="custom-script">
+        <script>
+            function updateFail(data) {
+                if(data.status === "success"){
+                    var temp = document.getElementById('fo:notification').innerHTML;
+
+                    if (temp !== "") {
+                        document.getElementById("alertUpdate").style.display = "block";
+                    };
+                };
+            };
+        </script>
+    </ui:define>
+</ui:composition>

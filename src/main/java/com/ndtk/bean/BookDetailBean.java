@@ -96,6 +96,9 @@ public class BookDetailBean {
                     FacesContext.getCurrentInstance().getApplication().getNavigationHandler()
                             .handleNavigation(FacesContext.getCurrentInstance(), null, "book?faces-redirect=true");
             }
+            else
+                FacesContext.getCurrentInstance().getApplication().getNavigationHandler()
+                        .handleNavigation(FacesContext.getCurrentInstance(), null, "book?faces-redirect=true");
         }
     }
     

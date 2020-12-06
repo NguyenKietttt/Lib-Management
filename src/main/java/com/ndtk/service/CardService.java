@@ -24,6 +24,25 @@ import org.hibernate.SessionFactory;
 public class CardService {
     private static final SessionFactory factory = HibernateUtil.getFACTORY();
     
+    public int getCardID(){
+        try(Session session = factory.openSession()){
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Card> query = builder.createQuery(Card.class);
+            Root<Card> root = query.from(Card.class);
+            
+            query.select(root);
+            
+            ArrayList<Card> listBR = (ArrayList<Card>) session.createQuery(query).getResultList();
+            
+            if (listBR.size() > 0) {
+                return listBR.size();
+            }
+           
+            return 0;
+        }
+    }
+    
+    
     public Card getCardByID(String cardID){
         try(Session session = factory.openSession()){
             CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -44,5 +63,41 @@ public class CardService {
            
             return null;
         }
+    }
+    
+        public boolean addOrSaveCard(Card c){
+        try(Session session = factory.openSession()){
+            try{
+                session.getTransaction().begin();
+
+                session.saveOrUpdate(c);
+
+                session.getTransaction().commit();
+            }
+            catch(Exception ex){
+                session.getTransaction().rollback();
+                return false;
+            }
+        }
+
+        return true;
+    }
+        
+    public boolean deleteCard(Card c){
+        try(Session session = factory.openSession()){
+            try{
+                session.getTransaction().begin();
+
+                session.delete(c);
+
+                session.getTransaction().commit();
+            }
+            catch(Exception ex){
+                session.getTransaction().rollback();
+                return false;
+            }
+        }
+
+        return true;
     }
 }

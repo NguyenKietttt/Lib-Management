@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -38,7 +39,7 @@ public class Employee implements Serializable{
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     private Set<BorrowReturn> listBorrowReturn;
     
-    @OneToOne(mappedBy = "employee")
+    @OneToOne(mappedBy = "employee", fetch = FetchType.EAGER)
     private Account account;
     
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">

@@ -46,6 +46,11 @@ public class BookBean {
         }
         
         ArrayList<Book> books = bookSvc.getAllBooks(temp, this.categoryID, this.authorID, this.publisherID);
+        
+        if (books == null) {
+            listBook.clear();
+            return  listBook;
+        }
        
         ArrayList<BookRes> booksRes = initBookRes(books);
         

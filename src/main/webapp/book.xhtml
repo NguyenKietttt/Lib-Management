@@ -82,8 +82,10 @@
                         <div class="card-body" style="padding-top: 0px;">
                             <div  class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
                                 <p:dataTable value="#{bookBean.listBook}" var="p"
+                                             emptyMessage="No book found"
                                              paginator="true"
                                              rows="5"
+                                             pageLinks="10"
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {LastPageLink} "
                                              paginatorPosition="bottom"
                                              id="test"

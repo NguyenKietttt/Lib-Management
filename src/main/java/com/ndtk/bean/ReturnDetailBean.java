@@ -7,6 +7,7 @@ package com.ndtk.bean;
 
 import com.ndtk.pojo.BorrowReturn;
 import com.ndtk.pojo.BorrowReturnDetail;
+import com.ndtk.pojo.Employee;
 import com.ndtk.res.BookReturnDetailRes;
 import com.ndtk.service.BorrowReturnService;
 import java.util.ArrayList;
@@ -35,64 +36,86 @@ public class ReturnDetailBean {
     private String fines;
     private Date borrowDate = null;
     private Date returnDate = null;
+    private Employee employee = null;
     private ArrayList<BookReturnDetailRes> listBRDRes = new ArrayList<BookReturnDetailRes>();
     
     public ReturnDetailBean(){
-        FacesContext context = FacesContext.getCurrentInstance();
-        BorrowReturn br;
-        String brID;
         
-        if (context.getExternalContext().getSessionMap().get("brID") != null)
-            brID = (String) context.getExternalContext().getSessionMap().get("brID");
-        else{
-            brID = (String) context.getExternalContext().getRequestParameterMap().get("brID");
-            
-            Pattern pattern = Pattern.compile("^[BR.0-9]*$");
-            Matcher matcher = pattern.matcher(brID);
-            
-            if (!matcher.matches()) {
+        if (!FacesContext.getCurrentInstance().isPostback()){
+            FacesContext context = FacesContext.getCurrentInstance();
+            BorrowReturn br;
+            String brID;
+        
+            if (context.getExternalContext().getSessionMap().get("brID") != null)
+                brID = (String) context.getExternalContext().getSessionMap().get("brID");
+            else{
+                brID = (String) context.getExternalContext().getRequestParameterMap().get("brID");
+
+                Pattern pattern = Pattern.compile("^[BR.0-9]*$");
+                Matcher matcher = pattern.matcher(brID);
+
+                if (!matcher.matches()) {
+                    context.getApplication().getNavigationHandler()
+                        .handleNavigation(context, null, "book?faces-redirect=true");
+                }
+            }
+        
+            br = brSvc.getBorrowReturnByID(brID);
+
+            if (br != null) {
+                this.brID = br.getBorrowReturnID();
+                this.cardID = br.getCard().getCardID();
+                this.readerName = br.getCard().getReader().getReaderName();
+                this.email = br.getCard().getReader().getEmail();
+                this.phone = br.getCard().getReader().getPhone();
+                this.fines = br.getFines() + " VND";
+                this.borrowDate = br.getBorrowDate(); 
+                this.returnDate = br.getReturnDate();
+                this.employee = br.getEmployee();
+                for (BorrowReturnDetail brDetail : br.getListBorrowReturnDetail()) {
+                    BookReturnDetailRes brdRes = new BookReturnDetailRes();
+                    brdRes.setBookName(brDetail.getBook().getBookName());
+                    if (brDetail.isLost())
+                        brdRes.setStatus("Lost");
+                    else
+                        brdRes.setStatus("Still");
+
+                    listBRDRes.add(brdRes);
+                }
+            }
+            else
                 context.getApplication().getNavigationHandler()
-                    .handleNavigation(context, null, "book?faces-redirect=true");
-            }
+                        .handleNavigation(context, null, "book?faces-redirect=true");
         }
-        
-        br = brSvc.getBorrowReturnByID(brID);
-        
-        if (br != null) {
-            this.brID = br.getBorrowReturnID();
-            this.cardID = br.getCard().getCardID();
-            this.readerName = br.getCard().getReader().getReaderName();
-            this.email = br.getCard().getReader().getEmail();
-            this.phone = br.getCard().getReader().getPhone();
-            this.fines = br.getFines() + " VND";
-            this.borrowDate = br.getBorrowDate(); 
-            this.returnDate = br.getReturnDate(); 
-            for (BorrowReturnDetail brDetail : br.getListBorrowReturnDetail()) {
-                BookReturnDetailRes brdRes = new BookReturnDetailRes();
-                brdRes.setBookName(brDetail.getBook().getBookName());
-                if (brDetail.isLost())
-                    brdRes.setStatus("Lost");
-                else
-                    brdRes.setStatus("Still");
-                
-                listBRDRes.add(brdRes);
-            }
-        }
-        else
-            context.getApplication().getNavigationHandler()
-                    .handleNavigation(context, null, "book?faces-redirect=true");
     }
     
     public void confirmReturn(){
         FacesContext context = FacesContext.getCurrentInstance();
         
-        context.getExternalContext().getSessionMap().remove("brID");
+        if (context.getExternalContext().getSessionMap().get("brID") != null) {
+            context.getExternalContext().getSessionMap().remove("brID");
+        }
+
         
         context.getApplication().getNavigationHandler()
-                .handleNavigation(context, null, "book?faces-redirect=true");
+                .handleNavigation(context, null, "book-return?faces-redirect=true");
     }
 
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
+    /**
+     * @return the employee
+     */
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    /**
+     * @param employee the employee to set
+     */
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+    
     /**
      * @return the fines
      */
@@ -233,6 +256,4 @@ public class ReturnDetailBean {
         this.listBRDRes = listBRDRes;
     }
     // </editor-fold>
-
-
 }

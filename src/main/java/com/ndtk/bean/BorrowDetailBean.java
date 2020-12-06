@@ -8,6 +8,7 @@ package com.ndtk.bean;
 import com.ndtk.pojo.Book;
 import com.ndtk.pojo.BorrowReturn;
 import com.ndtk.pojo.BorrowReturnDetail;
+import com.ndtk.pojo.Employee;
 import com.ndtk.service.BorrowReturnService;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,6 +31,7 @@ public class BorrowDetailBean {
     private String email = "";
     private String phone = "";
     private Date borrowDate = null;
+    private Employee employee = null;
     private ArrayList<Book> listBook = new ArrayList<Book>();
     
     
@@ -45,6 +47,7 @@ public class BorrowDetailBean {
             this.email = br.getCard().getReader().getEmail();
             this.phone = br.getCard().getReader().getPhone();
             this.borrowDate = br.getBorrowDate(); 
+            this.employee = br.getEmployee();
             for (BorrowReturnDetail brDetail : br.getListBorrowReturnDetail()) {
                 listBook.add(brDetail.getBook());
             }
@@ -64,6 +67,20 @@ public class BorrowDetailBean {
     }
 
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
+    /**
+     * @return the employee
+     */
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    /**
+     * @param employee the employee to set
+     */
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+    
     /**
      * @return the brSvc
      */

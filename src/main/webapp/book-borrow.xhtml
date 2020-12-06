@@ -37,7 +37,8 @@
                                         <div class="card-body" style="padding-top: 0px;">
                                         <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
                                             <p:dataTable value="#{borrowBean.carts}" var="c"
-                                             rows="5" id="test" tableStyleClass="ui-datatable">
+                                                         emptyMessage="No book found"
+                                                        rows="5" id="test" tableStyleClass="ui-datatable">
                                                  <p:column headerText="Name">    				                                                        
                                                         <h:outputText value="#{c['bookName']}"></h:outputText>
                                                  </p:column>
