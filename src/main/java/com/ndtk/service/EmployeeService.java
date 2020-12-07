@@ -7,12 +7,12 @@ package com.ndtk.service;
 
 import com.ndtk.Library_web.HibernateUtil;
 import com.ndtk.pojo.Employee;
-import com.ndtk.pojo.Reader;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.hibernate.Session;
@@ -25,6 +25,28 @@ import org.hibernate.SessionFactory;
 
 public class EmployeeService {
     private static final SessionFactory factory = HibernateUtil.getFACTORY();
+    
+    public Employee getEmployeeByID(String ID){
+        try(Session session = factory.openSession()){
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
+            Root<Employee> root = query.from(Employee.class);
+            
+            root.fetch("listBorrowReturn", JoinType.LEFT);
+            
+            Predicate p = builder.equal(root.get("employeeID"), ID);
+            
+            query.select(root).where(p);
+            
+            ArrayList<Employee> listEmployee = (ArrayList<Employee>) session.createQuery(query).getResultList();
+            
+            if (listEmployee.size() > 0) {
+                return listEmployee.get(0);
+            }
+           
+            return null;
+        }
+    }
     
     public ArrayList<Employee> filterEmployee(String keyword){
         try(Session session = factory.openSession()){

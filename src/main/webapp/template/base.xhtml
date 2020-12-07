@@ -59,7 +59,7 @@ and open the template in the editor.
                             <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType ne 'Admin'}">
                                 <li class="nav-item">
                                     <ui:insert name="profile-nav">
-                                        <h:commandLink class="nav-link" action="profile?faces-redirect=true">
+                                        <h:commandLink class="nav-link" action="employee-detail?faces-redirect=true">
                                             <i class="fas fa-user"></i>
                                             <span>Profile</span>
                                         </h:commandLink>

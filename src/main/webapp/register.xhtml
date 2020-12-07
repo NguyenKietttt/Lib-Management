@@ -4,106 +4,120 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:t="http://xmlns.jcp.org/jsf/passthrough"
                 xmlns="http://www.w3.org/1999/xhtml"
-                template="template/base-login.xhtml">
-                
+                template="template/base.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    
     <ui:define name="filter">
         <f:metadata>
-            <f:viewAction action="#{accountBean.checkLogin()}"></f:viewAction>
+            <f:viewAction action="#{accountBean.checkNotLogin()}"></f:viewAction>
+            <f:viewAction action="#{accountBean.checkAdmin()}"></f:viewAction>
         </f:metadata>
     </ui:define>
     
-    <ui:define name="title">Register</ui:define>
-    <ui:define name="info">Register Form</ui:define>
+    <ui:define name="title">Employee Create</ui:define>
     
-    <ui:define name="link">
-        <h:link class="small" outcome="login.xhtml">Already have an account? Login!</h:link>
-    </ui:define>
+    <ui:define name="info">Employee Create</ui:define>
     
     <ui:define name="content">
-        <h:form id="fo" class="user">
-            <div class="form-group">
-                <label><strong>UserName</strong><br/></label>
-                <h:message style="color: red" for="username" />
-                <div id="alertUpdate" style="display: none">
-                    <h:outputText style="color: red" id="notification" value="#{accountBean.message}"></h:outputText>
-                </div>
-                <h:inputText id="username" class="form-control form-control-user" 
-                             t:placeholder="Username" 
-                             style="font-size: 12.8px;"
-                             value="#{accountBean.accountID}"
-                             required="true" requiredMessage=" *"/>
-            </div>
-            <div class="form-group">
-                <label><strong>Full Name</strong><br/></label>
-                <h:message style="color: red" for="fullname" />
-                <h:inputText id="fullname" class="form-control form-control-user" 
-                             t:placeholder="Full Name" 
-                             style="font-size: 12.8px;" 
-                             required="true" requiredMessage=" *"
-                             value="#{accountBean.fullName}"/>
-            </div>
-            <div class="form-group">
-                <div class="form-row">
-                    <div class="col-lg-6 align-self-center">
-                        <label><strong>Email</strong><br/></label>
-                        <h:message style="color: red" for="mailaddress" />
-                        <h:inputText id="mailaddress" class="form-control form-control-user"
-                                     t:placeholder="Email" 
-                                     style="font-size: 12.8px;" 
-                                     required="true" requiredMessage=" *" 
-                                     validatorMessage=" - Invalid email"
-                                     value="#{accountBean.email}">
-                            <f:validateRegex pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" />
-                        </h:inputText>
-                    </div>
+        <div class="row justify-content-center mb-3">
+            <div class="col-lg-8">
+                <div class="row">
                     <div class="col">
-                        <label><strong>Phone</strong><br/></label>
-                        <h:message style="color: red" for="phone" />
-                        <h:inputText id="phone" class="form-control form-control-user" 
-                                     t:placeholder="Phone Number" 
-                                     style="font-size: 12.8px;"
-                                     required="true" requiredMessage=" *"
-                                     validatorMessage=" - Invalid phone number"
-                                     value="#{accountBean.phone}">
-                            <f:validateRegex pattern="^(0[3|5|7|8|9]|01[2|6|8|9])+([0-9]{8})$" />
-                        </h:inputText>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="form-row">
-                    <div class="col-lg-6 align-self-center">
-                        <label><strong>Password</strong><br/></label>
-                        <h:message style="color: red" for="password" />
-                        <h:inputSecret id="password" class="form-control form-control-user" 
-                                     t:placeholder="Password" 
-                                     style="font-size: 12.8px;" 
-                                     required="true" requiredMessage=" *"
-                                     value="#{accountBean.password}"
-                                     onkeyup="check()"/>
-                    </div>
-                    <div class="col">
-                        <label><strong>Password Confirm</strong><br/></label>
-                        <div id="checkPass" style="display: none">
-                            <h:outputText style="color: red" value=" - Not matching"></h:outputText>
+                        <div class="card shadow mb-3">
+                            <div class="card-header py-3">
+                                <p class="text-primary m-0 font-weight-bold">Infomation</p>
+                            </div>
+                            <div class="card-body">
+                                <h:form id="fo" class="user">
+                                    <div id="alertUpdate" role="alert" class="alert alert-danger"
+                                        style="display: none">
+                                        <h:outputText id="notification" value="#{employeeDetailBean.alert}"></h:outputText>
+                                   </div>
+                                    <div class="form-group">
+                                        <label><strong>Username</strong><br/></label>
+                                        <h:message style="color: red" for="username" />
+                                        <h:inputText id="username" class="form-control" 
+                                                     t:placeholder="Username"
+                                                     value="#{employeeDetailBean.accountID}"
+                                                     required="true" requiredMessage=" *"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label><strong>Full Name</strong><br/></label>
+                                        <h:message style="color: red" for="fullname" />
+                                        <h:inputText id="fullname" class="form-control" 
+                                                     t:placeholder="Full Name"
+                                                     required="true" requiredMessage=" *"
+                                                     value="#{employeeDetailBean.fullName}"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form-row">
+                                            <div class="col-lg-6 align-self-center">
+                                                <label><strong>Email</strong><br/></label>
+                                                <h:message style="color: red" for="mailaddress" />
+                                                <h:inputText id="mailaddress" class="form-control"
+                                                             t:placeholder="Email" 
+                                                             required="true" requiredMessage=" *" 
+                                                             validatorMessage=" - Invalid email"
+                                                             value="#{employeeDetailBean.email}">
+                                                    <f:validateRegex pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" />
+                                                </h:inputText>
+                                            </div>
+                                            <div class="col">
+                                                <label><strong>Phone</strong><br/></label>
+                                                <h:message style="color: red" for="phone" />
+                                                <h:inputText id="phone" class="form-control" 
+                                                             t:placeholder="Phone Number"
+                                                             required="true" requiredMessage=" *"
+                                                             validatorMessage=" - Invalid phone number"
+                                                             value="#{employeeDetailBean.phone}">
+                                                    <f:validateRegex pattern="^(0[3|5|7|8|9]|01[2|6|8|9])+([0-9]{8})$" />
+                                                </h:inputText>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form-row">
+                                            <div class="col-lg-6 align-self-center">
+                                                <label><strong>Password</strong><br/></label>
+                                                <h:message style="color: red" for="password" />
+                                                <h:inputSecret id="password" class="form-control" 
+                                                             t:placeholder="Password"
+                                                             required="true" requiredMessage=" *"
+                                                             value="#{employeeDetailBean.password}"
+                                                             onkeyup="check()"/>
+                                            </div>
+                                            <div class="col">
+                                                <label><strong>Password Confirm</strong><br/></label>
+                                                <div id="checkPass" style="display: none">
+                                                    <h:outputText style="color: red" value=" - Not matching"></h:outputText>
+                                                </div>
+                                                <h:message style="color: red" for="passwordConfirm" />
+                                                <h:inputSecret id="passwordConfirm" class="form-control" 
+                                                             t:placeholder="Password"
+                                                             required="true" requiredMessage=" *"
+                                                             value="#{employeeDetailBean.confirmPassword}"
+                                                             onkeyup="check()"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row text-center">
+                                        <div class="col">
+                                            <h:commandButton id="confirm" class="btn btn-primary"
+                                                             style="width: 25%; margin-right: 5%" 
+                                                             value="Create">
+                                                <f:ajax execute="@form" listener="#{employeeDetailBean.addAccount()}"
+                                                                            render="@form"
+                                                                            onevent="createFail"/>
+                                            </h:commandButton>
+                                        </div>
+                                    </div>
+                                </h:form>
+                            </div>
                         </div>
-                        <h:message style="color: red" for="passwordConfirm" />
-                        <h:inputSecret id="passwordConfirm" class="form-control form-control-user" 
-                                     t:placeholder="Password" 
-                                     style="font-size: 12.8px;" 
-                                     required="true" requiredMessage=" *"
-                                     value="#{accountBean.confirmPassword}"
-                                     onkeyup="check()"/>
                     </div>
                 </div>
             </div>
-            <h:commandButton id="confirm" class="btn btn-primary btn-block text-white btn-user" value="Register Account">
-                <f:ajax execute="@form" listener="#{accountBean.addAccount()}"
-                                            render="@form"
-                                            onevent="createFail"/>
-            </h:commandButton>
-            <hr/>
-        </h:form>
+        </div>
     </ui:define>
     
     <ui:define name="custom-script">
@@ -116,7 +130,7 @@
                 if (data.status === "success") {
                     var temp = document.getElementById('fo:notification').innerHTML;
                     if (temp !== "") {
-                        document.getElementById("alertUpdate").style.display = "inline";
+                        document.getElementById("alertUpdate").style.display = "block";
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                     }
                 }
