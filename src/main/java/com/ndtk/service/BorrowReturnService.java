@@ -23,6 +23,20 @@ import org.hibernate.SessionFactory;
 public class BorrowReturnService {
     private static final SessionFactory factory = HibernateUtil.getFACTORY();
     
+    public ArrayList<BorrowReturn> getListBorrowReturn(){
+        try(Session session = factory.openSession()){
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<BorrowReturn> query = builder.createQuery(BorrowReturn.class);
+            Root<BorrowReturn> root = query.from(BorrowReturn.class);
+            
+            Predicate p = builder.isNull(root.get("returnDate"));
+                    
+            query.select(root).where(p);
+            
+            return (ArrayList<BorrowReturn>) session.createQuery(query).getResultList();
+        }
+    }
+    
     public BorrowReturn getBorrowNotReturnByID(String ID){
         try(Session session = factory.openSession()){
             CriteriaBuilder builder = session.getCriteriaBuilder();

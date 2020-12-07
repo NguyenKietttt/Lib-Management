@@ -93,8 +93,13 @@
                                                      <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
                                                          <p:dataTable value="#{employeeDetailBean.listBR}" var="c"
                                                                       emptyMessage="No borrow found"
-                                                                        rows="5" tableStyleClass="ui-datatable">
-                                                           <p:column headerText="ID" style="width: 10%">    				                                                        
+                                                                        paginator="true"
+                                                                        rows="5"
+                                                                        paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {LastPageLink} "
+                                                                        paginatorPosition="bottom"
+                                                                        id="test"
+                                                                        tableStyleClass="ui-datatable">
+                                                           <p:column headerText="ID" style="width: 12%">    				                                                        
                                                                <h:outputText value="#{c.borrowReturnID}"></h:outputText>
                                                            </p:column>
                                                           <p:column headerText="Borrow Date">    				                                                        

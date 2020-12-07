@@ -32,17 +32,16 @@ public class EmployeeDetailBean {
     
     private static Employee emp;
     
+    private static Set<BorrowReturn> listBR;
+    
     private String accountID;
     private String password;
     private String fullName;
     private String email;
     private String phone;
-    private Set<BorrowReturn> listBR;
-
-    private String alert;
     
     private String confirmPassword;
-    
+    private String alert;
     private String oldPassword;
     private String newPassword;
     
@@ -53,6 +52,12 @@ public class EmployeeDetailBean {
         emp = new Employee();
         
         if (!context.isPostback()) {
+            accountID = null;
+            password = null;
+            fullName = null;
+            email = null;
+            phone = null;
+            listBR = null;
             
             Account acc = (Account) context.getExternalContext().getSessionMap().get("user");
             

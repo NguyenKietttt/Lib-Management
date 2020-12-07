@@ -79,7 +79,7 @@ public class BookBean {
     // <editor-fold defaultstate="collapsed" desc=" Crawl Books ">
 //    public void crawlBook() throws IOException, URISyntaxException{
 //        String pathExcel = FacesContext.getCurrentInstance()
-//        .getExternalContext().getInitParameter("com.ndtk.ExcelPath") + "\\" + "Book.xlsx";
+//        .getExternalContext().getInitParameter("com.ndtk.OtherPath") + "\\" + "Book.xlsx";
 //        try (InputStream inputStream = new FileInputStream(new File(pathExcel))) {
 //            Workbook workbook = new XSSFWorkbook(inputStream);
 //            Sheet sheet = workbook.getSheetAt(0);

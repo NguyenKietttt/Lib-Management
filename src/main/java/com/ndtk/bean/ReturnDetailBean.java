@@ -68,7 +68,10 @@ public class ReturnDetailBean {
                 this.readerName = br.getCard().getReader().getReaderName();
                 this.email = br.getCard().getReader().getEmail();
                 this.phone = br.getCard().getReader().getPhone();
-                this.fines = br.getFines() + " VND";
+                if (this.fines == null)
+                    this.fines = 0 + " VND";
+                else
+                    this.fines = br.getFines() + " VND";
                 this.borrowDate = br.getBorrowDate(); 
                 this.returnDate = br.getReturnDate();
                 this.employee = br.getEmployee();
