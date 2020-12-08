@@ -1,0 +1,225 @@
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:t="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns="http://www.w3.org/1999/xhtml"
+                template="template/base.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf">
+    
+    <ui:define name="filter">
+        <f:metadata>
+            <f:viewAction action="#{accountBean.checkNotLogin()}"></f:viewAction>
+        </f:metadata>
+    </ui:define>
+    
+    <ui:define name="title">Dashboard</ui:define>
+    
+    <ui:define name="dashboard-nav">
+        <h:commandLink class="nav-link active" action="dashboard?faces-redirect=true">
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+        </h:commandLink>
+    </ui:define>
+
+    <ui:define name="info">Dashboard</ui:define>
+    
+    <ui:define name="content">
+        <h:form id="fo">
+            <div class="row">
+                <div class="col-md-6 col-lg-4 col-xl-3 offset-xl-0 text-nowrap">
+                    <div id="dataTable_length-1" class="dataTables_length" aria-controls="dataTable">
+                        <label>Quarter:&#160;
+                            <h:selectOneMenu value="#{dashBoardBean.quarter}" class="form-control form-control-sm custom-select custom-select-sm">
+                                <f:selectItems value="#{dashBoardBean.listQuarter}" var="q" itemLabel="#{q}" itemValue="#{q}"></f:selectItems>
+                                <f:ajax listener="#{dashBoardBean.initReport(dashBoardBean.year, dashBoardBean.quarter)}" 
+                                        execute="@form" render="@form :javascript"/>
+                            </h:selectOneMenu>&#160;
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 offset-xl-0 text-nowrap">
+                    <div id="dataTable_length-2" class="dataTables_length" aria-controls="dataTable">
+                        <label>Year:&#160;
+                            <h:selectOneMenu value="#{dashBoardBean.year}" class="form-control form-control-sm custom-select custom-select-sm">
+                                <f:selectItems value="#{dashBoardBean.listYear}" var="y" itemLabel="#{y}" itemValue="#{y}">
+                                 </f:selectItems>
+                                <f:ajax listener="#{dashBoardBean.initReport(dashBoardBean.year, dashBoardBean.quarter)}" 
+                                        execute="@form" render="@form :javascript"/>
+                            </h:selectOneMenu>&#160;
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 1%">
+                <div class="col-md-6 col-xl-3 mb-4">
+                    <div class="card shadow border-left-primary py-2">
+                        <div class="card-body">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col mr-2">
+                                    <div class="text-uppercase text-primary font-weight-bold text-xs mb-1">
+                                        <span>borrowed books</span>
+                                    </div>
+                                    <div class="text-dark font-weight-bold h5 mb-0">
+                                        <span class="flash animated">#{dashBoardBean.dbAll.bookborrow}</span>
+                                        <span class="flash animated">quyển</span>
+                                    </div>
+                                </div>
+                                <div class="col-auto"><i class="fas fa-book-open fa-2x text-gray-300"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3 mb-4">
+                    <div class="card shadow border-left-success py-2">
+                        <div class="card-body">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col mr-2">
+                                    <div class="text-uppercase text-success font-weight-bold text-xs mb-1">
+                                        <span>returned books</span>
+                                    </div>
+                                    <div class="text-dark font-weight-bold h5 mb-0">
+                                        <span class="flash animated">#{dashBoardBean.dbAll.bookReturn}</span>
+                                        <span class="flash animated">quyển</span>
+                                    </div>
+                                </div>
+                                <div class="col-auto"><i class="fas fa-book fa-2x text-gray-300"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3 mb-4">
+                    <div class="card shadow border-left-info py-2">
+                        <div class="card-body">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col mr-2">
+                                    <div class="text-uppercase text-info font-weight-bold text-xs mb-1">
+                                        <span>lost books</span>
+                                    </div>
+                                    <div class="row no-gutters align-items-center flash animated">
+                                        <div class="col-auto">
+                                            <div class="text-dark font-weight-bold h5 mb-0 mr-3">
+                                                <span>#{dashBoardBean.dbAll.bookLost}</span>
+                                                <span class="flash animated">quyển</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto"><i class="fas fa-book fa-2x text-gray-300"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3 mb-4">
+                    <div class="card shadow border-left-warning py-2">
+                        <div class="card-body">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col mr-2">
+                                    <div class="text-uppercase text-warning font-weight-bold text-xs mb-1">
+                                        <span>fines</span>
+                                    </div>
+                                    <div class="text-dark flash animated font-weight-bold h5 mb-0">
+                                        <span>#{dashBoardBean.dbAll.fines}</span>
+                                    </div>
+                                </div>
+                                <div class="col-auto"><i class="fas fa-money-alt fa-2x text-gray-300"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <div class="card">
+                            <div class="card-header py-3">
+                                <p class="text-primary m-0 font-weight-bold"><strong>Chart</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="columnchart_material" style="width: 900px; height: 500px; display: block; margin: 0 auto;"></div>
+                </div>
+                <div class="col" style="margin-top: 3%">
+                    <div class="form-group">
+                        <div class="card">
+                            <div class="card-header py-3">
+                                <p class="text-primary m-0 font-weight-bold"><strong>List Borrow</strong></p>
+                            </div>
+                            <div class="card-body" style="padding-top: 0px;">
+                                <div class="table-responsive table mt-2" id="dataTable-2" role="grid" aria-describedby="dataTable_info">
+                                    <p:dataTable value="#{dashBoardBean.listBorrow}" var="c"
+                                                    emptyMessage="No borrow found"
+                                                      paginator="true"
+                                                      rows="5"
+                                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {LastPageLink} "
+                                                      paginatorPosition="bottom"
+                                                      id="test"
+                                                      tableStyleClass="ui-datatable">
+                                        <p:column headerText="ID" style="width: 12%" sortBy="#{c.borrowReturnID}">    				                                                        
+                                             <h:outputText value="#{c.borrowReturnID}"></h:outputText>
+                                         </p:column>
+                                        <p:column headerText="Reader" sortBy="#{c.card.reader.readerName}">    				                                                        
+                                            <h:outputText value="#{c.card.reader.readerName}">
+                                                <f:convertDateTime type="date" pattern = "dd/MM/yyyy" />
+                                            </h:outputText>
+                                         </p:column>
+                                        <p:column headerText="Borrow Date" sortBy="#{c.borrowDate}">    				                                                        
+                                            <h:outputText value="#{c.borrowDate}">
+                                                <f:convertDateTime type="date" pattern = "dd/MM/yyyy" />
+                                            </h:outputText>
+                                         </p:column>
+                                          <p:column headerText="Return Date" sortBy="#{c.returnDate}">    				                                                        
+                                              <h:outputText value="#{c.returnDate}">
+                                                  <f:convertDateTime type="date" pattern = "dd/MM/yyyy" />
+                                              </h:outputText>
+                                         </p:column>
+                                        <p:column headerText="Fines" sortBy="#{c.fines}">    				                                                        
+                                            <h:outputText value="#{c.fines}">
+                                              </h:outputText>
+                                         </p:column>
+                                           <p:column>
+                                              <h:link class="btn btn-primary btn-sm" 
+                                                             style="width: 100%; height: 200%; color: white;" 
+                                                             value="Detail"
+                                                             includeViewParams="true"
+                                                             outcome="book-return-detail?faces-redirect=true">
+                                                  <f:param name="brID" value="#{c.borrowReturnID}"/>
+                                              </h:link>
+                                           </p:column>
+                                     </p:dataTable>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+    
+    <ui:define name="custom-script">
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <div jsf:id="javascript">
+            <script type="text/javascript">
+              google.charts.load('current', {'packages':['bar']});
+              google.charts.setOnLoadCallback(drawChart);
+
+              function drawChart() {
+                var data = google.visualization.arrayToDataTable([
+                  ['Month', 'Book Borrow', 'Book Return', 'Book Lost'],
+                  ['#{dashBoardBean.chart[0][0]}', #{dashBoardBean.chart[0][1]}, #{dashBoardBean.chart[0][2]}, #{dashBoardBean.chart[0][3]}],
+                  ['#{dashBoardBean.chart[1][0]}', #{dashBoardBean.chart[1][1]}, #{dashBoardBean.chart[1][2]}, #{dashBoardBean.chart[1][3]}],
+                  ['#{dashBoardBean.chart[2][0]}', #{dashBoardBean.chart[2][1]}, #{dashBoardBean.chart[2][2]}, #{dashBoardBean.chart[2][3]}]
+                ]);
+
+                var options = {
+                    vAxis: {format:'decimal'}
+                };
+
+                var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+
+                chart.draw(data, google.charts.Bar.convertOptions(options));
+              }
+            </script>
+        </div>
+    </ui:define>
+</ui:composition>
+

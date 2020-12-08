@@ -37,7 +37,7 @@ public class ReturnDetailBean {
     private Date borrowDate = null;
     private Date returnDate = null;
     private Employee employee = null;
-    private ArrayList<BookReturnDetailRes> listBRDRes = new ArrayList<BookReturnDetailRes>();
+    private ArrayList<BookReturnDetailRes> listBRDRes = new ArrayList<>();
     
     public ReturnDetailBean(){
         

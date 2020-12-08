@@ -7,9 +7,13 @@ package com.ndtk.service;
 
 import com.ndtk.Library_web.HibernateUtil;
 import com.ndtk.pojo.BorrowReturn;
+import com.ndtk.pojo.BorrowReturnDetail;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.hibernate.Session;
@@ -23,17 +27,86 @@ import org.hibernate.SessionFactory;
 public class BorrowReturnService {
     private static final SessionFactory factory = HibernateUtil.getFACTORY();
     
-    public ArrayList<BorrowReturn> getListBorrowReturn(){
+    public List<BorrowReturn> getListBorrowByMonthAndYear(int year, Integer[] quarter){
         try(Session session = factory.openSession()){
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<BorrowReturn> query = builder.createQuery(BorrowReturn.class);
+            
+            Root<BorrowReturn> rootBR = query.from(BorrowReturn.class);
+            
+            query.select(rootBR);
+            
+            Predicate y = builder.equal(builder.function("YEAR", Integer.class, rootBR.get("borrowDate")), year);
+            Predicate q1 = builder.equal(builder.function("MONTH", Integer.class, rootBR.get("borrowDate")), quarter[0]);
+            Predicate q2 = builder.equal(builder.function("MONTH", Integer.class, rootBR.get("borrowDate")), quarter[1]);
+            Predicate q3 = builder.equal(builder.function("MONTH", Integer.class, rootBR.get("borrowDate")), quarter[2]);
+            
+            Predicate or = builder.or(q1, q2, q3);
+            Predicate and = builder.and(y, or);
+            
+            query.where(and);
+            
+            return session.createQuery(query).getResultList();
+        }
+    }
+    
+    public List<Object[]> getFinesByMonthAndYear(int year, Integer[] quarter){
+        try(Session session = factory.openSession()){
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Object[]> query = builder.createQuery(Object[].class);
+            
+            Root<BorrowReturn> rootBR = query.from(BorrowReturn.class);
+            
+            query.multiselect(rootBR.get("borrowDate"), rootBR.get("fines"));
+            query.groupBy(rootBR.get("borrowDate"), rootBR.get("fines"));
+            
+            Predicate y = builder.equal(builder.function("YEAR", Integer.class, rootBR.get("borrowDate")), year);
+            Predicate q1 = builder.equal(builder.function("MONTH", Integer.class, rootBR.get("borrowDate")), quarter[0]);
+            Predicate q2 = builder.equal(builder.function("MONTH", Integer.class, rootBR.get("borrowDate")), quarter[1]);
+            Predicate q3 = builder.equal(builder.function("MONTH", Integer.class, rootBR.get("borrowDate")), quarter[2]);
+            
+            Predicate or = builder.or(q1, q2, q3);
+            Predicate and = builder.and(y, or);
+            
+            query.where(and);
+            
+            return session.createQuery(query).getResultList();
+        }
+    }
+    
+    public List<BorrowReturnDetail> getBookBorrowByMonthAndYear(int year, Integer[] quarter){
+        try(Session session = factory.openSession()){
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<BorrowReturnDetail> query = builder.createQuery(BorrowReturnDetail.class);
+            
+            Root<BorrowReturnDetail> rootBRD = query.from(BorrowReturnDetail.class);
+            rootBRD.fetch("borrowReturn", JoinType.INNER);
+            
+            query.select(rootBRD);
+            
+            Predicate y = builder.equal(builder.function("YEAR", Integer.class, rootBRD.get("borrowReturn").get("borrowDate")), year);
+            Predicate q1 = builder.equal(builder.function("MONTH", Integer.class, rootBRD.get("borrowReturn").get("borrowDate")), quarter[0]);
+            Predicate q2 = builder.equal(builder.function("MONTH", Integer.class, rootBRD.get("borrowReturn").get("borrowDate")), quarter[1]);
+            Predicate q3 = builder.equal(builder.function("MONTH", Integer.class, rootBRD.get("borrowReturn").get("borrowDate")), quarter[2]);
+            
+            Predicate or = builder.or(q1, q2, q3);
+            Predicate and = builder.and(y, or);
+            
+            query.where(and);
+            
+            return session.createQuery(query).getResultList();
+        }
+    }
+    
+    public ArrayList<Integer> getListYearBorrowReturn(){
+        try(Session session = factory.openSession()){
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Integer> query = builder.createQuery(Integer.class);
             Root<BorrowReturn> root = query.from(BorrowReturn.class);
-            
-            Predicate p = builder.isNull(root.get("returnDate"));
                     
-            query.select(root).where(p);
+            query.select(builder.function("YEAR", Integer.class, root.get("borrowDate"))).distinct(true);
             
-            return (ArrayList<BorrowReturn>) session.createQuery(query).getResultList();
+            return (ArrayList<Integer>) session.createQuery(query).getResultList();
         }
     }
     

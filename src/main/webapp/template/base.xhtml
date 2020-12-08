@@ -89,10 +89,10 @@ and open the template in the editor.
                             <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType eq 'Admin'}">
                                 <li class="nav-item">
                                     <ui:insert name="dashboard-nav">
-                                        <a class="nav-link" href="#">
+                                        <h:commandLink class="nav-link" action="dashboard?faces-redirect=true">
                                             <i class="fas fa-tachometer-alt"></i>
                                             <span>Dashboard</span>
-                                        </a>
+                                        </h:commandLink>
                                     </ui:insert>
                                 </li>
                             </c:if>
