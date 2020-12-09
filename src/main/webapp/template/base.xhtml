@@ -8,7 +8,8 @@ and open the template in the editor.
 <html xmlns = "http://www.w3.org/1999/xhtml"   
    xmlns:h = "http://java.sun.com/jsf/html"
    xmlns:ui = "http://java.sun.com/jsf/facelets"
-   xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+   xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+   xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <ui:insert name="filter" />
         <meta charset="utf-8"/>
@@ -22,12 +23,13 @@ and open the template in the editor.
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"/>
     </h:head>
     <h:body id="page-top">
+        <f:loadBundle var="pMsg" basename="book"></f:loadBundle>
         <div id="wrapper">
             <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
                 <div class="container-fluid d-flex flex-column p-0">
                     <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="book.xhtml">
                         <div class="sidebar-brand-icon"><i class="fas fa-ethernet"></i></div>
-                        <div class="sidebar-brand-text mx-3"><span>Library</span></div>
+                        <div class="sidebar-brand-text mx-3"><span>#{pMsg['lib.title']}</span></div>
                     </a>
                     <hr class="sidebar-divider my-0"/>
                     <h:form>
@@ -36,7 +38,7 @@ and open the template in the editor.
                                 <ui:insert name="book-listing-nav">
                                     <h:commandLink class="nav-link" action="book?faces-redirect=true">
                                         <i class="fas fa-filter"></i>
-                                        <span>Book Listing</span>
+                                        <span>#{pMsg['book.title']}</span>
                                     </h:commandLink>
                                 </ui:insert>
                             </li>
@@ -44,7 +46,7 @@ and open the template in the editor.
                                 <ui:insert name="book-borrow-nav">
                                     <h:commandLink class="nav-link" action="book-borrow?faces-redirect=true">
                                         <i class="fas fa-book-reader"></i>
-                                        <span>Book Borrow</span>
+                                        <span>#{pMsg['bookborrow.title']}</span>
                                     </h:commandLink>
                                 </ui:insert>
                             </li>
@@ -52,7 +54,7 @@ and open the template in the editor.
                                 <ui:insert name="book-return-nav">
                                     <h:commandLink class="nav-link" action="book-return?faces-redirect=true">
                                         <i class="fas fa-book"></i>
-                                        <span>Book Return</span>
+                                        <span>#{pMsg['bookreturn.title']}</span>
                                     </h:commandLink>
                                 </ui:insert>
                             </li>
@@ -61,7 +63,7 @@ and open the template in the editor.
                                     <ui:insert name="profile-nav">
                                         <h:commandLink class="nav-link" action="employee-detail?faces-redirect=true">
                                             <i class="fas fa-user"></i>
-                                            <span>Profile</span>
+                                            <span>#{pMsg['employeedetail.title']}</span>
                                         </h:commandLink>
                                     </ui:insert>
                                 </li>
@@ -71,7 +73,7 @@ and open the template in the editor.
                                     <ui:insert name="reader-nav">
                                         <h:commandLink class="nav-link" action="reader?faces-redirect=true">
                                             <i class="fas fa-user-friends"></i>
-                                            <span>Reader</span>
+                                            <span>#{pMsg['reader.title']}</span>
                                         </h:commandLink>
                                     </ui:insert>
                                 </li>
@@ -81,7 +83,7 @@ and open the template in the editor.
                                     <ui:insert name="employee-nav">
                                         <h:commandLink class="nav-link" action="employee?faces-redirect=true">
                                             <i class="icon-people"></i>
-                                            <span>Employee</span>
+                                            <span>#{pMsg['employee.title']}</span>
                                         </h:commandLink>
                                     </ui:insert>
                                 </li>
@@ -91,7 +93,7 @@ and open the template in the editor.
                                     <ui:insert name="dashboard-nav">
                                         <h:commandLink class="nav-link" action="dashboard?faces-redirect=true">
                                             <i class="fas fa-tachometer-alt"></i>
-                                            <span>Dashboard</span>
+                                            <span>#{pMsg['dashboard.title']}</span>
                                         </h:commandLink>
                                     </ui:insert>
                                 </li>
@@ -99,7 +101,7 @@ and open the template in the editor.
                             <li class="nav-item">
                                 <h:commandLink class="nav-link" action="#{accountBean.logoutAccount()}">
                                     <i class="icon-logout"></i>
-                                    <span>Logout</span>
+                                    <span>#{pMsg['loging.logout']}</span>
                                 </h:commandLink>
                             </li>
                         </ul>

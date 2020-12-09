@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ResourceBundle;
 import java.util.TimeZone;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -32,6 +33,8 @@ import javax.servlet.http.Part;
 @ManagedBean(name = "bookCreateBean")
 @RequestScoped
 public class BookCreateBean {
+    private ResourceBundle bundle = ResourceBundle.getBundle("book", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+    
     private static BookService bookSvc = new BookService();
     private static CategoryService categorySvc = new CategoryService();
     private static AuthorService authorSvc = new AuthorService();
@@ -90,7 +93,8 @@ public class BookCreateBean {
             b.setBookName(this.getBookName());
          }
          else{
-            this.setAlert("Book Name cannot be blank");
+            this.setAlert(this.bundle.getString("book.name") + " " +
+                    this.bundle.getString("bookdetail.validateBlank"));
             return;
          }
 
@@ -108,7 +112,8 @@ public class BookCreateBean {
             b.setImage(this.getPart().getSubmittedFileName());
         }
         else{
-            this.setAlert("Image cannot be blank");
+            this.setAlert(this.bundle.getString("book.img") + " " +
+                    this.bundle.getString("bookdetail.validateBlank"));
             return;
         }
         
@@ -117,7 +122,8 @@ public class BookCreateBean {
             b.setBookDescription(this.getBookDescription());
          }
          else{
-            this.setAlert("Book Description cannot be blank");
+            this.setAlert(this.bundle.getString("bookdetail.description") + " " +
+                    this.bundle.getString("bookdetail.validateBlank"));
             return;
          }
         
@@ -143,7 +149,8 @@ public class BookCreateBean {
                 b.setAuthor(authorNew);
         }
         else{
-            this.setAlert("Author cannot be blank");
+            this.setAlert(this.bundle.getString("book.author") + " " +
+                    this.bundle.getString("bookdetail.validateBlank"));
             return;
         }
 
@@ -166,19 +173,21 @@ public class BookCreateBean {
                 b.setPublisher(publisherNew);
         }
         else{
-            this.setAlert("Publisher cannot be blank");
+            this.setAlert(this.bundle.getString("book.publisher") + " " +
+                    this.bundle.getString("bookdetail.validateBlank"));
             return;
         }
         
         // Book Status
         if (!this.getStatus().trim().equals("")) {
-            if (this.getStatus().equals("Còn"))
+            if (this.getStatus().equals(this.bundle.getString("book.inStock")))
                 b.setBookStatus(true);
             else
                 b.setBookStatus(false);
         }
         else{
-            this.setAlert("Book Status cannot be blank");
+            this.setAlert(this.bundle.getString("book.status") + " " +
+                    this.bundle.getString("bookdetail.validateBlank"));
             return;
         }
         
@@ -196,6 +205,20 @@ public class BookCreateBean {
    }
     
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
+    /**
+     * @return the bundle
+     */
+    public ResourceBundle getBundle() {
+        return bundle;
+    }
+
+    /**
+     * @param bundle the bundle to set
+     */
+    public void setBundle(ResourceBundle bundle) {
+        this.bundle = bundle;
+    }
+    
     /**
      * @return the bookSvc
      */

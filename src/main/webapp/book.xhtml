@@ -13,21 +13,23 @@
         </f:metadata>
     </ui:define>
     
-    <ui:define name="title">Book Listing</ui:define>
+    <ui:define name="title">#{pMsg['book.title']}</ui:define>
     
     <ui:define name="book-listing-nav">
         <h:commandLink class="nav-link active" action="book?faces-redirect=true">
             <i class="fas fa-filter"></i>
-            <span>Book Listing</span>
+            <span>#{pMsg['book.title']}</span>
         </h:commandLink>
     </ui:define>
+    
+    <ui:define name="info">#{pMsg['book.title']}</ui:define>
     
     <ui:define name="add-book">
         <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType eq 'Admin'}">
             <div class="col-md-6 col-xl-3 text-left align-self-center">
                 <h:link class="btn btn-danger" 
                                  style="width: 100%;"
-                                 value="Add a Book"
+                                 value="#{pMsg['book.add']}"
                                  outcome="book-create?faces-redirect=true">
                 </h:link>
             </div>
@@ -40,14 +42,14 @@
                 <div class="col-md-6 col-lg-6 col-xl-4 offset-xl-0 text-nowrap">
                     <div id="dataTable_length-1" class="dataTables_length" aria-controls="dataTable"></div>
                     <h:selectOneMenu value="#{bookBean.category}" class="form-control form-control-sm custom-select custom-select-sm" style="width: 100%;">
-                        <f:selectItem itemValue="-1" itemLabel="--- Category ---" noSelectionOption="true"/>
+                        <f:selectItem itemValue="-1" itemLabel="--- #{pMsg['book.category']} ---" noSelectionOption="true"/>
                         <f:selectItems value="#{categoryBean.listCategory}" var="cate" itemLabel="#{cate.categoryName}" itemValue="#{cate.categoryId}"></f:selectItems>
                     </h:selectOneMenu>
                 </div>
                 <div class="col-md-6 col-lg-6 col-xl-4 offset-xl-0 text-nowrap">
                     <div id="dataTable_length-2" class="dataTables_length" aria-controls="dataTable">
                         <h:selectOneMenu value="#{bookBean.author}" class="form-control form-control-sm custom-select custom-select-sm" style="width: 100%;" label="--- Tác giả ---">
-                            <f:selectItem itemValue="-1" itemLabel="--- Author ---" noSelectionOption="true"/>
+                            <f:selectItem itemValue="-1" itemLabel="--- #{pMsg['book.author']} ---" noSelectionOption="true"/>
                             <f:selectItems value="#{authorBean.listAuthor}" var="author" itemLabel="#{author.authorName}" itemValue="#{author.authorID}"></f:selectItems>
                         </h:selectOneMenu>
                     </div>
@@ -55,7 +57,7 @@
                 <div class="col-md-6 col-lg-6 col-xl-4 offset-xl-0 text-nowrap">
                     <div id="dataTable_length-3" class="dataTables_length" aria-controls="dataTable">
                         <h:selectOneMenu value="#{bookBean.publisher}" class="form-control form-control-sm custom-select custom-select-sm" style="width: 100%;">
-                            <f:selectItem itemValue="-1" itemLabel="--- Publisher ---" noSelectionOption="true"/>
+                            <f:selectItem itemValue="-1" itemLabel="--- #{pMsg['book.publisher']} ---" noSelectionOption="true"/>
                             <f:selectItems value="#{publisherBean.listPublisher}" var="publisher" itemValue="#{publisher.publisherID}" itemLabel="#{publisher.publisherName}"></f:selectItems>
                         </h:selectOneMenu>
                     </div>
@@ -63,8 +65,9 @@
                 <div class="col-xl-10 offset-xl-1" style="margin-top: 1%;margin-bottom: 1%;">
                     <h:inputText class="bg-light form-control form-control-sm input-group-text custom-select-sm" 
                                  style="width: 90%;margin-left: 0px;margin-right: 6.5px; display: inline-block" 
-                                 value="#{bookBean.keyword}" t:placeholder="Search by name or id..."/>
-                    <h:commandButton id="SearchBtn" class="btn btn-primary py-0" style="height: 32px; margin-bottom: 3px" value="Search">
+                                 value="#{bookBean.keyword}" t:placeholder="#{pMsg['book.keyword']}"/>
+                    <h:commandButton id="SearchBtn" class="btn btn-primary py-0" style="height: 32px; margin-bottom: 3px" 
+                                     value="#{pMsg['book.buttonSearch']}">
                         <f:ajax execute="@form" listener="#{bookBean.searchItem()}" render="fo:test" />
                     </h:commandButton>
                 </div>
@@ -74,7 +77,7 @@
                 <div class="form-group">
                     <div class="card">
                         <div class="card-header py-3">
-                            <p class="text-primary m-0 font-weight-bold">Books</p>
+                            <p class="text-primary m-0 font-weight-bold">#{pMsg['book.info']}</p>
                         </div>
                         <div id="alertUpdate" role="alert" class="alert alert-danger" style="display: none">
                             <h:outputText id="notification" value="#{borrowBean.alert}"></h:outputText>
@@ -82,7 +85,7 @@
                         <div class="card-body" style="padding-top: 0px;">
                             <div  class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
                                 <p:dataTable value="#{bookBean.listBook}" var="p"
-                                             emptyMessage="No book found"
+                                             emptyMessage="#{pMsg['book.noBook']}"
                                              paginator="true"
                                              rows="5"
                                              pageLinks="10"
@@ -90,28 +93,28 @@
                                              paginatorPosition="bottom"
                                              id="test"
                                              tableStyleClass="ui-datatable">
-                                    <p:column headerText="ID" style="width:70px;" sortBy="#{p.bookID}">    				                                                  
+                                    <p:column headerText="#{pMsg['book.id']}" style="width:12%;" sortBy="#{p.bookID}">    				                                                  
                                             <h:outputText value="#{p.bookID}"></h:outputText>
                                      </p:column>
-                                    <p:column headerText="Image">                                                                                                       
+                                    <p:column headerText="#{pMsg['book.img']}">                                                                                                       
                                             <h:graphicImage library="img" name="#{p.image}" styleClass="img-fluid" width="120"></h:graphicImage>
                                      </p:column>
-                                     <p:column headerText="Name" sortBy="#{p.bookName}">    				                                                        
+                                     <p:column headerText="#{pMsg['book.name']}" sortBy="#{p.bookName}">    				                                                        
                                             <h:outputText value="#{p.bookName}"></h:outputText>
                                      </p:column>
-                                    <p:column headerText="Status" sortBy="#{p.status}">    				                                                        
+                                    <p:column headerText="#{pMsg['book.status']}" sortBy="#{p.status}">    				                                                        
                                             <h:outputText value="#{p.status}"></h:outputText>
                                      </p:column>
                                     <p:column>
                                         <h:commandButton class="btn btn-success btn-sm" 
                                                         style="height:33px; width:100%; margin-bottom: 10%; font-size: .875rem;"
-                                                        value="Borrow" 
+                                                        value="#{pMsg['book.buttonBorrow']}" 
                                                         disabled="#{p.status eq 'Hết'}">
                                             <f:ajax listener="#{borrowBean.addToCart(p.bookID, p.bookName)}" render=":fo:notification" onevent="addFail"/>
                                         </h:commandButton>
                                         <h:link class="btn btn-primary btn-sm" 
                                                        style="width: 100%;margin-bottom: 10%;height: 200%; color: white;" 
-                                                       value="Detail"
+                                                       value="#{pMsg['book.buttonDetail']}"
                                                        includeViewParams="true"
                                                        outcome="book-detail?faces-redirect=true">
                                             <f:param name="bookID" value="#{p.bookID}"/>

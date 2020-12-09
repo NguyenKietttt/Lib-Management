@@ -9,8 +9,10 @@ import com.ndtk.pojo.Book;
 import com.ndtk.res.BookRes;
 import com.ndtk.service.BookService;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -20,6 +22,8 @@ import javax.faces.bean.RequestScoped;
 @ManagedBean(name = "bookBean")
 @RequestScoped
 public class BookBean {
+    private ResourceBundle bundle = ResourceBundle.getBundle("book", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+    
     private static BookService bookSvc = new BookService();
     
     private static ArrayList<BookRes> listBook;
@@ -65,9 +69,9 @@ public class BookBean {
         
         for (Book b : books) {
             if (b.getBookStatus())
-                status = "Còn";
+                status = this.bundle.getString("book.inStock");
             else
-                status = "Hết";
+                status = this.bundle.getString("book.outStock");
                 
             BookRes bRes = new BookRes(b.getBookID(), b.getBookName(), b.getImage(), status);
             booksRes.add(bRes);
@@ -181,6 +185,20 @@ public class BookBean {
     // </editor-fold>
         
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
+    /**
+     * @return the bundle
+     */
+    public ResourceBundle getBundle() {
+        return bundle;
+    }
+
+    /**
+     * @param bundle the bundle to set
+     */
+    public void setBundle(ResourceBundle bundle) {
+        this.bundle = bundle;
+    }
+    
     /**
      * @return the bookSvc
      */

@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.TimeZone;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -32,6 +33,8 @@ import javax.faces.context.FacesContext;
 @ManagedBean(name = "returnBean")
 @RequestScoped
 public class ReturnBean {
+    private ResourceBundle bundle = ResourceBundle.getBundle("book", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+    
     private static BorrowReturnService brSvc = new BorrowReturnService();
     
     private static String brID;
@@ -85,7 +88,7 @@ public class ReturnBean {
             }
         }
         else
-            this.status = "Borrow Detail does not exits";
+            this.status = this.bundle.getString("bookreturn.check");
     }
     
     public void returnBook(){
@@ -141,6 +144,20 @@ public class ReturnBean {
     }
 
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
+    /**
+     * @return the bundle
+     */
+    public ResourceBundle getBundle() {
+        return bundle;
+    }
+
+    /**
+     * @param bundle the bundle to set
+     */
+    public void setBundle(ResourceBundle bundle) {
+        this.bundle = bundle;
+    }
+    
     /**
      * @return the brSvc
      */

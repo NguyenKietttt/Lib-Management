@@ -9,6 +9,7 @@ import com.ndtk.pojo.Card;
 import com.ndtk.pojo.Reader;
 import com.ndtk.service.CardService;
 import java.time.LocalDate;
+import java.util.ResourceBundle;
 import java.util.TimeZone;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -22,11 +23,13 @@ import javax.faces.context.FacesContext;
 @ManagedBean(name = "readerCreateBean")
 @RequestScoped
 public class ReaderCreateBean {
+    private ResourceBundle bundle = ResourceBundle.getBundle("book", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+    
     private static CardService cardSvc = new CardService();
     
-    private static String readerName = "";
-    private static String email = "";
-    private static String phone = "";
+    private String readerName = "";
+    private String email = "";
+    private String phone = "";
     
     private String alert = "";
     
@@ -43,7 +46,8 @@ public class ReaderCreateBean {
             r.setReaderName(this.getReaderName());
         }
         else{
-           this.setAlert("Reader Name cannot be blank");
+           this.setAlert(this.bundle.getString("employeedetail.fullName") + " " +
+                    this.bundle.getString("bookdetail.validateBlank"));
            return;
         }
         
@@ -52,7 +56,8 @@ public class ReaderCreateBean {
             r.setEmail(this.getEmail());
         }
         else{
-           this.setAlert("Email cannot be blank");
+           this.setAlert(this.bundle.getString("bookborrow.email") + " " +
+                    this.bundle.getString("bookdetail.validateBlank"));
            return;
         }
         
@@ -61,7 +66,8 @@ public class ReaderCreateBean {
             r.setPhone(this.getPhone());
         }
         else{
-           this.setAlert("Phone cannot be blank");
+           this.setAlert(this.bundle.getString("bookborrow.phone") + " " +
+                    this.bundle.getString("bookdetail.validateBlank"));
            return;
         }
         
@@ -85,11 +91,23 @@ public class ReaderCreateBean {
                 .handleNavigation(FacesContext
                         .getCurrentInstance(), null, "reader-detail?faces-redirect=true&cardID=" + c.getCardID());
         }
-        else
-            this.alert = "Can't create reader";
     }
     
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
+    /**
+     * @return the bundle
+     */
+    public ResourceBundle getBundle() {
+        return bundle;
+    }
+
+    /**
+     * @param bundle the bundle to set
+     */
+    public void setBundle(ResourceBundle bundle) {
+        this.bundle = bundle;
+    }
+    
     /**
      * @return the alert
      */

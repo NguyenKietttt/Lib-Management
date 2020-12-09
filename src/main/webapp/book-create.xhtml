@@ -12,9 +12,9 @@
         </f:metadata>
     </ui:define>
     
-    <ui:define name="title">Book Create</ui:define>
+    <ui:define name="title">#{pMsg['bookcreate.title']}</ui:define>
     
-    <ui:define name="info">Book Create</ui:define>
+    <ui:define name="info">#{pMsg['bookcreate.title']}</ui:define>
     
     <ui:define name="content">
         <h:form id="fo" enctype="multipart/form-data">
@@ -26,7 +26,7 @@
                                             library="img" name="#{bookCreateBean.image}" 
                                             width="160" height="160"/>
                             <div class="mb-3">
-                                <h:outputLabel for="file-upload" value="Upload" 
+                                <h:outputLabel for="file-upload" value="#{pMsg['bookdetail.buttonUpload']}" 
                                                styleClass="btn btn-primary btn-sm" style="width: 50%;" />
                                 <p style="color: red" id="file-name"></p>
                                 <h:inputFile id="file-upload" styleClass="upload" 
@@ -41,7 +41,7 @@
                         <div class="col">
                             <div class="card shadow mb-3">
                                 <div class="card-header py-3">
-                                <p class="text-primary m-0 font-weight-bold">Infomation</p>
+                                <p class="text-primary m-0 font-weight-bold">#{pMsg['book.info']}</p>
                             </div>
                                 <div class="card-body">
                                     <div id="alertUpdate" role="alert" class="alert alert-danger"
@@ -52,14 +52,14 @@
                                         <div class="col">
                                             <div class="form-group">
                                                 <label>
-                                                    <strong>Status</strong>
+                                                    <strong>#{pMsg['book.status']}</strong>
                                                     <h:message id="mStatus" style="color: red" for="status" />
                                                     <br/>
                                                 </label>
                                                 <h:inputText id="status" class="form-control" 
-                                                             t:placeholder="Status" value="#{bookCreateBean.status}"
+                                                             t:placeholder="#{pMsg['book.status']}" value="#{bookCreateBean.status}"
                                                              required="true" requiredMessage=" *"
-                                                             validatorMessage=" - chấp nhận giá trị Còn hoặc Hết">
+                                                             validatorMessage="&#160; #{pMsg['bookdetail.validateStatus']}">
                                                     <f:validateRegex pattern="^Còn|Hết$"/>
                                                 </h:inputText>
                                             </div>
@@ -69,26 +69,26 @@
                                     <div class="col-xl-12">
                                         <div class="form-group">
                                             <label>
-                                                <strong>Book Name</strong>
+                                                <strong>#{pMsg['book.name']}</strong>
                                                 <h:message id="mBookName" style="color: red" for="bookName" />
                                                 <br/>
                                             </label>
                                             <h:inputText id="bookName" class="form-control" 
-                                                         t:placeholder="Name" value="#{bookCreateBean.bookName}" 
+                                                         t:placeholder="#{pMsg['book.name']}" value="#{bookCreateBean.bookName}" 
                                                          required="true" requiredMessage=" *"/>
                                         </div>
                                     </div>
                                     <div class="col-xl-12">
                                         <div class="form-group">
                                             <label>
-                                                <strong>Publishing Date</strong>
+                                                <strong>#{pMsg['bookdetail.publishingDate']}</strong>
                                                 <h:message id="mPubDate" style="color: red" for="pubDate" />
                                                 <br/>
                                             </label>
                                             <h:inputText id="pubDate" class="form-control" 
-                                                         t:placeholder="Publishing Date" value="#{bookCreateBean.dateUtil}" 
+                                                         t:placeholder="#{pMsg['bookdetail.publishingDate']}" value="#{bookCreateBean.dateUtil}" 
                                                          required="true" requiredMessage=" *"
-                                                         converterMessage=" - Sai định dạng. Ví dụ: 27/5/2020">
+                                                         converterMessage="&#160; #{pMsg['bookdetail.validatePubDate']}">
                                                 <f:convertDateTime type="date" pattern = "dd/MM/yyyy" />
                                             </h:inputText>
                                         </div>
@@ -96,7 +96,7 @@
                                     <div class="col-xl-12">
                                         <div class="form-group">
                                             <label>
-                                                <strong>Category</strong>
+                                                <strong>#{pMsg['book.category']}</strong>
                                             </label>
                                             <h:selectOneMenu class="form-control"
                                                              value="#{bookCreateBean.cateID}">
@@ -108,35 +108,35 @@
                                     <div class="col-xl-12">
                                         <div class="form-group">
                                             <label>
-                                                <strong>Author</strong>
+                                                <strong>#{pMsg['book.author']}</strong>
                                                 <h:message id="mAuthor" style="color: red" for="author" />
                                                 <br/>
                                             </label>
                                             <h:inputText id="author" class="form-control" 
-                                                         t:placeholder="Author" value="#{bookCreateBean.authorName}" 
+                                                         t:placeholder="#{pMsg['book.author']}" value="#{bookCreateBean.authorName}" 
                                                          required="true" requiredMessage=" *"/>
                                         </div>
                                     </div>
                                     <div class="col-xl-12">
                                         <div class="form-group">
                                             <label>
-                                                <strong>Publisher</strong>
+                                                <strong>#{pMsg['book.publisher']}</strong>
                                                 <h:message id="mPublisher" style="color: red" for="publisher" />
                                                 <br/>
                                             </label>
                                             <h:inputText id="publisher" class="form-control" 
-                                                         t:placeholder="Publisher" value="#{bookCreateBean.publisherName}" 
+                                                         t:placeholder="#{pMsg['book.publisher']}" value="#{bookCreateBean.publisherName}" 
                                                          required="true" requiredMessage=" *"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label>
-                                        <strong>Description</strong>
+                                        <strong>#{pMsg['bookdetail.description']}</strong>
                                         <h:message id="mDes" style="color: red" for="des" />
                                     </label>
                                     <h:inputTextarea  id="des" class="form-control" 
-                                                      t:placeholder="Description" value="#{bookCreateBean.bookDescription}" 
+                                                      t:placeholder="#{pMsg['bookdetail.description']}" value="#{bookCreateBean.bookDescription}" 
                                                       style="width: 100%;height: 200px; resize: none;"
                                                       required="true" requiredMessage=" *">
                                     </h:inputTextarea>
@@ -144,7 +144,7 @@
                                 <div class="form-group text-center" style="margin-top: 4%;">
 
                                     <h:commandButton id="save" class="btn btn-primary" style="width: 20%;"
-                                        value="Save">
+                                        value="#{pMsg['bookcreate.buttonCreate']}">
                                         <f:ajax execute="@form" listener="#{bookCreateBean.addBook()}"
                                                 render="@form"
                                                 onevent="updateFail"/>
@@ -210,20 +210,20 @@
                 readURL(this);
                 if (imgSize > 2097152){
                     document.getElementById("fo:save").disabled = true;
-                    document.querySelector("#file-name").textContent = "File lesser than 2MB";
+                    document.querySelector("#file-name").textContent = "#{pMsg['bookdetail.size']}";
                 }
                 else{
                     document.getElementById("fo:save").disabled = false;
-                    document.querySelector("#file-name").textContent = "Preview";
+                    document.querySelector("#file-name").textContent = "#{pMsg['bookdetail.preview']}";
                 }
                 
                 if (!validImageTypes.includes(imgType)){
                     document.getElementById("fo:save").disabled = true;
-                    document.querySelector("#file-name").textContent = "File must be png/jgp";
+                    document.querySelector("#file-name").textContent = "#{pMsg['bookdetail.type']}";
                 }
                 else{
                     document.getElementById("fo:save").disabled = false;
-                    document.querySelector("#file-name").textContent = "Preview";
+                    document.querySelector("#file-name").textContent = "#{pMsg['bookdetail.preview']}";
                 }
             });
         </script>

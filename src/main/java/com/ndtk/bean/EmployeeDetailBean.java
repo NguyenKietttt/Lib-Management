@@ -10,6 +10,7 @@ import com.ndtk.pojo.BorrowReturn;
 import com.ndtk.pojo.Employee;
 import com.ndtk.service.AccountService;
 import com.ndtk.service.EmployeeService;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.UUID;
@@ -27,6 +28,8 @@ import javax.faces.context.FacesContext;
 @ManagedBean(name = "employeeDetailBean")
 @RequestScoped
 public class EmployeeDetailBean {
+    private ResourceBundle bundle = ResourceBundle.getBundle("book", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+    
     private static AccountService accountSvc = new AccountService();
     private static EmployeeService employeeSvc = new EmployeeService();
     
@@ -99,7 +102,8 @@ public class EmployeeDetailBean {
             e.setEmployeeName(this.fullName);
         }
         else{
-           this.alert = "Employee Name cannot be blank";
+           this.alert = this.bundle.getString("employeedetail.fullName") + " " +
+                    this.bundle.getString("bookdetail.validateBlank");
            return;
         }
         
@@ -108,7 +112,8 @@ public class EmployeeDetailBean {
             e.setEmail(this.email);
         }
         else{
-           this.alert = "Email cannot be blank";
+           this.alert = this.bundle.getString("bookborrow.email") + " " +
+                    this.bundle.getString("bookdetail.validateBlank");
            return;
         }
         
@@ -117,19 +122,22 @@ public class EmployeeDetailBean {
             e.setPhone(this.phone);
         }
         else{
-           this.alert = "Phone cannot be blank";
+           this.alert = this.bundle.getString("bookborrow.phone") + " " +
+                    this.bundle.getString("bookdetail.validateBlank");
            return;
         }
         
         // Username
         if (this.accountID.trim().equals("")) {
-            this.alert = "Username cannot be blank";
+            this.alert = this.bundle.getString("login.username") + " " +
+                    this.bundle.getString("bookdetail.validateBlank");
            return;
         }
         
         // Password
         if (this.password.trim().equals("")) {
-            this.alert = "Username cannot be blank";
+            this.alert = this.alert = this.bundle.getString("login.password") + " " +
+                    this.bundle.getString("bookdetail.validateBlank");
         }
 
         if (employeeSvc.addOrSaveEmployee(e)) {
@@ -154,7 +162,7 @@ public class EmployeeDetailBean {
                 employeeSvc.DeleteEmployee(e);
         }
         
-         this.setAlert("Username has been used");
+         this.setAlert(this.alert = this.bundle.getString("login.createWrong"));
     }
     
     public void updateAccount() {
@@ -163,7 +171,8 @@ public class EmployeeDetailBean {
             emp.setEmployeeName(this.fullName);
         }
         else{
-           this.alert = "Employee Name cannot be blank";
+           this.alert = this.bundle.getString("employeedetail.fullName") + " " +
+                    this.bundle.getString("bookdetail.validateBlank");
            return;
         }
         
@@ -172,7 +181,8 @@ public class EmployeeDetailBean {
             emp.setEmail(this.email);
         }
         else{
-           this.alert = "Email cannot be blank";
+           this.alert = this.bundle.getString("bookborrow.email") + " " +
+                    this.bundle.getString("bookdetail.validateBlank");
            return;
         }
         
@@ -181,7 +191,8 @@ public class EmployeeDetailBean {
             emp.setPhone(this.phone);
         }
         else{
-           this.alert = "Phone cannot be blank";
+           this.alert = this.bundle.getString("bookborrow.phone") + " " +
+                    this.bundle.getString("bookdetail.validateBlank");
            return;
         }
 
@@ -210,7 +221,7 @@ public class EmployeeDetailBean {
                 }
             }
             else
-                this.alert = "Not equal";
+                this.alert = this.bundle.getString("login.updatePassWrong");
         }
         else{
             if (accountSvc.addOrSaveAccount(emp.getAccount())) {
@@ -234,6 +245,20 @@ public class EmployeeDetailBean {
     }
     
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
+    /**
+     * @return the bundle
+     */
+    public ResourceBundle getBundle() {
+        return bundle;
+    }
+
+    /**
+     * @param bundle the bundle to set
+     */
+    public void setBundle(ResourceBundle bundle) {
+        this.bundle = bundle;
+    }
+    
     /**
      * @return the accountID
      */

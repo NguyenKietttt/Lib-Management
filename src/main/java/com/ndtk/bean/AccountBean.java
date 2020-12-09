@@ -8,6 +8,7 @@ package com.ndtk.bean;
 import com.ndtk.pojo.Account;
 import com.ndtk.service.AccountService;
 import com.ndtk.service.EmployeeService;
+import java.util.ResourceBundle;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -20,6 +21,8 @@ import javax.faces.context.FacesContext;
 @ManagedBean(name = "accountBean")
 @RequestScoped
 public class AccountBean {
+    private ResourceBundle bundle = ResourceBundle.getBundle("book", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+    
     private static AccountService accountSvc = new AccountService();
     private static EmployeeService employeeSvc = new EmployeeService();
     
@@ -96,7 +99,7 @@ public class AccountBean {
             return;
         }
         
-         this.setAlert("Username or Password is wrong");
+         this.setAlert(this.bundle.getString("login.loginWrong"));
     }
     
     public String getMessage() {
@@ -104,6 +107,20 @@ public class AccountBean {
    }
     
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
+    /**
+     * @return the bundle
+     */
+    public ResourceBundle getBundle() {
+        return bundle;
+    }
+
+    /**
+     * @param bundle the bundle to set
+     */
+    public void setBundle(ResourceBundle bundle) {
+        this.bundle = bundle;
+    }
+    
     /**
      * @return the alert
      */

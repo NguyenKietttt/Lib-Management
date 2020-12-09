@@ -13,9 +13,9 @@
         </f:metadata>
     </ui:define>
     
-    <ui:define name="title">Reader Create</ui:define>
+    <ui:define name="title">#{pMsg['readerdetail.title']}</ui:define>
     
-    <ui:define name="info">Reader Create</ui:define>
+    <ui:define name="info">#{pMsg['readerdetail.title']}</ui:define>
     
     <ui:define name="content">
         <h:form id="fo">
@@ -23,23 +23,23 @@
                 <div class="col-xl-8">
                     <div class="card shadow mb-3">
                         <div class="card-header py-3">
-                            <p class="text-primary m-0 font-weight-bold">Infomation</p>
+                            <p class="text-primary m-0 font-weight-bold">#{pMsg['book.info']}</p>
                         </div>
                         <div class="card-body">
                             <div id="alertUpdate" role="alert" class="alert alert-danger"
                                 style="display: none">
-                                <h:outputText id="notification" value=""></h:outputText>
+                                <h:outputText id="notification" value="#{readerCreateBean.alert}"></h:outputText>
                            </div>
                             <div class="form-row">
                                 <div class="col">
                                     <div class="form-group">
                                         <label>
-                                            <strong>Name</strong>
+                                            <strong>#{pMsg['bookborrow.readerName']}</strong>
                                             <h:message style="color: red" for="readerName" />
                                             <br/>
                                         </label>
                                         <h:inputText id="readerName" class="form-control"
-                                                     t:placeholder="Reader Name"
+                                                     t:placeholder="#{pMsg['bookborrow.readerName']}"
                                                      required="true" requiredMessage=" *"
                                                      value="#{readerCreateBean.readerName}" />
                                     </div>
@@ -49,15 +49,15 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <label>
-                                            <strong>Email</strong>
+                                            <strong>#{pMsg['bookborrow.email']}</strong>
                                             <h:message style="color: red" for="mailaddress" />
                                             <br/>
                                         </label>
                                         <h:inputText id="mailaddress" class="form-control"
-                                                     t:placeholder="Email" 
+                                                     t:placeholder="#{pMsg['bookborrow.email']}" 
                                                      value="#{readerCreateBean.email}"
                                                      required="true" requiredMessage=" *" 
-                                                     validatorMessage=" - Invalid email">
+                                                     validatorMessage="&#160; #{pMsg['employeedetail.validateMail']}">
                                             <f:validateRegex pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" />
                                         </h:inputText>
                                     </div>
@@ -65,14 +65,15 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <label>
-                                            <strong>Phone</strong>
+                                            <strong>#{pMsg['bookborrow.phone']}</strong>
                                             <h:message id="test" style="color: red" for="phone" />
                                             <br/>
                                         </label>
                                         <h:inputText id="phone" class="form-control"
+                                                     t:placeholder="#{pMsg['bookborrow.phone']}"
                                                      value="#{readerCreateBean.phone}"
                                                      required="true" requiredMessage=" *"
-                                                     validatorMessage=" - Invalid phone number">
+                                                     validatorMessage="&#160; #{pMsg['employeedetail.validatePhone']}">
                                             <f:validateRegex pattern="^(0[3|5|7|8|9]|01[2|6|8|9])+([0-9]{8})$" />
                                         </h:inputText>
                                     </div>
@@ -83,7 +84,7 @@
                                     <div class="form-group">
                                         <h:commandButton styleClass="btn btn-success" type="button"
                                                              style="width: 25%; margin-right: 5%"
-                                                             value="Update">
+                                                             value="#{pMsg['login.buttonRegister']}">
                                             <f:ajax render="@form" execute="@form"
                                                     onevent="createFail" listener="#{readerCreateBean.addReader()}"/>
                                         </h:commandButton>
@@ -102,6 +103,8 @@
             function createFail(data) {
                 if(data.status === "success"){
                     var temp = document.getElementById('fo:notification').innerHTML;
+                    
+                    console.log(temp);
 
                     if (temp !== "") {
                         document.getElementById("alertUpdate").style.display = "block";

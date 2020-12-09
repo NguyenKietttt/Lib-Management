@@ -12,9 +12,9 @@
         </f:metadata>
     </ui:define>
     
-    <ui:define name="title">Book Detail</ui:define>
+    <ui:define name="title">#{pMsg['bookdetail.title']}</ui:define>
     
-    <ui:define name="info">Book Detail</ui:define>
+    <ui:define name="info">#{pMsg['bookdetail.title']}</ui:define>
     
     <ui:define name="content">
         <h:form id="fo" enctype="multipart/form-data">
@@ -26,7 +26,7 @@
                                             library="img" name="#{bookDetailBean.bookDetailRes.image}" 
                                             width="160" height="160"/>
                             <div class="mb-3" style="#{facesContext.externalContext.sessionMap.get('user').userType ne 'Admin' ? 'display: none;' : 'display: block;'}">
-                                <h:outputLabel for="file-upload" value="Upload" 
+                                <h:outputLabel for="file-upload" value="#{pMsg['bookdetail.buttonUpload']}" 
                                                styleClass="btn btn-primary btn-sm" style="width: 50%;" />
                                 <p style="color: red" id="file-name"></p>
                                 <h:inputFile id="file-upload" styleClass="upload" 
@@ -41,7 +41,7 @@
                         <div class="col">
                             <div class="card shadow mb-3">
                                 <div class="card-header py-3">
-                                    <p class="text-primary m-0 font-weight-bold">Infomation</p>
+                                    <p class="text-primary m-0 font-weight-bold">#{pMsg['book.info']}</p>
                                 </div>
                                 <div class="card-body">
                                     <div id="alertUpdate" role="alert" class="alert alert-danger"
@@ -50,7 +50,7 @@
                                    </div>
                                     <div class="form-row">
                                         <div class="col">
-                                            <div class="form-group"><label><strong>Book ID</strong><br/></label>
+                                            <div class="form-group"><label><strong>#{pMsg['book.id']}</strong><br/></label>
                                                 <h:inputText class="form-control" 
                                                              t:placeholder="ID" value="#{bookDetailBean.bookDetailRes.bookID}"
                                                              readonly="true"/>
@@ -59,14 +59,14 @@
                                         <div class="col">
                                             <div class="form-group">
                                                 <label>
-                                                    <strong>Status</strong>
+                                                    <strong>#{pMsg['book.status']}</strong>
                                                     <h:message id="mStatus" style="color: red" for="status" />
                                                     <br/>
                                                 </label>
                                                 <h:inputText id="status" class="form-control" 
-                                                             t:placeholder="Status" value="#{bookDetailBean.bookDetailRes.status}"
+                                                             t:placeholder="#{pMsg['book.status']}" value="#{bookDetailBean.bookDetailRes.status}"
                                                              required="true" requiredMessage=" *"
-                                                             validatorMessage=" - chấp nhận giá trị Còn hoặc Hết"
+                                                             validatorMessage="&#160; #{pMsg['bookdetail.validateStatus']}"
                                                              readonly="#{facesContext.externalContext.sessionMap
                                                                          .get('user').userType eq 'Admin' ? false : true}">
                                                     <f:validateRegex pattern="^Còn|Hết$"/>
@@ -78,12 +78,12 @@
                                         <div class="col-xl-12">
                                             <div class="form-group">
                                                 <label>
-                                                    <strong>Book Name</strong>
+                                                    <strong>#{pMsg['book.name']}</strong>
                                                     <h:message id="mBookName" style="color: red" for="bookName" />
                                                     <br/>
                                                 </label>
                                                 <h:inputText id="bookName" class="form-control" 
-                                                             t:placeholder="Name" value="#{bookDetailBean.bookDetailRes.bookName}" 
+                                                             t:placeholder="#{pMsg['book.name']}" value="#{bookDetailBean.bookDetailRes.bookName}" 
                                                              required="true" requiredMessage=" *"
                                                              readonly="#{facesContext.externalContext.sessionMap
                                                                          .get('user').userType eq 'Admin' ? false : true}"/>
@@ -92,14 +92,14 @@
                                         <div class="col-xl-12">
                                             <div class="form-group">
                                                 <label>
-                                                    <strong>Publishing Date</strong>
+                                                    <strong>#{pMsg['bookdetail.publishingDate']}</strong>
                                                     <h:message id="mPubDate" style="color: red" for="pubDate" />
                                                     <br/>
                                                 </label>
                                                 <h:inputText id="pubDate" class="form-control" 
-                                                             t:placeholder="Publishing Date" value="#{bookDetailBean.dateString}" 
+                                                             t:placeholder="#{pMsg['bookdetail.publishingDate']}" value="#{bookDetailBean.dateString}" 
                                                              required="true" requiredMessage=" *"
-                                                             converterMessage=" - Sai định dạng. Ví dụ: 27/5/2020"
+                                                             converterMessage="&#160; #{pMsg['bookdetail.validatePubDate']}"
                                                              readonly="#{facesContext.externalContext.sessionMap
                                                                          .get('user').userType eq 'Admin' ? false : true}">
                                                     <f:convertDateTime type="date" pattern = "dd/MM/yyyy" />
@@ -109,7 +109,7 @@
                                         <div class="col-xl-12">
                                             <div class="form-group">
                                                 <label>
-                                                    <strong>Category</strong>
+                                                    <strong>#{pMsg['book.category']}</strong>
                                                 </label>
                                                 <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType eq 'Admin'}">
                                                     <h:selectOneMenu class="form-control"
@@ -123,7 +123,7 @@
                                                 </c:if>
                                                 <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType ne 'Admin'}">
                                                     <h:inputText class="form-control" 
-                                                                 t:placeholder="Name" 
+                                                                 t:placeholder="#{pMsg['book.category']}" 
                                                                  value="#{bookDetailBean.bookDetailRes.category.categoryName}"
                                                                  readonly="true"/>
                                                 </c:if>
@@ -132,12 +132,12 @@
                                         <div class="col-xl-12">
                                             <div class="form-group">
                                                 <label>
-                                                    <strong>Author</strong>
+                                                    <strong>#{pMsg['book.author']}</strong>
                                                     <h:message id="mAuthor" style="color: red" for="author" />
                                                     <br/>
                                                 </label>
                                                 <h:inputText id="author" class="form-control" 
-                                                             t:placeholder="Author" value="#{bookDetailBean.bookDetailRes.author.authorName}" 
+                                                             t:placeholder="#{pMsg['book.author']}" value="#{bookDetailBean.bookDetailRes.author.authorName}" 
                                                              required="true" requiredMessage=" *"
                                                              readonly="#{facesContext.externalContext.sessionMap
                                                                          .get('user').userType eq 'Admin' ? false : true}"/>
@@ -146,12 +146,12 @@
                                         <div class="col-xl-12">
                                             <div class="form-group">
                                                 <label>
-                                                    <strong>Publisher</strong>
+                                                    <strong>#{pMsg['book.publisher']}</strong>
                                                     <h:message id="mPublisher" style="color: red" for="publisher" />
                                                     <br/>
                                                 </label>
                                                 <h:inputText id="publisher" class="form-control" 
-                                                             t:placeholder="Publisher" value="#{bookDetailBean.bookDetailRes.publisher.publisherName}" 
+                                                             t:placeholder="#{pMsg['book.publisher']}" value="#{bookDetailBean.bookDetailRes.publisher.publisherName}" 
                                                              required="true" requiredMessage=" *"
                                                              readonly="#{facesContext.externalContext.sessionMap
                                                                          .get('user').userType eq 'Admin' ? false : true}"/>
@@ -160,11 +160,11 @@
                                     </div>
                                     <div class="form-group">
                                         <label>
-                                            <strong>Description</strong>
+                                            <strong>#{pMsg['bookdetail.description']}</strong>
                                             <h:message id="mDes" style="color: red" for="des" />
                                         </label>
                                         <h:inputTextarea  id="des" class="form-control" 
-                                                          t:placeholder="Description" value="#{bookDetailBean.bookDetailRes.bookDescription}" 
+                                                          t:placeholder="#{pMsg['bookdetail.description']}" value="#{bookDetailBean.bookDetailRes.bookDescription}" 
                                                           style="width: 100%;height: 200px; resize: none;"
                                                           required="true" requiredMessage=" *"
                                                           readonly="#{facesContext.externalContext.sessionMap
@@ -172,19 +172,19 @@
                                         </h:inputTextarea>
                                     </div>
                                     <div class="form-group text-center" style="margin-top: 4%;">
-                                        <h:commandButton value="Borrow" class="btn btn-success" type="button" 
+                                        <h:commandButton value="#{pMsg['book.buttonBorrow']}" class="btn btn-success" type="button" 
                                                          style="width: 20%;"
                                                          disabled="#{bookDetailBean.bookDetailRes.status eq 'Hết'}">
                                         </h:commandButton>
 
                                         <h:commandButton id="save" class="btn btn-primary" 
                                                          style="width: 20%; margin-left: 5%; #{facesContext.externalContext.sessionMap.get('user').userType ne 'Admin' ? 'display: none;' : 'display: inline-block;'}"
-                                                        value="Save">
+                                                        value="#{pMsg['bookdetail.buttonUpdate']}">
                                             <f:ajax execute="@form" listener="#{bookDetailBean.updateBook()}"
                                                     render="@form"
                                                     onevent="updateFail"/>
                                         </h:commandButton>
-                                        <h:commandButton value="Delete" class="btn btn-danger" type="button" 
+                                        <h:commandButton value="#{pMsg['bookdetail.buttonDelete']}" class="btn btn-danger" type="button" 
                                                          style="margin-left: 5%; width: 20%;
                                                          #{facesContext.externalContext.sessionMap.get('user').userType ne 'Admin' ? 'display: none;' : 'display: inline-block;'}">
                                             <f:ajax execute="@form" listener="#{bookDetailBean.deleteBook()}"
@@ -251,20 +251,20 @@
                 readURL(this);
                 if (imgSize > 2097152){
                     document.getElementById("fo:save").disabled = true;
-                    document.querySelector("#file-name").textContent = "File lesser than 2MB";
+                    document.querySelector("#file-name").textContent = "#{pMsg['bookdetail.size']}";
                 }
                 else{
                     document.getElementById("fo:save").disabled = false;
-                    document.querySelector("#file-name").textContent = "Preview";
+                    document.querySelector("#file-name").textContent = "#{pMsg['bookdetail.preview']}";
                 }
                 
                 if (!validImageTypes.includes(imgType)){
                     document.getElementById("fo:save").disabled = true;
-                    document.querySelector("#file-name").textContent = "File must be png/jgp";
+                    document.querySelector("#file-name").textContent = "#{pMsg['bookdetail.type']}";
                 }
                 else{
                     document.getElementById("fo:save").disabled = false;
-                    document.querySelector("#file-name").textContent = "Preview";
+                    document.querySelector("#file-name").textContent = "#{pMsg['bookdetail.preview']}";
                 }
             });
         </script>

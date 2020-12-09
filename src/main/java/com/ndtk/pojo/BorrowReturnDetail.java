@@ -30,7 +30,7 @@ public class BorrowReturnDetail implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "BorrowReturnID")
     private BorrowReturn borrowReturn;
     

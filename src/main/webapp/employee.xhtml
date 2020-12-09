@@ -14,22 +14,22 @@
         </f:metadata>
     </ui:define>
     
-    <ui:define name="title">Employee</ui:define>
+    <ui:define name="title">#{pMsg['employee.title']}</ui:define>
     
     <ui:define name="employee-nav">
         <h:commandLink class="nav-link active" action="employee?faces-redirect=true">
             <i class="icon-people"></i>
-            <span>Employee</span>
+            <span>#{pMsg['employee.title']}</span>
         </h:commandLink>
     </ui:define>
 
-    <ui:define name = "info" >Employee</ui:define>
+    <ui:define name = "info" >#{pMsg['employee.title']}</ui:define>
     
     <ui:define name="add-book">
         <div class="col-md-6 col-xl-3 text-left align-self-center">
             <h:link class="btn btn-danger" 
                              style="width: 100%;"
-                             value="Add a Employee"
+                             value="#{pMsg['employee.add']}"
                              outcome="register?faces-redirect=true">
             </h:link>
         </div>
@@ -41,8 +41,10 @@
                 <div class="col-xl-10 offset-xl-1" style="margin-top: 1%;margin-bottom: 1%;">
                     <h:inputText class="bg-light form-control form-control-sm input-group-text custom-select-sm" 
                                  style="width: 90%;margin-left: 0px;margin-right: 6.5px; display: inline-block" 
-                                 value="#{employeeBean.keyword}" t:placeholder="Search by Eemployee Name or ID..."/>
-                    <h:commandButton id="SearchBtn" class="btn btn-primary py-0" style="height: 32px; margin-bottom: 3px" value="Search">
+                                 value="#{employeeBean.keyword}" t:placeholder="#{pMsg['employee.keyword']}"/>
+                    <h:commandButton id="SearchBtn" class="btn btn-primary py-0" 
+                                     style="height: 32px; margin-bottom: 3px" 
+                                     value="#{pMsg['book.buttonSearch']}">
                         <f:ajax execute="@form" render="fo:test" listener="#{employeeBean.filterEmployee()}"/>
                     </h:commandButton>
                 </div>
@@ -52,36 +54,36 @@
                 <div class="form-group">
                     <div class="card">
                         <div class="card-header py-3">
-                            <p class="text-primary m-0 font-weight-bold">List Employees</p>
+                            <p class="text-primary m-0 font-weight-bold">#{pMsg['employee.list']}</p>
                         </div>
                         <div class="card-body" style="padding-top: 0px;">
                             <div  class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
                                 <p:dataTable value="#{employeeBean.listEmp}" var="p"
-                                             emptyMessage="No employee found"
+                                             emptyMessage="#{pMsg['employee.noEmployee']}"
                                              paginator="true"
                                              rows="5"
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {LastPageLink} "
                                              paginatorPosition="bottom"
                                              id="test"
                                              tableStyleClass="ui-datatable">
-                                    <p:column headerText="ID" width="12%" sortBy="#{p.employeeID}">    				                                                  
+                                    <p:column headerText="#{pMsg['employee.id']}" width="16%" sortBy="#{p.employeeID}">    				                                                  
                                         <h:outputText value="#{p.employeeID}"></h:outputText>
                                      </p:column>
-                                     <p:column headerText="Name" width="30%" sortBy="#{p.employeeName}">    				                                                        
+                                     <p:column headerText="#{pMsg['employee.name']}" width="30%" sortBy="#{p.employeeName}">    				                                                        
                                          <h:outputText value="#{p.employeeName}"></h:outputText>
                                      </p:column>
-                                    <p:column headerText="Email" sortBy="#{p.email}">    				                                                        
+                                    <p:column headerText="#{pMsg['bookborrow.email']}" sortBy="#{p.email}">    				                                                        
                                         <h:outputText value="#{p.email}">
                                         </h:outputText>
                                      </p:column>
-                                    <p:column headerText="Phone" sortBy="#{p.phone}">    				                                                        
+                                    <p:column headerText="#{pMsg['bookborrow.phone']}" sortBy="#{p.phone}">    				                                                        
                                         <h:outputText value="#{p.phone}">
                                         </h:outputText>
                                      </p:column>
                                     <p:column>
                                         <h:link class="btn btn-primary btn-sm" 
                                                        style="width: 100%; height: 200%; color: white;" 
-                                                       value="Detail"
+                                                       value="#{pMsg['book.buttonDetail']}"
                                                        includeViewParams="true"
                                                        outcome="employee-detail?faces-redirect=true">
                                             <f:param name="employeeID" value="#{p.employeeID}"/>

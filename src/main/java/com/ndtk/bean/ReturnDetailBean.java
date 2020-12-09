@@ -12,6 +12,7 @@ import com.ndtk.res.BookReturnDetailRes;
 import com.ndtk.service.BorrowReturnService;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.faces.bean.ManagedBean;
@@ -26,6 +27,8 @@ import javax.faces.context.FacesContext;
 @ManagedBean(name = "returndetailBean")
 @RequestScoped
 public class ReturnDetailBean {
+    private ResourceBundle bundle = ResourceBundle.getBundle("book", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+    
     private static BorrowReturnService brSvc = new BorrowReturnService();
     
     private String brID;
@@ -69,9 +72,9 @@ public class ReturnDetailBean {
                 this.email = br.getCard().getReader().getEmail();
                 this.phone = br.getCard().getReader().getPhone();
                 if (this.fines == null)
-                    this.fines = 0 + " VND";
+                    this.fines = 0 + " " + this.bundle.getString("bookreturndetail.money");
                 else
-                    this.fines = br.getFines() + " VND";
+                    this.fines = br.getFines() + " " + this.bundle.getString("bookreturndetail.money");
                 this.borrowDate = br.getBorrowDate(); 
                 this.returnDate = br.getReturnDate();
                 this.employee = br.getEmployee();
@@ -79,9 +82,9 @@ public class ReturnDetailBean {
                     BookReturnDetailRes brdRes = new BookReturnDetailRes();
                     brdRes.setBookName(brDetail.getBook().getBookName());
                     if (brDetail.isLost())
-                        brdRes.setStatus("Lost");
+                        brdRes.setStatus(this.bundle.getString("bookreturndetail.isLost"));
                     else
-                        brdRes.setStatus("Still");
+                        brdRes.setStatus(this.bundle.getString("bookreturndetail.isStill"));
 
                     listBRDRes.add(brdRes);
                 }
@@ -105,6 +108,20 @@ public class ReturnDetailBean {
     }
 
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
+    /**
+     * @return the bundle
+     */
+    public ResourceBundle getBundle() {
+        return bundle;
+    }
+
+    /**
+     * @param bundle the bundle to set
+     */
+    public void setBundle(ResourceBundle bundle) {
+        this.bundle = bundle;
+    }
+    
     /**
      * @return the employee
      */

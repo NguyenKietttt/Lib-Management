@@ -14,22 +14,22 @@
         </f:metadata>
     </ui:define>
     
-    <ui:define name="title">List Reader</ui:define>
+    <ui:define name="title">#{pMsg['reader.title']}</ui:define>
     
     <ui:define name="reader-nav">
         <h:commandLink class="nav-link active" action="reader?faces-redirect=true">
             <i class="fas fa-user-friends"></i>
-            <span>Reader</span>
+            <span>#{pMsg['reader.title']}</span>
         </h:commandLink>
     </ui:define>
     
-    <ui:define name = "info" >Reader</ui:define>
+    <ui:define name = "info">#{pMsg['reader.title']}</ui:define>
     
     <ui:define name="add-book">
         <div class="col-md-6 col-xl-3 text-left align-self-center">
             <h:link class="btn btn-danger" 
                              style="width: 100%;"
-                             value="Add a Reader"
+                             value="#{pMsg['reader.add']}"
                              outcome="reader-create?faces-redirect=true">
             </h:link>
         </div>
@@ -41,8 +41,10 @@
                 <div class="col-xl-10 offset-xl-1" style="margin-top: 1%;margin-bottom: 1%;">
                     <h:inputText class="bg-light form-control form-control-sm input-group-text custom-select-sm" 
                                  style="width: 90%;margin-left: 0px;margin-right: 6.5px; display: inline-block" 
-                                 value="#{readerBean.keyword}" t:placeholder="Search by Reader Name or Card ID..."/>
-                    <h:commandButton id="SearchBtn" class="btn btn-primary py-0" style="height: 32px; margin-bottom: 3px" value="Search">
+                                 value="#{readerBean.keyword}" t:placeholder="#{pMsg['reader.keyword']}"/>
+                    <h:commandButton id="SearchBtn" class="btn btn-primary py-0" 
+                                     style="height: 32px; margin-bottom: 3px" 
+                                     value="#{pMsg['book.buttonSearch']}">
                         <f:ajax execute="@form" render="fo:test" listener="#{readerBean.filterReader()}"/>
                     </h:commandButton>
                 </div>
@@ -52,30 +54,30 @@
                 <div class="form-group">
                     <div class="card">
                         <div class="card-header py-3">
-                            <p class="text-primary m-0 font-weight-bold">List Readers</p>
+                            <p class="text-primary m-0 font-weight-bold">#{pMsg['reader.list']}</p>
                         </div>
                         <div class="card-body" style="padding-top: 0px;">
                             <div  class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
                                 <p:dataTable value="#{readerBean.listReader}" var="p"
-                                             emptyMessage="No reader found"
+                                             emptyMessage="#{pMsg['reader.noReader']}"
                                              paginator="true"
                                              rows="5"
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PageLinks} {LastPageLink} "
                                              paginatorPosition="bottom"
                                              id="test"
                                              tableStyleClass="ui-datatable">
-                                    <p:column headerText="Card ID" width="12%" sortBy="#{p.card.cardID}">    				                                                  
+                                    <p:column headerText="#{pMsg['bookborrow.cardID']}" width="12%" sortBy="#{p.card.cardID}">    				                                                  
                                         <h:outputText value="#{p.card.cardID}"></h:outputText>
                                      </p:column>
-                                     <p:column headerText="Reader Name" width="30%" sortBy="#{p.readerName}">    				                                                        
+                                     <p:column headerText="#{pMsg['bookborrow.readerName']}" width="30%" sortBy="#{p.readerName}">    				                                                        
                                          <h:outputText value="#{p.readerName}"></h:outputText>
                                      </p:column>
-                                    <p:column headerText="Create Date" sortBy="#{p.card.createDate}">    				                                                        
+                                    <p:column headerText="#{pMsg['reader.createDate']}" sortBy="#{p.card.createDate}">    				                                                        
                                         <h:outputText value="#{p.card.createDate}">
                                             <f:convertDateTime type="date" pattern = "dd/MM/yyyy" />
                                         </h:outputText>
                                      </p:column>
-                                    <p:column headerText="Due Date" sortBy="#{p.card.dueDate}">    				                                                        
+                                    <p:column headerText="#{pMsg['reader.dueDate']}" sortBy="#{p.card.dueDate}">    				                                                        
                                         <h:outputText value="#{p.card.dueDate}">
                                             <f:convertDateTime type="date" pattern = "dd/MM/yyyy" />
                                         </h:outputText>
@@ -83,7 +85,7 @@
                                     <p:column>
                                         <h:link class="btn btn-primary btn-sm" 
                                                        style="width: 100%; height: 200%; color: white;" 
-                                                       value="Detail"
+                                                       value="#{pMsg['book.buttonDetail']}"
                                                        includeViewParams="true"
                                                        outcome="reader-detail?faces-redirect=true">
                                             <f:param name="cardID" value="#{p.card.cardID}"/>

@@ -19,6 +19,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
@@ -34,6 +35,8 @@ import javax.faces.context.FacesContext;
 @ManagedBean(name="readerBean")
 @RequestScoped
 public class ReaderBean {
+    private ResourceBundle bundle = ResourceBundle.getBundle("book", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+    
     private static ReaderService readerSvc = new ReaderService();
     private static CardService cardSvc = new CardService();
     private static BookService bookSvc = new BookService();
@@ -58,17 +61,17 @@ public class ReaderBean {
     }
     
     public void searchReader(){
-        Reader r = readerSvc.getReaderByCardID(cardID);
+        Reader r = getReaderSvc().getReaderByCardID(cardID);
         
         if (r == null) {
-            this.status = "CarID does not exit";
+            this.status = this.bundle.getString("card.null");
             return;
         }
         
         java.util.Date dueDate = r.getCard().getDueDate();
         java.util.Date currentDate = new java.util.Date();
         if (dueDate.before(currentDate)) {
-            this.status = "Card is expired. Please extend your library card";
+            this.status = this.bundle.getString("card.expire");
             return;
         }
 
@@ -82,7 +85,7 @@ public class ReaderBean {
         if (listFilter.size() > 0) {
             for (BorrowReturn br : listBR) {
                 if (br.getListBorrowReturnDetail().size() > 5) {
-                    this.status = "You have borrowed 5 books";
+                    this.status = this.bundle.getString("bookborrow.borrowInMonth");
                     return;
                 }
                 else
@@ -94,7 +97,7 @@ public class ReaderBean {
             .getExternalContext().getSessionMap().get("cart");
         
         if (cart.size() < 1) {
-            this.status = "You don't have any book to borrow";
+            this.status = this.bundle.getString("bookborrow.empty");
             return;
         }
         
@@ -106,12 +109,12 @@ public class ReaderBean {
             countBook -= temp;
             
             if (this.bookBorrow == 0) {
-                this.status = "You must return book before borrow more";
+                this.status = this.bundle.getString("bookborrow.borrowInMonth");
                 return;
             }
             else
                 if (countBook < 0) {
-                    this.status = "You can't borrow greater than " + this.bookBorrow;
+                    this.status = this.bundle.getString("bookborrow.borrowStill") + " " + this.bookBorrow;
                     return;
                 }
         }
@@ -128,14 +131,14 @@ public class ReaderBean {
                                     .getSessionMap().get("cart");
         
         if (cart.size() < 1) {
-            this.status = "You don't have any book to borrow";
+            this.status = this.bundle.getString("bookborrow.empty");
             return;
         }
         
         BorrowReturn br = new BorrowReturn();
         
         // ID
-        int id = brSvc.getBorrowReturnID() + 1;
+        int id = getBrSvc().getBorrowReturnID() + 1;
         br.setBorrowReturnID("BR" + String.valueOf(id));
         
         // CardID
@@ -179,7 +182,7 @@ public class ReaderBean {
         
         br.setListBorrowReturnDetail(listBRD);
         
-        if (brSvc.addOrSaveBorrowReturn(br)) {
+        if (getBrSvc().addOrSaveBorrowReturn(br)) {
             this.status = "";
             cart.clear();
             
@@ -196,7 +199,7 @@ public class ReaderBean {
             return;
         }
         
-        ArrayList<Reader> listR = readerSvc.filterReader(this.keyword);
+        ArrayList<Reader> listR = getReaderSvc().filterReader(this.keyword);
         
         if (listR == null) {
             listReader.clear();
@@ -207,6 +210,48 @@ public class ReaderBean {
     }
     
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
+    /**
+     * @return the bundle
+     */
+    public ResourceBundle getBundle() {
+        return bundle;
+    }
+
+    /**
+     * @param bundle the bundle to set
+     */
+    public void setBundle(ResourceBundle bundle) {
+        this.bundle = bundle;
+    }
+
+    /**
+     * @return the readerSvc
+     */
+    public static ReaderService getReaderSvc() {
+        return readerSvc;
+    }
+
+    /**
+     * @param aReaderSvc the readerSvc to set
+     */
+    public static void setReaderSvc(ReaderService aReaderSvc) {
+        readerSvc = aReaderSvc;
+    }
+
+    /**
+     * @return the brSvc
+     */
+    public static BorrowReturnService getBrSvc() {
+        return brSvc;
+    }
+
+    /**
+     * @param aBrSvc the brSvc to set
+     */
+    public static void setBrSvc(BorrowReturnService aBrSvc) {
+        brSvc = aBrSvc;
+    }
+    
     /**
      * @return the keyword
      */

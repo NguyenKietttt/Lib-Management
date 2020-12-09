@@ -11,6 +11,7 @@ import com.ndtk.service.CardService;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
@@ -28,6 +29,8 @@ import javax.faces.context.FacesContext;
 @ManagedBean(name = "readerdetailBean")
 @RequestScoped
 public class ReaderDetailBean {
+    private ResourceBundle bundle = ResourceBundle.getBundle("book", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+    
     private static CardService cardSvc = new CardService();
     
     private static String cardID;
@@ -80,17 +83,13 @@ public class ReaderDetailBean {
     public void updateReader(){
         Card c = cardSvc.getCardByID(this.getCardID());
         
-        if (c == null) {
-            this.alert = "Reader does not exist";
-            return;
-        }
-        
         // Reader Name
         if (!this.getReaderName().trim().equals("")) {
             c.getReader().setReaderName(this.getReaderName());
         }
         else{
-           this.setAlert("Reader Name cannot be blank");
+           this.setAlert(this.bundle.getString("employeedetail.fullName") + " " +
+                    this.bundle.getString("bookdetail.validateBlank"));
            return;
         }
         
@@ -99,7 +98,8 @@ public class ReaderDetailBean {
             c.getReader().setEmail(this.getEmail());
         }
         else{
-           this.setAlert("Email cannot be blank");
+           this.setAlert(this.bundle.getString("bookborrow.email") + " " +
+                    this.bundle.getString("bookdetail.validateBlank"));
            return;
         }
         
@@ -108,13 +108,14 @@ public class ReaderDetailBean {
             c.getReader().setPhone(this.getPhone());
         }
         else{
-           this.setAlert("Phone cannot be blank");
+           this.setAlert(this.bundle.getString("bookborrow.phone") + " " +
+                    this.bundle.getString("bookdetail.validateBlank"));
            return;
         }
         
         // Due Date
         if (this.getDueDate().before(c.getCreateDate()) || this.getDueDate().before(c.getDueDate())) {
-            this.alert = "Ngày hết hạn phải sau ngày tạo và ngày hết hạn cũ";
+            this.alert = this.bundle.getString("reader.dueDateCheck");
             return;
         }
         else
@@ -126,8 +127,6 @@ public class ReaderDetailBean {
                 .handleNavigation(FacesContext
                         .getCurrentInstance(), null, "reader-detail?faces-redirect=true&cardID=" + c.getCardID());
         }
-        else
-            this.alert = "Can't update reader";
     }
     
     public void deleteBook(){
@@ -138,7 +137,7 @@ public class ReaderDetailBean {
                 .filter(p -> p.getReturnDate() == null).collect(Collectors.toList());
         
         if (listBRFilter.size() > 0) {
-            this.alert = "Độc giả còn sách đang mượn, không thể xóa";
+            this.alert = this.bundle.getString("reader.deleteCheck");
             return;
         }
         
@@ -148,11 +147,23 @@ public class ReaderDetailBean {
             context.getApplication().getNavigationHandler()
                 .handleNavigation(context, null, "reader?faces-redirect=true");
         }
-        else
-            this.setAlert("Cannot be delete");
     }
     
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
+    /**
+     * @return the bundle
+     */
+    public ResourceBundle getBundle() {
+        return bundle;
+    }
+
+    /**
+     * @param bundle the bundle to set
+     */
+    public void setBundle(ResourceBundle bundle) {
+        this.bundle = bundle;
+    }
+    
     /**
      * @return the alert
      */

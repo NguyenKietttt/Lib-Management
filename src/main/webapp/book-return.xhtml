@@ -12,16 +12,16 @@
         </f:metadata>
     </ui:define>
     
-    <ui:define name="title">Return Book</ui:define>
+    <ui:define name="title">#{pMsg['bookreturn.title']}</ui:define>
     
-    <ui:insert name="book-return-nav">
+    <ui:define name="book-return-nav">
         <h:commandLink class="nav-link active" action="book-return?faces-redirect=true">
             <i class="fas fa-book"></i>
-            <span>Book Return</span>
+            <span>#{pMsg['bookreturn.title']}</span>
         </h:commandLink>
-    </ui:insert>
+    </ui:define>
     
-    <ui:define name="info">Return Book</ui:define>
+    <ui:define name="info">#{pMsg['bookreturn.title']}</ui:define>
     
     <ui:define name="content">
         <h:form id="fo">
@@ -29,20 +29,20 @@
                 <div class="col-xl-8">
                     <div class="card shadow mb-3">
                         <div class="card-header py-3">
-                            <p class="text-primary m-0 font-weight-bold">Infomation</p>
+                            <p class="text-primary m-0 font-weight-bold">#{pMsg['book.info']}</p>
                         </div>
                         <div class="card-body">
                             <div class="form-row">
                                 <div class="col">
                                     <div class="form-group">
                                         <label>
-                                            <strong>Borrow ID</strong>
+                                            <strong>#{pMsg['bookreturn.brID']}</strong>
                                             <h:message id="mbrID" style="color: red" for="brID" />
                                             <br/>
                                         </label>
-                                        <h:inputText id="brID" class="form-control" t:placeholder="Borrow ID"
+                                        <h:inputText id="brID" class="form-control" t:placeholder="#{pMsg['bookreturn.brID']}"
                                                      required="true" requiredMessage=" *"
-                                                     validatorMessage=" - Ví dụ: BR1"
+                                                     validatorMessage="&#160; #{pMsg['bookreturn.validatebrID']}"
                                                      value="#{returnBean.brID}">
                                             <f:validateRegex pattern="^[BR.0-9]*$"/>
                                         </h:inputText>
@@ -51,7 +51,7 @@
                                 <div class="col text-center align-self-center">
                                     <h:commandButton styleClass="btn btn-primary" 
                                                      style="width: 100%;margin-top: 16px;"
-                                                     value="Search">
+                                                     value="#{pMsg['book.buttonSearch']}">
                                         <f:ajax render="@form" execute="@form"
                                                 listener="#{returnBean.searchBR()}"
                                                 onevent="searchFail"/>
@@ -65,7 +65,7 @@
                                 <div class="col-xl-12">
                                     <div class="form-group">
                                         <label>
-                                            <strong>Card ID</strong>
+                                            <strong>#{pMsg['bookborrow.cardID']}</strong>
                                             <br/>
                                         </label>
                                         <h:inputText id="cardID" class="form-control" 
@@ -76,7 +76,7 @@
                                 <div class="col-xl-12">
                                     <div class="form-group">
                                         <label>
-                                            <strong>Name</strong>
+                                            <strong>#{pMsg['bookborrow.readerName']}</strong>
                                             <br/>
                                         </label>
                                         <h:inputText id="nameReader" class="form-control"
@@ -87,7 +87,7 @@
                                 <div class="col-xl-12">
                                     <div class="form-group">
                                         <label>
-                                            <strong>Email</strong>
+                                            <strong>#{pMsg['bookborrow.email']}</strong>
                                             <br/>
                                         </label>
                                         <h:inputText class="form-control" 
@@ -98,7 +98,7 @@
                                 <div class="col-xl-12">
                                     <div class="form-group">
                                         <label>
-                                            <strong>Phone</strong>
+                                            <strong>#{pMsg['bookborrow.phone']}</strong>
                                             <br/>
                                         </label>
                                         <h:inputText class="form-control"
@@ -109,7 +109,7 @@
                                 <div class="col-xl-12">
                                     <div class="form-group">
                                         <label>
-                                            <strong>Borrow Date</strong>
+                                            <strong>#{pMsg['bookreturn.borrowDate']}</strong>
                                             <br/>
                                         </label>
                                         <h:inputText class="form-control" 
@@ -121,19 +121,19 @@
                                 <div class="col-xl-12">
                                     <div class="form-group">
                                         <label>
-                                            <strong>List Book</strong>
+                                            <strong>#{pMsg['book.title']}</strong>
                                             <br/>
                                         </label>
                                          <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
                                              <p:dataTable value="#{returnBean.listBookReturnRes}" var="c"
                                                 rows="5" id="test" tableStyleClass="ui-datatable">
-                                                <p:column headerText="ID" style="width: 20%">    				                                                        
+                                                <p:column headerText="#{pMsg['book.id']}" style="width: 20%">    				                                                        
                                                     <h:outputText value="#{c.id}"></h:outputText>
                                                 </p:column>
-                                               <p:column headerText="Book Name">    				                                                        
+                                               <p:column headerText="#{pMsg['book.name']}">    				                                                        
                                                    <h:outputText value="#{c.bookName}"></h:outputText>
                                                 </p:column>
-                                                <p:column headerText="Lost">    				                                                        
+                                                <p:column headerText="#{pMsg['bookreturn.lost']}">    				                                                        
                                                     <h:selectBooleanCheckbox value="#{returnBean.lostBook[c.id]}">
                                                     </h:selectBooleanCheckbox>
                                                 </p:column>

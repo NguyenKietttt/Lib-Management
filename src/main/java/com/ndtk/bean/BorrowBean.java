@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -22,6 +23,8 @@ import javax.faces.context.FacesContext;
 @ManagedBean(name="borrowBean")
 @SessionScoped
 public class BorrowBean implements Serializable{
+    private ResourceBundle bundle = ResourceBundle.getBundle("book", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+    
     private String alert = "";
     
     @PostConstruct
@@ -52,7 +55,7 @@ public class BorrowBean implements Serializable{
                 .getExternalContext().getSessionMap().get("cart");
         
         if (cart.size() >= 5){
-            this.alert = "You already have 5 book in borrow";
+            this.alert = this.bundle.getString("bookborrow.sizeCart");
             return;
         }
         
@@ -61,7 +64,7 @@ public class BorrowBean implements Serializable{
             Map<String, Object> b = (Map<String, Object>) cart.get(integer);
             count += (int) b.get("count");
             if (count >= 5) {
-                this.alert = "You already have 5 book in borrow";
+                this.alert = this.bundle.getString("bookborrow.sizeCart");
                 return; 
             }
         }
@@ -100,6 +103,20 @@ public class BorrowBean implements Serializable{
     }
 
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
+    /**
+     * @return the bundle
+     */
+    public ResourceBundle getBundle() {
+        return bundle;
+    }
+
+    /**
+     * @param bundle the bundle to set
+     */
+    public void setBundle(ResourceBundle bundle) {
+        this.bundle = bundle;
+    }
+    
     /**
      * @return the alert
      */

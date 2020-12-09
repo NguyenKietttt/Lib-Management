@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -28,6 +29,8 @@ import javax.faces.context.FacesContext;
 @ManagedBean(name = "dashBoardBean")
 @RequestScoped
 public class DashBoardBean {
+    private ResourceBundle bundle = ResourceBundle.getBundle("book", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+    
     private static BorrowReturnService brSvc = new BorrowReturnService();
     
     private static List<Integer> listYear;
@@ -93,7 +96,7 @@ public class DashBoardBean {
         }
 
         DecimalFormat df = new DecimalFormat("0.##"); 
-        dbAll.setFines(df.format(sum) + " VND");
+        dbAll.setFines(df.format(sum) + " " + this.bundle.getString("bookreturndetail.money"));
         
         // Each Month
         for (int i = 0; i < 3; i++) {
@@ -122,7 +125,7 @@ public class DashBoardBean {
                 }
             }
             
-            db.setFines(df.format(sumMonth) + " VND");
+            db.setFines(df.format(sumMonth) + " " + this.bundle.getString("bookreturndetail.money"));
             
             getDbEachMonth().add(db);
         }
@@ -148,6 +151,62 @@ public class DashBoardBean {
     }
 
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
+    /**
+     * @return the dbEachMonth
+     */
+    public List<DashBoardRes> getDbEachMonth() {
+        return dbEachMonth;
+    }
+
+    /**
+     * @param dbEachMonth the dbEachMonth to set
+     */
+    public void setDbEachMonth(List<DashBoardRes> dbEachMonth) {
+        this.dbEachMonth = dbEachMonth;
+    }
+
+    /**
+     * @return the chart
+     */
+    public int[][] getChart() {
+        return chart;
+    }
+
+    /**
+     * @param chart the chart to set
+     */
+    public void setChart(int[][] chart) {
+        this.chart = chart;
+    }
+
+    /**
+     * @return the listBorrow
+     */
+    public List<BorrowReturn> getListBorrow() {
+        return listBorrow;
+    }
+
+    /**
+     * @param listBorrow the listBorrow to set
+     */
+    public void setListBorrow(List<BorrowReturn> listBorrow) {
+        this.listBorrow = listBorrow;
+    }
+
+    /**
+     * @return the bundle
+     */
+    public ResourceBundle getBundle() {
+        return bundle;
+    }
+
+    /**
+     * @param bundle the bundle to set
+     */
+    public void setBundle(ResourceBundle bundle) {
+        this.bundle = bundle;
+    }
+    
     /**
      * @return the brSvc
      */
@@ -246,46 +305,4 @@ public class DashBoardBean {
         this.listYear = listYear;
     }
     // </editor-fold>
-
-    /**
-     * @return the dbEachMonth
-     */
-    public List<DashBoardRes> getDbEachMonth() {
-        return dbEachMonth;
-    }
-
-    /**
-     * @param dbEachMonth the dbEachMonth to set
-     */
-    public void setDbEachMonth(List<DashBoardRes> dbEachMonth) {
-        this.dbEachMonth = dbEachMonth;
-    }
-
-    /**
-     * @return the chart
-     */
-    public int[][] getChart() {
-        return chart;
-    }
-
-    /**
-     * @param chart the chart to set
-     */
-    public void setChart(int[][] chart) {
-        this.chart = chart;
-    }
-
-    /**
-     * @return the listBorrow
-     */
-    public List<BorrowReturn> getListBorrow() {
-        return listBorrow;
-    }
-
-    /**
-     * @param listBorrow the listBorrow to set
-     */
-    public void setListBorrow(List<BorrowReturn> listBorrow) {
-        this.listBorrow = listBorrow;
-    }
 }

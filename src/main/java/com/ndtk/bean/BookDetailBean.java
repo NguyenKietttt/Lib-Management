@@ -23,6 +23,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.ResourceBundle;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,6 +40,8 @@ import javax.servlet.http.Part;
 @ManagedBean(name = "bookDetailBean")
 @RequestScoped
 public class BookDetailBean {
+    private ResourceBundle bundle = ResourceBundle.getBundle("book", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+    
     private static BookService bookSvc = new BookService();
     private static CategoryService categorySvc = new CategoryService();
     private static AuthorService authorSvc = new AuthorService();
@@ -80,9 +83,9 @@ public class BookDetailBean {
                         bookDetailRes.setAuthor(b.getAuthor());
                         bookDetailRes.setPublisher(b.getPublisher());
                         if (b.getBookStatus())
-                            bookDetailRes.setStatus("Còn");
+                            bookDetailRes.setStatus(this.bundle.getString("book.inStock"));
                         else
-                            bookDetailRes.setStatus("Hết");
+                            bookDetailRes.setStatus(this.bundle.getString("book.outStock"));
                         
                         java.util.Date newDate = bookDetailRes.getPublishingDate();
                         this.setDateString(newDate);    
@@ -145,21 +148,13 @@ public class BookDetailBean {
     public void updateBook() throws IOException {
         Book b = bookSvc.getBookByID(this.getBookDetailRes().getBookID());
         
-        if (b.getListBorrowReturnDetail().size() > 0) {
-            for (BorrowReturnDetail borrowReturnDetail : b.getListBorrowReturnDetail()) {
-                if (borrowReturnDetail.getBorrowReturn().getReturnDate() == null){
-                    this.setAlert("Book has been borrowed cannot update!");
-                    return;
-                }
-            }
-        }
-        
         // Book Name
         if (!bookDetailRes.getBookName().trim().equals("")) {
             b.setBookName(bookDetailRes.getBookName());
          }
          else{
-            this.setAlert("Book Name cannot be blank");
+            this.setAlert(this.bundle.getString("book.name") + " " +
+                    this.bundle.getString("bookdetail.validateBlank"));
             return;
          }
         
@@ -184,7 +179,8 @@ public class BookDetailBean {
             b.setBookDescription(bookDetailRes.getBookDescription());
          }
          else{
-            this.setAlert("Book Description cannot be blank");
+            this.setAlert(this.bundle.getString("bookdetail.description") + " " +
+                    this.bundle.getString("bookdetail.validateBlank"));
             return;
          }
         
@@ -210,7 +206,8 @@ public class BookDetailBean {
                 b.setAuthor(authorNew);
         }
         else{
-            this.setAlert("Author cannot be blank");
+            this.setAlert(this.bundle.getString("book.author") + " " +
+                    this.bundle.getString("bookdetail.validateBlank"));
             return;
         }
         
@@ -232,20 +229,22 @@ public class BookDetailBean {
                 b.setPublisher(publisherNew);
         }
         else{
-            this.setAlert("Publisher cannot be blank");
+            this.setAlert(this.bundle.getString("book.publisher") + " " +
+                    this.bundle.getString("bookdetail.validateBlank"));
             return;
         }
         
         
         // Book Status
         if (!bookDetailRes.getStatus().trim().equals("")) {
-            if (bookDetailRes.getStatus().equals("Còn"))
+            if (bookDetailRes.getStatus().equals(this.bundle.getString("book.inStock")))
                 b.setBookStatus(true);
             else
                 b.setBookStatus(false);
         }
         else{
-            this.setAlert("Book Status cannot be blank");
+            this.setAlert(this.bundle.getString("book.status") + " " +
+                    this.bundle.getString("bookdetail.validateBlank"));
             return;
         }
             
@@ -256,8 +255,6 @@ public class BookDetailBean {
             context.getApplication().getNavigationHandler()
                 .handleNavigation(context, null, "book-detail?faces-redirect=true&bookID=" + bookDetailRes.getBookID());
         }
-        else
-            this.setAlert("Cannot be update");
     }
     
     public void deleteBook(){
@@ -266,7 +263,8 @@ public class BookDetailBean {
         if (b.getListBorrowReturnDetail().size() > 0) {
             for (BorrowReturnDetail borrowReturnDetail : b.getListBorrowReturnDetail()) {
                 if (borrowReturnDetail.getBorrowReturn().getReturnDate() == null){
-                    this.setAlert("Book has been borrowed cannot be delete");
+                    this.setAlert(this.bundle.getString("bookdetail.validate") + " " +
+                            this.bundle.getString("bookdetail.buttonDelete").toLowerCase());
                     return;
                 }
             }
@@ -278,8 +276,6 @@ public class BookDetailBean {
             context.getApplication().getNavigationHandler()
                 .handleNavigation(context, null, "book?faces-redirect=true");
         }
-        else
-            this.setAlert("Cannot be delete");
     }
 
     public String getMessage() {
@@ -287,6 +283,20 @@ public class BookDetailBean {
    }
         
     // <editor-fold defaultstate="collapsed" desc=" Getter - Setter ">
+    /**
+     * @return the bundle
+     */
+    public ResourceBundle getBundle() {
+        return bundle;
+    }
+
+    /**
+     * @param bundle the bundle to set
+     */
+    public void setBundle(ResourceBundle bundle) {
+        this.bundle = bundle;
+    }
+    
     /**
      * @return the part
      */

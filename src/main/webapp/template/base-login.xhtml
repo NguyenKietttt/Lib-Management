@@ -7,7 +7,8 @@ and open the template in the editor.
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <ui:insert name="filter" />
         <title><ui:insert name="title">Title</ui:insert></title>
@@ -16,6 +17,7 @@ and open the template in the editor.
         <h:outputStylesheet name="fonts/fontawesome-all.min.css"></h:outputStylesheet>
     </h:head>
     <h:body class="bg-gradient-primary">
+        <f:loadBundle var="pMsg" basename="book"></f:loadBundle>
         <div class="container">
             <div class="container">
                 <div class="card shadow-lg o-hidden border-0 my-5">
