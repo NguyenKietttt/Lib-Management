@@ -10,6 +10,8 @@ import com.ndtk.res.BookRes;
 import com.ndtk.service.BookService;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -37,6 +39,42 @@ public class BookBean {
     private String keyword;
     
     public BookBean(){
+        String cateID = FacesContext.getCurrentInstance()
+                .getExternalContext().getRequestParameterMap().get("cateID");
+        
+        String auID = FacesContext.getCurrentInstance()
+                .getExternalContext().getRequestParameterMap().get("auID");
+        
+        String pubID = FacesContext.getCurrentInstance()
+                .getExternalContext().getRequestParameterMap().get("pubID");
+        
+        Pattern pattern = Pattern.compile("^[0-9]*$");
+        Matcher matcher;
+
+        if (cateID != null && !cateID.isEmpty()) {
+            matcher = pattern.matcher(cateID);
+
+            if (matcher.matches()){
+                this.categoryID = Integer.parseInt(cateID);
+            }
+        }
+        
+        if (auID != null && !auID.isEmpty()) {
+            matcher = pattern.matcher(auID);
+
+            if (matcher.matches()){
+                this.authorID = Integer.parseInt(auID);
+            }
+        }
+        
+        if (pubID != null && !pubID.isEmpty()) {
+            matcher = pattern.matcher(pubID);
+
+            if (matcher.matches()){
+                this.publisherID = Integer.parseInt(pubID);
+            }
+        }
+
         ArrayList<Book> books = bookSvc.getAllBooks(this.keyword, this.categoryID, this.authorID, this.publisherID);
         ArrayList<BookRes> booksRes = initBookRes(books);
         setListBook(booksRes);

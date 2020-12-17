@@ -122,10 +122,12 @@
                                                     </h:selectOneMenu>
                                                 </c:if>
                                                 <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType ne 'Admin'}">
-                                                    <h:inputText class="form-control" 
-                                                                 t:placeholder="#{pMsg['book.category']}" 
-                                                                 value="#{bookDetailBean.bookDetailRes.category.categoryName}"
-                                                                 readonly="true"/>
+                                                    <h:link style="width: 100%; display: block;" 
+                                                            value="#{bookDetailBean.bookDetailRes.category.categoryName}"
+                                                            includeViewParams="true"
+                                                            outcome="book?faces-redirect=true">
+                                                        <f:param name="cateID" value="#{bookDetailBean.bookDetailRes.category.categoryId}"/>
+                                                    </h:link>
                                                 </c:if>
                                             </div>
                                         </div>
@@ -136,11 +138,19 @@
                                                     <h:message id="mAuthor" style="color: red" for="author" />
                                                     <br/>
                                                 </label>
-                                                <h:inputText id="author" class="form-control" 
-                                                             t:placeholder="#{pMsg['book.author']}" value="#{bookDetailBean.bookDetailRes.author.authorName}" 
-                                                             required="true" requiredMessage=" *"
-                                                             readonly="#{facesContext.externalContext.sessionMap
-                                                                         .get('user').userType eq 'Admin' ? false : true}"/>
+                                                <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType eq 'Admin'}">
+                                                    <h:inputText id="author" class="form-control" 
+                                                                 t:placeholder="#{pMsg['book.author']}" value="#{bookDetailBean.bookDetailRes.author.authorName}" 
+                                                                 required="true" requiredMessage=" *"/>
+                                                </c:if>
+                                                <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType ne 'Admin'}">
+                                                    <h:link style="width: 100%; display: block;" 
+                                                            value="#{bookDetailBean.bookDetailRes.author.authorName}"
+                                                            includeViewParams="true"
+                                                            outcome="book?faces-redirect=true">
+                                                        <f:param name="auID" value="#{bookDetailBean.bookDetailRes.author.authorID}"/>
+                                                    </h:link>
+                                                </c:if>
                                             </div>
                                         </div>
                                         <div class="col-xl-12">
@@ -150,11 +160,19 @@
                                                     <h:message id="mPublisher" style="color: red" for="publisher" />
                                                     <br/>
                                                 </label>
-                                                <h:inputText id="publisher" class="form-control" 
-                                                             t:placeholder="#{pMsg['book.publisher']}" value="#{bookDetailBean.bookDetailRes.publisher.publisherName}" 
-                                                             required="true" requiredMessage=" *"
-                                                             readonly="#{facesContext.externalContext.sessionMap
-                                                                         .get('user').userType eq 'Admin' ? false : true}"/>
+                                                <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType eq 'Admin'}">
+                                                    <h:inputText id="publisher" class="form-control" 
+                                                                 t:placeholder="#{pMsg['book.publisher']}" value="#{bookDetailBean.bookDetailRes.publisher.publisherName}" 
+                                                                 required="true" requiredMessage=" *"/>
+                                                </c:if>
+                                                <c:if test="#{facesContext.externalContext.sessionMap.get('user').userType ne 'Admin'}">
+                                                    <h:link style="width: 100%; display: block;" 
+                                                            value="#{bookDetailBean.bookDetailRes.publisher.publisherName}"
+                                                            includeViewParams="true"
+                                                            outcome="book?faces-redirect=true">
+                                                        <f:param name="pubID" value="#{bookDetailBean.bookDetailRes.publisher.publisherID}"/>
+                                                    </h:link>
+                                                </c:if>
                                             </div>
                                         </div>
                                     </div>
