@@ -83,7 +83,7 @@ public class ReaderBean {
         this.bookBorrow = 5;
         
         if (listFilter.size() > 0) {
-            for (BorrowReturn br : listBR) {
+            for (BorrowReturn br : listFilter) {
                 if (br.getListBorrowReturnDetail().size() > 5) {
                     this.status = this.bundle.getString("bookborrow.borrowInMonth");
                     return;

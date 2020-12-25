@@ -28,6 +28,17 @@
                                 <div class="col-xl-12">
                                     <div class="form-group">
                                         <label>
+                                            <strong>#{pMsg['bookreturn.brID']}</strong>
+                                            <br/>
+                                        </label>
+                                        <h:inputText id="brID" class="form-control" 
+                                                     value="#{borrowdetailBean.brID}" 
+                                                     readonly="true"/>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="form-group">
+                                        <label>
                                             <strong>#{pMsg['bookborrow.cardID']}</strong>
                                             <br/>
                                         </label>
@@ -91,7 +102,7 @@
                                                      value="#{borrowdetailBean.employee.employeeName}" readonly="true">
                                         </h:inputText>
                                     </div>
-                                </div
+                                </div>
                                 <div class="col-xl-12">
                                     <div class="form-group">
                                         <label>

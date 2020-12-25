@@ -26,6 +26,7 @@ import javax.faces.context.FacesContext;
 public class BorrowDetailBean {
     private static BorrowReturnService brSvc = new BorrowReturnService();
     
+    private String brID = "";
     private String cardID = "";
     private String readerName = "";
     private String email = "";
@@ -42,6 +43,7 @@ public class BorrowDetailBean {
         BorrowReturn br = brSvc.getBorrowReturnByID(brID);
         
         if (br != null) {
+            this.brID = br.getBorrowReturnID();
             this.cardID = br.getCard().getCardID();
             this.readerName = br.getCard().getReader().getReaderName();
             this.email = br.getCard().getReader().getEmail();
@@ -179,5 +181,19 @@ public class BorrowDetailBean {
         this.listBook = listBook;
     }
     // </editor-fold>
+
+    /**
+     * @return the brID
+     */
+    public String getBrID() {
+        return brID;
+    }
+
+    /**
+     * @param brID the brID to set
+     */
+    public void setBrID(String brID) {
+        this.brID = brID;
+    }
 
 }

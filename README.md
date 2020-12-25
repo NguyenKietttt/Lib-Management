@@ -4,11 +4,15 @@ The website helps manage borrow and return book.
 
 ## Prerequisite
 - JDK = 8
+- Apache Tomcat = 9.0.41
 - JSF (JavaServer Faces) = 2.2
 - Hibernate = 5.4.23.Final
 - MySQL = 8.0.22
 
 ## Install
+**Apache Tomcat**
+Follow this [link](https://tomcat.apache.org/download-90.cgi)
+
 **JDK 8**
 Follow this [link](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
 
@@ -20,8 +24,6 @@ Follow this [link](https://dev.mysql.com/downloads/mysql/)
   * Book sources: [https://sachvui.com](https://sachvui.com)
 
 ## Features
-
-Localhost
 
 Authenticate & Authorize for Employee/Admin
 

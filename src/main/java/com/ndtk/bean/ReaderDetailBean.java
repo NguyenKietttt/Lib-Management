@@ -10,6 +10,7 @@ import com.ndtk.pojo.Card;
 import com.ndtk.service.CardService;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -129,14 +130,19 @@ public class ReaderDetailBean {
         }
     }
     
-    public void deleteBook(){
+    public void deleteReader(){
         Card c = cardSvc.getCardByID(this.getCardID());
         
-        List<BorrowReturn> listBR = new ArrayList<>(c.getListBorrowReturn());
-        List<BorrowReturn> listBRFilter = listBR.stream()
-                .filter(p -> p.getReturnDate() == null).collect(Collectors.toList());
+        List<BorrowReturn> listNew = new ArrayList<>(c.getListBorrowReturn());
         
-        if (listBRFilter.size() > 0) {
+        for (Iterator<BorrowReturn> iter = listNew.iterator(); iter.hasNext(); ) {
+            BorrowReturn br = iter.next();
+            if (br.getReturnDate() != null) {
+                iter.remove();
+            }
+         }
+        
+        if (listNew.size() > 0) {
             this.alert = this.bundle.getString("reader.deleteCheck");
             return;
         }

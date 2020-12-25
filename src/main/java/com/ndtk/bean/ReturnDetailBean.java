@@ -71,10 +71,10 @@ public class ReturnDetailBean {
                 this.readerName = br.getCard().getReader().getReaderName();
                 this.email = br.getCard().getReader().getEmail();
                 this.phone = br.getCard().getReader().getPhone();
-                if (this.fines == null)
+                if (br.getFines() == null)
                     this.fines = 0 + " " + this.bundle.getString("bookreturndetail.money");
                 else
-                    this.fines = br.getFines() + " " + this.bundle.getString("bookreturndetail.money");
+                    this.fines = br.getFines().stripTrailingZeros().toPlainString() + " " + this.bundle.getString("bookreturndetail.money");
                 this.borrowDate = br.getBorrowDate(); 
                 this.returnDate = br.getReturnDate();
                 this.employee = br.getEmployee();
